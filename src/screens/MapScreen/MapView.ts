@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { View } from "../../type";
+import type { View } from "../../type";
 
 export class MapScreenView implements View {
     private group: Konva.Group;

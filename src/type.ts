@@ -7,7 +7,8 @@ export interface View {
 }
 
 export type Screen =
-	| { type: "map" };
+	| { type: "map" }
+	| { type: "level" };
 
 export abstract class ScreenController {
     abstract getView(): View;
@@ -22,5 +23,5 @@ export abstract class ScreenController {
 }
 
 export interface ScreenSwitcher {
-    switchTo(screen: ScreenController): void;
+    switchTo(screen: Screen): void;
 }   
