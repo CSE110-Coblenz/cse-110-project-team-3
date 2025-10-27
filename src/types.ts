@@ -1,9 +1,9 @@
 import type { Group } from "konva/lib/Group";
 
 export interface View {
-	getGroup(): Group;
-	show(): void;
-	hide(): void;
+  getGroup(): Group;
+  show(): void;
+  hide(): void;
 }
 
 /**
@@ -11,21 +11,20 @@ export interface View {
  *
  * - "rules": Rulesscreen
  */
-export type Screen =
-	| { type: "rules" };
+export type Screen = { type: "rules" };
 
 export abstract class ScreenController {
-	abstract getView(): View;
+  abstract getView(): View;
 
-	show(): void {
-		this.getView().show();
-	}
+  show(): void {
+    this.getView().show();
+  }
 
-	hide(): void {
-		this.getView().hide();
-	}
+  hide(): void {
+    this.getView().hide();
+  }
 }
 
 export interface ScreenSwitcher {
-	switchToScreen(screen: Screen): void;
+  switchToScreen(screen: Screen): void;
 }

@@ -2,7 +2,6 @@
 export const STAGE_WIDTH = 800;
 export const STAGE_HEIGHT = 600;
 
-
 // Color palette
 export const COLORS = {
   bg: "#000000",
@@ -13,5 +12,8 @@ export const COLORS = {
   buttonStroke: "#cfcfcf",
   buttonText: "#1a1a1a",
   text: "#ffffff",
-  badge: "#6c2bd9",
+  black: "#000000",
 };
+
+export const FONT_FAMILY =
+  "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace";
