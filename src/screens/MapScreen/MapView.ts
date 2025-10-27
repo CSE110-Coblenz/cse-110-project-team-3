@@ -7,6 +7,14 @@ import {
   FONT_FAMILY,
 } from "../../constants";
 
+type NodeDescription = {
+  group: Konva.Group;
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+};
+
 export class MapScreenView implements View {
   private group: Konva.Group;
 
@@ -25,9 +33,9 @@ export class MapScreenView implements View {
     this.group.add(background);
 
     // Map Nodes
-    const nodeB = this.createNode(100, STAGE_HEIGHT / 2 - 50, "1");
-    const nodeC = this.createNode(300, STAGE_HEIGHT / 2 - 50, "2");
-    const nodeD = this.createNode(500, STAGE_HEIGHT / 2 - 50, "Game 1", {
+    const nodeA = this.createNode(100, STAGE_HEIGHT / 2 - 50, "1");
+    const nodeB = this.createNode(300, STAGE_HEIGHT / 2 - 50, "2");
+    const nodeC = this.createNode(500, STAGE_HEIGHT / 2 - 50, "Game 1", {
       height: 120,
       width: 250,
     });
@@ -54,10 +62,32 @@ export class MapScreenView implements View {
       160,
       64
     );
-    // const nextBtn = this.createChevronButton(STAGE_WIDTH - 108, STAGE_HEIGHT - 96, 84);
+    const nextBtn = this.createPillButton(
+      ">",
+      STAGE_WIDTH - 108,
+      STAGE_HEIGHT - 96,
+      84,
+      64
+    );
 
-    this.group.add(refBtn, rulesBtn, exitBtn);
-    this.group.add(nodeB, nodeC, nodeD);
+    // Arrows (add BEFORE nodes so nodes sit on top)
+    const arrowAB = this.createArrow(
+      nodeA.x + nodeA.width,
+      nodeA.y + nodeA.height / 2,
+      nodeB.x,
+      nodeB.y + nodeB.height / 2
+    );
+    const arrowBC = this.createArrow(
+      nodeB.x + nodeB.width,
+      nodeB.y + nodeB.height / 2,
+      nodeC.x,
+      nodeC.y + nodeC.height / 2
+    );
+
+    // Add all elements to the main group
+    this.group.add(refBtn, rulesBtn, exitBtn, nextBtn);
+    this.group.add(nodeA.group, nodeB.group, nodeC.group);
+    this.group.add(arrowAB, arrowBC);
   }
 
   private createNode(
@@ -65,7 +95,7 @@ export class MapScreenView implements View {
     y: number,
     label: string,
     opts: { height?: number; width?: number } = {}
-  ): Konva.Group {
+  ): NodeDescription {
     const height = opts.height ?? 120;
     const width = opts.width ?? height;
     const radius = 24;
@@ -89,8 +119,8 @@ export class MapScreenView implements View {
 
     // For wide nodes, pick a size that respects BOTH height and width
     const wideFontSize = Math.min(
-      (height - pad * 2) * 0.58, // don’t overflow vertically
-      (width - pad * 2) * 0.24 // don’t overflow horizontally
+      (height - pad * 2) * 0.58,
+      (width - pad * 2) * 0.24
     );
 
     const text = new Konva.Text({
@@ -110,7 +140,7 @@ export class MapScreenView implements View {
     });
 
     group.add(outer, text);
-    return group;
+    return { group, x, y, height, width };
   }
 
   private createPillButton(
@@ -152,6 +182,25 @@ export class MapScreenView implements View {
 
     g.add(rect, text);
     return g;
+  }
+
+  private createArrow(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number
+  ): Konva.Arrow {
+    return new Konva.Arrow({
+      points: [x1, y1, x2, y2],
+      pointerLength: 14,
+      pointerWidth: 14,
+      stroke: COLORS.nodeStroke,
+      fill: COLORS.nodeStroke,
+      strokeWidth: 6,
+      lineCap: "round",
+      lineJoin: "round",
+      listening: false,
+    });
   }
 
   getGroup(): Konva.Group {
