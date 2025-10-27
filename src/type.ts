@@ -6,6 +6,9 @@ export interface View {
     hide(): void;
 }
 
+export type Screen =
+	| { type: "map" };
+
 export abstract class ScreenController {
     abstract getView(): View;
 
