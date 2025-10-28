@@ -8,14 +8,29 @@ export class MapScreenController extends ScreenController {
 
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
-    this.view = new MapScreenView();
+    this.view = new MapScreenView(
+      () => this.handleReferenceClick(),
+      () => this.handleRulesClick(),
+      () => this.handleExitClick()
+    );
     this.screenSwitcher = screenSwitcher;
   }
 
-  private switchToLevelScreen(): void {
-    // Implementation for switching to level screen goes here
-    this.screenSwitcher.switchTo({ type: "level" });
-  }
+  private handleNodeClick = (level: string) => {
+    console.log(`Node ${level} clicked`);
+  };
+
+  private handleReferenceClick = () => {
+    console.log("Reference button clicked");
+  };
+
+  private handleRulesClick = () => {
+    console.log("Rules button clicked");
+  };
+
+  private handleExitClick = () => {
+    console.log("Exit button clicked");
+  };
 
   getView(): MapScreenView {
     return this.view;

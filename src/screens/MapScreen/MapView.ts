@@ -18,7 +18,11 @@ type NodeDescription = {
 export class MapScreenView implements View {
   private group: Konva.Group;
 
-  constructor() {
+  constructor(
+    handleReferenceClick?: () => void,
+    handleRulesClick?: () => void,
+    handleExitClick?: () => void
+  ) {
     this.group = new Konva.Group();
 
     // Background
@@ -69,6 +73,17 @@ export class MapScreenView implements View {
       84,
       64
     );
+
+    // Link handle clicks
+    if (handleReferenceClick) {
+      refBtn.on("click", handleReferenceClick);
+    }
+    if (handleRulesClick) {
+      rulesBtn.on("click", handleRulesClick);
+    }
+    if (handleExitClick) {
+      exitBtn.on("click", handleExitClick);
+    }
 
     // Arrows (add BEFORE nodes so nodes sit on top)
     const arrowAB = this.createArrow(
@@ -181,6 +196,7 @@ export class MapScreenView implements View {
     });
 
     g.add(rect, text);
+
     return g;
   }
 
