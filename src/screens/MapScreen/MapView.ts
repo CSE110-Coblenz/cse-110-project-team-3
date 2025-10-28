@@ -61,16 +61,9 @@ export class MapScreenView implements View {
     );
     const exitBtn = this.createPillButton(
       "EXIT",
-      STAGE_WIDTH / 2 + 90,
+      STAGE_WIDTH - 192,
       STAGE_HEIGHT - 96,
       160,
-      64
-    );
-    const nextBtn = this.createPillButton(
-      ">",
-      STAGE_WIDTH - 108,
-      STAGE_HEIGHT - 96,
-      84,
       64
     );
 
@@ -100,7 +93,7 @@ export class MapScreenView implements View {
     );
 
     // Add all elements to the main group
-    this.group.add(refBtn, rulesBtn, exitBtn, nextBtn);
+    this.group.add(refBtn, rulesBtn, exitBtn);
     this.group.add(nodeA.group, nodeB.group, nodeC.group);
     this.group.add(arrowAB, arrowBC);
   }
