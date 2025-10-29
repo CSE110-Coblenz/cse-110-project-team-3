@@ -1,0 +1,27 @@
+{
+  "name": "cse-110-project-team-3",
+  "version": "1.0.0",
+  "description": "Fresh repository with main branch.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ndimaya/cse-110-project-team-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ndimaya/cse-110-project-team-3/issues"
+  },
+  "homepage": "https://github.com/ndimaya/cse-110-project-team-3#readme",
+  "dependencies": {
+    "konva": "^10.0.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12"
+  }
+}
