@@ -1,5 +1,5 @@
-import type { ScreenSwitcher } from "../../type";
-import { ScreenController } from "../../type";
+import type { ScreenSwitcher } from "../../types";
+import { ScreenController } from "../../types";
 import { MapScreenView } from "./MapView";
 
 export class MapScreenController extends ScreenController {

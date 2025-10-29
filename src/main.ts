@@ -1,5 +1,5 @@
 import Konva from "konva";
-import type { ScreenSwitcher, Screen } from "./type.ts";
+import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 
