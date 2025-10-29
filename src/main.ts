@@ -31,7 +31,7 @@ class App implements ScreenSwitcher {
     this.mapScreenController.getView().show();
   }
 
-  switchTo(screen: Screen): void {
+  switchToScreen(screen: Screen): void {
     // Hide all screens
     this.mapScreenController.getView().hide();
 
