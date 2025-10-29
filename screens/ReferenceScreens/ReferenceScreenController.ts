@@ -1,7 +1,6 @@
-
-import { ScreenContoller } from "../../types.ts";
+import { ScreenController } from "../../types.ts";
 import type { ScreenSwitcher} from "../../types.ts";
-import { ReferenceScreenView } from "./ReferenceScreen.ts";
+import { ReferenceScreenView } from "./ReferenceScreenView.ts";
 
 
 /*
@@ -20,11 +19,11 @@ export class ReferenceScreenController extends ScreenController {
 
     /*
     Handles the exit button click to be implemented after game view is implemented?
-    
-    private handleExitClick(): void {
-        this.screenSwitcher.switchToScreen({type: "game"});
-    }
     */
+    private handleExitClick(): void {
+        //this.screenSwitcher.switchToScreen({type: "game"});
+    }
+    
     /*
     Gets the reference screen view
     */
