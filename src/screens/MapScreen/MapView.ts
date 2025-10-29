@@ -1,5 +1,5 @@
 import Konva from "konva";
-import type { View } from "../../type";
+import type { View } from "../../types";
 import {
   COLORS,
   STAGE_HEIGHT,
@@ -21,7 +21,8 @@ export class MapScreenView implements View {
   constructor(
     handleReferenceClick?: () => void,
     handleRulesClick?: () => void,
-    handleExitClick?: () => void
+    handleExitClick?: () => void,
+    handleNodeClick?: (level: string) => void
   ) {
     this.group = new Konva.Group();
 
@@ -37,12 +38,30 @@ export class MapScreenView implements View {
     this.group.add(background);
 
     // Map Nodes
-    const nodeA = this.createNode(100, STAGE_HEIGHT / 2 - 50, "1");
-    const nodeB = this.createNode(300, STAGE_HEIGHT / 2 - 50, "2");
-    const nodeC = this.createNode(500, STAGE_HEIGHT / 2 - 50, "Game 1", {
-      height: 120,
-      width: 250,
-    });
+    const nodeA = this.createNode(
+      100,
+      STAGE_HEIGHT / 2 - 50,
+      "1",
+      {},
+      handleNodeClick
+    );
+    const nodeB = this.createNode(
+      300,
+      STAGE_HEIGHT / 2 - 50,
+      "2",
+      {},
+      handleNodeClick
+    );
+    const nodeC = this.createNode(
+      500,
+      STAGE_HEIGHT / 2 - 50,
+      "Game 1",
+      {
+        height: 120,
+        width: 250,
+      },
+      handleNodeClick
+    );
 
     // Level Buttons
     const refBtn = this.createPillButton(
@@ -102,7 +121,8 @@ export class MapScreenView implements View {
     x: number,
     y: number,
     label: string,
-    opts: { height?: number; width?: number } = {}
+    opts: { height?: number; width?: number } = {},
+    handleClick?: (level: string) => void
   ): NodeDescription {
     const height = opts.height ?? 120;
     const width = opts.width ?? height;
@@ -148,6 +168,12 @@ export class MapScreenView implements View {
     });
 
     group.add(outer, text);
+
+    // Click handler
+    if (handleClick) {
+      group.on("click", () => handleClick(label));
+    }
+
     return { group, x, y, height, width };
   }
 
