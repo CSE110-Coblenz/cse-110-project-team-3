@@ -12,7 +12,7 @@ export class MapScreenController extends ScreenController {
       () => this.handleReferenceClick(),
       () => this.handleRulesClick(),
       () => this.handleExitClick(),
-      (level: string) => this.handleNodeClick(level)
+      (level: string) => this.handleNodeClick(level),
     );
     this.screenSwitcher = screenSwitcher;
   }
