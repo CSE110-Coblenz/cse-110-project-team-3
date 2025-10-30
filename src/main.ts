@@ -31,7 +31,7 @@ class App implements ScreenSwitcher {
     this.layer.add(this.mapScreenController.getView().getGroup());
 	this.layer.add(this.rulesScreenController.getView().getGroup());
 
-    // Start with the map screen - 
+    // Start with the map screen
     this.mapScreenController.getView().show();
   }
 
