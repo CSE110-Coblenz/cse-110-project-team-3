@@ -1,7 +1,12 @@
 
 import Konva from 'konva';
 import type { View } from '../../types.ts';
-import { STAGE_WIDTH } from '../../constants.ts';
+import {
+  COLORS,
+  STAGE_HEIGHT,
+  STAGE_WIDTH,
+  FONT_FAMILY,
+} from "../../constants";
 
 /*
 ReferenceScreenView makes the reference screen view
@@ -9,8 +14,19 @@ ReferenceScreenView makes the reference screen view
 export class ReferenceScreenView implements View {
     private group: Konva.Group;
 
-    constructor(onExitClick: () => void) {
+    constructor(handleExitClick?: () => void) {
         this.group = new Konva.Group({ visible: true});
+
+        //background
+         const background = new Konva.Rect({
+              x: 0,
+              y: 0,
+              width: STAGE_WIDTH,
+              height: STAGE_HEIGHT,
+              fill: COLORS.bg,
+              cornerRadius: 8,
+            });
+            this.group.add(background);
 
         //Title Text
         const titleText = new Konva.Text({
@@ -25,33 +41,62 @@ export class ReferenceScreenView implements View {
         titleText.offsetX(titleText.width() / 2);
         this.group.add(titleText);
 
-        const exitButtonGroup = new Konva.Group();
-        const exitButton = new Konva.Rect({
-            x: STAGE_WIDTH - 110,
-            y: 300,
-            width: 200,
-            height: 50,
-            fill: 'red',
-            cornerRadius: 10,
-            stroke: "darkred",
-            strokeWidth: 4,
-        });
+        const exitBtn = this.createPillButton(
+      "EXIT",
+      STAGE_WIDTH - 192,
+      STAGE_HEIGHT - 96,
+      160,
+      64
+    );
 
-        const exitButtonText = new Konva.Text({
-            x: STAGE_WIDTH - 10,
-            y: 315,
-            text: 'Exit',
-            fontSize: 20,
-            fontFamily: 'Comic Sans MS',
-            fill: 'white',
-            align: 'center',
-        });
-        exitButtonText.offsetX(exitButtonText.width() / 2);
-        exitButtonGroup.add(exitButton);
-        exitButtonGroup.add(exitButtonText);
-        exitButtonGroup.on('click', onExitClick);
-        this.group.add(exitButtonGroup);
+    // Exit button click handler
+    if (handleExitClick) {
+      exitBtn.on("click", handleExitClick);
     }
+    this.group.add(exitBtn);
+    }
+    private createPillButton(
+        label: string,
+        x: number,
+        y: number,
+        width: number,
+        height: number
+      ): Konva.Group {
+        const g = new Konva.Group({ x, y });
+    
+        const r = Math.min(height / 2 + 6, 24);
+        const rect = new Konva.Rect({
+          width,
+          height,
+          cornerRadius: r,
+          fill: COLORS.buttonFill,
+          stroke: COLORS.buttonStroke,
+          strokeWidth: 4,
+          shadowColor: "#000",
+          shadowOpacity: 0.15,
+          shadowBlur: 8,
+        });
+    
+        const text = new Konva.Text({
+          x: 0,
+          y: 0,
+          width,
+          height,
+          text: label,
+          fill: COLORS.buttonText,
+          fontSize: 32,
+          fontStyle: "bold",
+          align: "center",
+          verticalAlign: "middle",
+          horizontalAlign: "center",
+          fontFamily: FONT_FAMILY,
+        });
+    
+        g.add(rect, text);
+    
+        return g;
+      }
+    
 
     /*
     Show the screen

@@ -1,5 +1,5 @@
 import Konva from "konva";
-import type { View } from "../../type";
+import type { View } from "../../types";
 import {
   COLORS,
   STAGE_HEIGHT,
