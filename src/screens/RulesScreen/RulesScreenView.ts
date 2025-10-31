@@ -78,7 +78,7 @@ export class RulesScreenView implements View {
           lineHeight: LINE_HEIGHT,
           fontFamily: FONT_FAMILY,
           fontSize: BULLET_SIZE,
-          fill: "#fff",
+          fill: COLORS.text,
           align: "left",
           listening: false,
         });
