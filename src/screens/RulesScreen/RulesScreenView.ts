@@ -64,7 +64,7 @@ export class RulesScreenView implements View {
           text: BULLET_CHAR,
           fontFamily: FONT_FAMILY,
           fontSize: BULLET_SIZE,
-          fill: "#fff",
+          fill: COLORS.text,
           align: "left",
           listening: false,
         });
