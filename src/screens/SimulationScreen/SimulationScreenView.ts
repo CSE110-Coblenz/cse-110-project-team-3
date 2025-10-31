@@ -1,77 +1,132 @@
 import Konva from "konva";
+import type { View } from "../../types";
+import {
+  COLORS,
+  STAGE_HEIGHT,
+  STAGE_WIDTH,
+  FONT_FAMILY,
+} from "../../constants";
 
-export const STAGE_WIDTH = 800;
-export const STAGE_HEIGHT = 600;
-
-const currentText = "Force";
-
-const stage = new Konva.Stage({
-  container: "container",
-  width: STAGE_WIDTH,
-  height: STAGE_HEIGHT,
-});
-
-const layer = new Konva.Layer();
-stage.add(layer);
-
-// Background
-const background = new Konva.Rect({
-  width: STAGE_WIDTH,
-  height: STAGE_HEIGHT,
-  fill: "black",
-});
-layer.add(background);
-
-// Title
-const title = new Konva.Text({
-  text: `SIMULATION: ${currentText}`,
-  fontStyle: "bold",
-  fontSize: 60,
-  fontFamily: "Arial",
-  fill: "grey",
-  x: STAGE_WIDTH / 2,
-  y: STAGE_HEIGHT / 2 - 270,
-});
-title.offsetX(title.width() / 2);
-layer.add(title);
+// import { Lev1Force } from "./Lev1Force"; 
 
 
-function createButton(x: number, y: number, label: string) {
-  const group = new Konva.Group({ x, y });
+export class SimulationScreenView implements View {
+  private group: Konva.Group;
+  private content: View | null = null;
 
-  const button = new Konva.Rect({
-    width: 100,
-    height: 40,
-    fill: "gray",
-    cornerRadius: 8,
-  });
+  constructor(
+    currentText: string = "Force",
+    handleBackClick?: () => void,
+    handleNextClick?: () => void,
+  ) {
+    this.group = new Konva.Group();
 
-  const text = new Konva.Text({
-    text: label,
-    fontSize: 22,
-    fontStyle: "bold",
-    fontFamily: "Arial",
-    fill: "white",
-    x: 18,
-    y: 10,
-  });
+    // Background 
+    const background = new Konva.Rect({
+      x: 0,
+      y: 0,
+      width: STAGE_WIDTH,
+      height: STAGE_HEIGHT,
+      fill: "black",
+    });
+    this.group.add(background);
 
-  group.add(button);
-  group.add(text);
-  layer.add(group);
+    // Title 
+    const title = new Konva.Text({
+      text: `SIMULATION: ${currentText}`,
+      fontStyle: "bold",
+      fontSize: 60,
+      fontFamily: FONT_FAMILY,
+      fill: "grey",
+      x: STAGE_WIDTH / 2,
+      y: STAGE_HEIGHT / 2 - 270,
+    });
+    title.offsetX(title.width() / 2);
+    this.group.add(title);
 
-  group.on("click", () => {
-    const isGray = button.fill() === "gray";
-    button.fill(isGray ? "white" : "gray");
-    text.fill(isGray ? "black" : "white");
-    layer.batchDraw();
-  });
+    // simulation
+    // this.content = new Lev1Force();
+    // this.group.add(this.content.getGroup()); 
 
-  return group;
+    // Bottoni pill identici allo stile della mappa
+    const BTN_W = 150;
+    const BTN_H = 50;
+
+    const backBtn = this.createPillButton(
+      "BACK",
+      20,
+      STAGE_HEIGHT - BTN_H - 20,
+      BTN_W,
+      BTN_H,
+    );
+    const nextBtn = this.createPillButton(
+      "NEXT",
+      STAGE_WIDTH - BTN_W- 20,
+      STAGE_HEIGHT - BTN_H - 20,
+      BTN_W,
+      BTN_H,
+    );
+
+    if (handleBackClick) backBtn.on("click", handleBackClick);
+    if (handleNextClick) nextBtn.on("click", handleNextClick);
+
+    this.group.add(backBtn, nextBtn);
+  }
+
+  // Button from Andrew class
+  private createPillButton(
+    label: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ): Konva.Group {
+    const g = new Konva.Group({ x, y });
+
+    const r = Math.min(height / 2 + 6, 24);
+    const rect = new Konva.Rect({
+      width,
+      height,
+      cornerRadius: r,
+      fill: COLORS.buttonFill,
+      stroke: COLORS.buttonStroke,
+      strokeWidth: 4,
+      shadowColor: "#000",
+      shadowOpacity: 0.15,
+      shadowBlur: 8,
+    });
+
+    const text = new Konva.Text({
+      x: 0,
+      y: 0,
+      width,
+      height,
+      text: label,
+      fill: COLORS.buttonText,
+      fontSize: 32,
+      fontStyle: "bold",
+      align: "center",
+      verticalAlign: "middle",
+      horizontalAlign: "center",
+      fontFamily: FONT_FAMILY,
+    });
+
+    g.add(rect, text);
+    return g;
+  }
+
+  getGroup(): Konva.Group {
+    return this.group;
+  }
+
+  show(): void {
+    this.group.visible(true);
+    this.group.getLayer()?.draw();
+  }
+
+  hide(): void {
+    this.group.visible(false);
+    this.group.getLayer()?.draw();
+  }
 }
 
-// Create buttons
-createButton(20, STAGE_HEIGHT - 60, "BACK");
-createButton(STAGE_WIDTH - 120, STAGE_HEIGHT - 60, "NEXT");
-
-layer.draw();
