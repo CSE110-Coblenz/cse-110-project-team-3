@@ -16,6 +16,20 @@
   },
   "dependencies": {
     "i": "^0.3.7",
-    "konva": "^10.0.2"
-  }
+    "konva": "^10.0.8",
+    "vite": "^7.1.12"
+  },
+  "description": "Fresh repository with main branch.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSE110-Coblenz/cse-110-project-team-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CSE110-Coblenz/cse-110-project-team-3/issues"
+  },
+  "homepage": "https://github.com/CSE110-Coblenz/cse-110-project-team-3#readme"
 }
