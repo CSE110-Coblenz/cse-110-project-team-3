@@ -48,7 +48,7 @@ export class RulesScreenView implements View {
         text: "RULES:",
         fontFamily: FONT_FAMILY,
         fontSize: TITLE_SIZE,
-        fill: "#fff",
+        fill: COLORS.text,
         fontStyle: "bold",
         listening: false,
       });
