@@ -28,11 +28,14 @@ class App implements ScreenSwitcher {
 	this.rulesScreenController = new RulesScreenController(this);
 
     // add all screen views to the layer
-    this.layer.add(this.mapScreenController.getView().getGroup());
+	this.layer.add(this.mapScreenController.getView().getGroup());
 	this.layer.add(this.rulesScreenController.getView().getGroup());
 
+	// Draw the layer
+	this.layer.draw();
+
     // Start with the map screen
-    this.mapScreenController.getView().show();
+    this.switchToScreen({ type: "map" });
   }
 
   switchToScreen(screen: Screen): void {
