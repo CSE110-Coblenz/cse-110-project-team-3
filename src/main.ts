@@ -1,6 +1,7 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
+import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
 import { SimulationScreenController } from "./screens/SimulationScreen/SimulationScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
@@ -12,6 +13,7 @@ class App implements ScreenSwitcher {
   private layer: Konva.Layer;
 
   private mapScreenController: MapScreenController;
+  private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
   private SimulationScreenController: SimulationScreenController;
 
@@ -38,12 +40,13 @@ class App implements ScreenSwitcher {
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
       this,
-      frictionConfig,
+      frictionConfig
     );
     this.projectileMotionTopicController = new TopicScreenController(
       this,
-      projectileMotionConfig,
+      projectileMotionConfig
     );
+    this.referenceScreenController = new ReferenceScreenController(this);
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
@@ -55,8 +58,11 @@ class App implements ScreenSwitcher {
     // Draw the layer
     this.layer.draw();
 
+    //this.layer.add(this.mapScreenController.getView().getGroup());
+    this.layer.add(this.referenceScreenController.getView().getGroup());
     // Start with the map screen
-    this.switchToScreen({ type: "map" });
+    //this.mapScreenController.getView().show();
+    this.referenceScreenController.getView().show();
   }
 
   switchToScreen(screen: Screen): void {
@@ -66,6 +72,7 @@ class App implements ScreenSwitcher {
     this.SimulationScreenController.getView().hide();
     this.frictionTopicController.getView().hide();
     this.projectileMotionTopicController.getView().hide();
+    this.referenceScreenController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
@@ -79,6 +86,9 @@ class App implements ScreenSwitcher {
         this.SimulationScreenController.getView().show();
         break;
       // Add cases for other screens as needed
+      case "reference":
+        this.referenceScreenController.getView().show();
+        break;
       case "topic":
         if (screen.level === "friction") {
           this.frictionTopicController.getView().show();

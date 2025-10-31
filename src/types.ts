@@ -20,7 +20,8 @@ export type Screen =
   | { type: "level" }
   | { type: "map" }
   | { type: "simulation" }
-  | { type: "topic"; level: "friction" | "projectile motion" };
+  | { type: "topic"; level: "friction" | "projectile motion" }
+  | { type: "reference" };
 
 export abstract class ScreenController {
   abstract getView(): View;
