@@ -1,6 +1,7 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
+import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 
 class App implements ScreenSwitcher {
@@ -8,6 +9,7 @@ class App implements ScreenSwitcher {
   private layer: Konva.Layer;
 
   private mapScreenController: MapScreenController;
+  private rulesScreenController: RulesScreenController;
 
   constructor(container: string = "container") {
     // Initialize stage
@@ -23,23 +25,32 @@ class App implements ScreenSwitcher {
 
     // Initialize screen controllers
     this.mapScreenController = new MapScreenController(this);
+	this.rulesScreenController = new RulesScreenController(this);
 
     // add all screen views to the layer
-    this.layer.add(this.mapScreenController.getView().getGroup());
+	this.layer.add(this.mapScreenController.getView().getGroup());
+	this.layer.add(this.rulesScreenController.getView().getGroup());
+
+	// Draw the layer
+	this.layer.draw();
 
     // Start with the map screen
-    this.mapScreenController.getView().show();
+    this.switchToScreen({ type: "map" });
   }
 
-  switchTo(screen: Screen): void {
+  switchToScreen(screen: Screen): void {
     // Hide all screens
     this.mapScreenController.getView().hide();
+	this.rulesScreenController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
       case "map":
         this.mapScreenController.getView().show();
         break;
+	  case "rules":
+		this.rulesScreenController.getView().show();
+		break;
       // Add cases for other screens as needed
     }
   }
