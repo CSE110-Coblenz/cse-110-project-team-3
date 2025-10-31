@@ -21,7 +21,8 @@ export class MapScreenView implements View {
   constructor(
     handleReferenceClick?: () => void,
     handleRulesClick?: () => void,
-    handleExitClick?: () => void
+    handleExitClick?: () => void,
+    handleNodeClick?: (level: string) => void,
   ) {
     this.group = new Konva.Group();
 
@@ -37,12 +38,30 @@ export class MapScreenView implements View {
     this.group.add(background);
 
     // Map Nodes
-    const nodeA = this.createNode(100, STAGE_HEIGHT / 2 - 50, "1");
-    const nodeB = this.createNode(300, STAGE_HEIGHT / 2 - 50, "2");
-    const nodeC = this.createNode(500, STAGE_HEIGHT / 2 - 50, "Game 1", {
-      height: 120,
-      width: 250,
-    });
+    const nodeA = this.createNode(
+      100,
+      STAGE_HEIGHT / 2 - 50,
+      "1",
+      {},
+      handleNodeClick,
+    );
+    const nodeB = this.createNode(
+      300,
+      STAGE_HEIGHT / 2 - 50,
+      "2",
+      {},
+      handleNodeClick,
+    );
+    const nodeC = this.createNode(
+      500,
+      STAGE_HEIGHT / 2 - 50,
+      "Game 1",
+      {
+        height: 120,
+        width: 250,
+      },
+      handleNodeClick,
+    );
 
     // Level Buttons
     const refBtn = this.createPillButton(
@@ -50,21 +69,21 @@ export class MapScreenView implements View {
       STAGE_WIDTH - 260,
       24,
       220,
-      64
+      64,
     );
     const rulesBtn = this.createPillButton(
       "RULES",
       32,
       STAGE_HEIGHT - 92,
       160,
-      64
+      64,
     );
     const exitBtn = this.createPillButton(
       "EXIT",
       STAGE_WIDTH - 192,
       STAGE_HEIGHT - 96,
       160,
-      64
+      64,
     );
 
     // Link handle clicks
@@ -83,13 +102,13 @@ export class MapScreenView implements View {
       nodeA.x + nodeA.width,
       nodeA.y + nodeA.height / 2,
       nodeB.x,
-      nodeB.y + nodeB.height / 2
+      nodeB.y + nodeB.height / 2,
     );
     const arrowBC = this.createArrow(
       nodeB.x + nodeB.width,
       nodeB.y + nodeB.height / 2,
       nodeC.x,
-      nodeC.y + nodeC.height / 2
+      nodeC.y + nodeC.height / 2,
     );
 
     // Add all elements to the main group
@@ -102,7 +121,8 @@ export class MapScreenView implements View {
     x: number,
     y: number,
     label: string,
-    opts: { height?: number; width?: number } = {}
+    opts: { height?: number; width?: number } = {},
+    handleClick?: (level: string) => void,
   ): NodeDescription {
     const height = opts.height ?? 120;
     const width = opts.width ?? height;
@@ -128,7 +148,7 @@ export class MapScreenView implements View {
     // For wide nodes, pick a size that respects BOTH height and width
     const wideFontSize = Math.min(
       (height - pad * 2) * 0.58,
-      (width - pad * 2) * 0.24
+      (width - pad * 2) * 0.24,
     );
 
     const text = new Konva.Text({
@@ -148,6 +168,12 @@ export class MapScreenView implements View {
     });
 
     group.add(outer, text);
+
+    // Click handler
+    if (handleClick) {
+      group.on("click", () => handleClick(label));
+    }
+
     return { group, x, y, height, width };
   }
 
@@ -156,7 +182,7 @@ export class MapScreenView implements View {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 
@@ -197,7 +223,7 @@ export class MapScreenView implements View {
     x1: number,
     y1: number,
     x2: number,
-    y2: number
+    y2: number,
   ): Konva.Arrow {
     return new Konva.Arrow({
       points: [x1, y1, x2, y2],
