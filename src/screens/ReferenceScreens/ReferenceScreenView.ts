@@ -33,13 +33,26 @@ export class ReferenceScreenView implements View {
             x: STAGE_WIDTH / 2,
             y: 50,
             text: 'References',
-            fontSize: 36,
-            fontFamily: 'Comic Sans MS',
-            fill: 'white',
+            fontSize: 64,
+            fontFamily: FONT_FAMILY,
+            fill: COLORS.text,
             align: 'center',
         });
         titleText.offsetX(titleText.width() / 2);
         this.group.add(titleText);
+        // middle text
+        const referencesText = new Konva.Text({
+          x: STAGE_WIDTH / 2,
+          y: STAGE_HEIGHT / 2,
+          text: 'Reference content goes here.',
+          fontSize: 32,
+          fontFamily: FONT_FAMILY,
+          fill: COLORS.text,
+          align: 'center',
+        });
+        referencesText.offsetX(referencesText.width() / 2);
+        referencesText.offsetY(referencesText.height() / 2);
+        this.group.add(referencesText);
 
         const exitBtn = this.createPillButton(
       "EXIT",
