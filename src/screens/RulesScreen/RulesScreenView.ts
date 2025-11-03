@@ -10,9 +10,7 @@ import {
 export class RulesScreenView implements View {
   private group: Konva.Group;
 
-  constructor(
-    handleExitClick?: () => void
-  ) {
+  constructor(handleExitClick?: () => void) {
     this.group = new Konva.Group();
 
     // Layout constants to match the mock
@@ -20,10 +18,10 @@ export class RulesScreenView implements View {
     const PAD_TOP = 48;
     const TITLE_SIZE = 72;
 
-    const BULLET_SIZE = 38;   // body text size
+    const BULLET_SIZE = 38; // body text size
     const BULLET_CHAR = "•";
-    const BULLET_GAP = 20;    // space between bullet dot and text
-    const ITEM_GAP = 28;      // vertical gap between bullet items
+    const BULLET_GAP = 20; // space between bullet dot and text
+    const ITEM_GAP = 28; // vertical gap between bullet items
     const LINE_HEIGHT = 1.2;
 
     // width reserved for bullet + gap; body wraps inside remaining width
@@ -43,64 +41,68 @@ export class RulesScreenView implements View {
 
     // Title: "RULES:"
     const title = new Konva.Text({
-        x: PAD_X,
-        y: PAD_TOP,
-        text: "RULES:",
+      x: PAD_X,
+      y: PAD_TOP,
+      text: "RULES:",
+      fontFamily: FONT_FAMILY,
+      fontSize: TITLE_SIZE,
+      fill: COLORS.text,
+      fontStyle: "bold",
+      listening: false,
+    });
+    this.group.add(title);
+
+    const addBulletedItem = (
+      text: string,
+      x: number,
+      y: number,
+    ): Konva.Group => {
+      const g = new Konva.Group({ x, y });
+
+      const dot = new Konva.Text({
+        x: 0,
+        y: 0,
+        width: BULLET_SIZE,
+        text: BULLET_CHAR,
         fontFamily: FONT_FAMILY,
-        fontSize: TITLE_SIZE,
+        fontSize: BULLET_SIZE,
         fill: COLORS.text,
-        fontStyle: "bold",
+        align: "left",
         listening: false,
       });
-      this.group.add(title);
 
-      const addBulletedItem = (text: string, x: number, y: number): Konva.Group => {
-        const g = new Konva.Group({ x, y });
-  
-        const dot = new Konva.Text({
-          x: 0,
-          y: 0,
-          width: BULLET_SIZE,
-          text: BULLET_CHAR,
-          fontFamily: FONT_FAMILY,
-          fontSize: BULLET_SIZE,
-          fill: COLORS.text,
-          align: "left",
-          listening: false,
-        });
-  
-        const body = new Konva.Text({
-          x: GUTTER,
-          y: 0,
-          width: BODY_WIDTH,
-          text,
-          wrap: "word",
-          lineHeight: LINE_HEIGHT,
-          fontFamily: FONT_FAMILY,
-          fontSize: BULLET_SIZE,
-          fill: COLORS.text,
-          align: "left",
-          listening: false,
-        });
-  
-        g.add(dot, body);
-        return g;
-      };
+      const body = new Konva.Text({
+        x: GUTTER,
+        y: 0,
+        width: BODY_WIDTH,
+        text,
+        wrap: "word",
+        lineHeight: LINE_HEIGHT,
+        fontFamily: FONT_FAMILY,
+        fontSize: BULLET_SIZE,
+        fill: COLORS.text,
+        align: "left",
+        listening: false,
+      });
+
+      g.add(dot, body);
+      return g;
+    };
 
     const bullets = [
-        "Complete each stage to learn the basics of physics.",
-        "At the end, complete each mini game to accomplish the stage.",
-      ];
+      "Complete each stage to learn the basics of physics.",
+      "At the end, complete each mini game to accomplish the stage.",
+    ];
 
-      let cursorY = title.y() + TITLE_SIZE + 36; // space under title
-      bullets.forEach((t, i) => {
-        const item = addBulletedItem(t, PAD_X, cursorY);
-        this.group.add(item);
-  
-        const h = item.getClientRect().height;
-        cursorY += h + ITEM_GAP;
-      });
-    
+    let cursorY = title.y() + TITLE_SIZE + 36; // space under title
+    bullets.forEach((t, i) => {
+      const item = addBulletedItem(t, PAD_X, cursorY);
+      this.group.add(item);
+
+      const h = item.getClientRect().height;
+      cursorY += h + ITEM_GAP;
+    });
+
     const BTN_W = 180;
     const BTN_H = 60;
     const exitBtn = this.createPillButton(
@@ -108,20 +110,20 @@ export class RulesScreenView implements View {
       (STAGE_WIDTH - BTN_W) / 2,
       STAGE_HEIGHT - 100,
       BTN_W,
-      BTN_H
+      BTN_H,
     );
     if (handleExitClick) {
-        exitBtn.on("click", handleExitClick);
-      }
+      exitBtn.on("click", handleExitClick);
+    }
     this.group.add(exitBtn);
-}
+  }
 
   private createPillButton(
     label: string,
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 

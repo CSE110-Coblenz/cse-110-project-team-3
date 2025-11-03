@@ -12,8 +12,15 @@ export interface View {
  * - "rules": Rulesscreen
  * - "level": Levelscreen
  * - "map": Mapscreen
+ * - "topic": Topic screen with specified level
  */
-export type Screen = { type: "rules" } | { type: "level" } | { type: "map" } | { type: "simulation" };
+
+export type Screen =
+  | { type: "rules" }
+  | { type: "level" }
+  | { type: "map" }
+  | { type: "simulation" }
+  | { type: "topic"; level: "friction" | "projectile motion" };
 
 export abstract class ScreenController {
   abstract getView(): View;

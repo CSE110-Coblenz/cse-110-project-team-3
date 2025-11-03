@@ -4,6 +4,8 @@ import { MapScreenController } from "./screens/MapScreen/MapController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
 import { SimulationScreenController } from "./screens/SimulationScreen/SimulationScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
+import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
+import { frictionConfig, projectileMotionConfig } from "./configs/topics";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
@@ -13,6 +15,8 @@ class App implements ScreenSwitcher {
   private rulesScreenController: RulesScreenController;
   private SimulationScreenController: SimulationScreenController;
   
+  private frictionTopicController: TopicScreenController;
+  private projectileMotionTopicController: TopicScreenController;
 
   constructor(container: string = "container") {
     // Initialize stage
@@ -35,9 +39,21 @@ class App implements ScreenSwitcher {
     this.layer.add(this.mapScreenController.getView().getGroup());
 	  this.layer.add(this.rulesScreenController.getView().getGroup());
     this.layer.add(this.SimulationScreenController.getView().getGroup());
+    this.layer.add(this.frictionTopicController.getView().getGroup());
+    this.layer.add(this.projectileMotionTopicController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
+
+    // Initialize topic screens with different configurations
+    this.frictionTopicController = new TopicScreenController(
+      this,
+      frictionConfig,
+    );
+    this.projectileMotionTopicController = new TopicScreenController(
+      this,
+      projectileMotionConfig,
+    );
 
     // Start with the map screen
     this.switchToScreen({ type: "map" });
@@ -48,6 +64,8 @@ class App implements ScreenSwitcher {
     this.mapScreenController.getView().hide();
 	  this.rulesScreenController.getView().hide();
     this.SimulationScreenController.getView().hide();
+    this.frictionTopicController.getView().hide();
+    this.projectileMotionTopicController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
@@ -61,8 +79,17 @@ class App implements ScreenSwitcher {
         this.SimulationScreenController.getView().show();
         break;
       // Add cases for other screens as needed
+      case "topic":
+        if (screen.level === "friction") {
+          this.frictionTopicController.getView().show();
+        } else if (screen.level === "projectile motion") {
+          this.projectileMotionTopicController.getView().show();
+        }
+        break;
     }
   }
 }
 
-new App();
+const app = new App();
+// use this format to test your screen. I had a specifier for topic, level, so you dont need to add that.
+// app.switchToScreen({ type: "topic", level: "friction" });
