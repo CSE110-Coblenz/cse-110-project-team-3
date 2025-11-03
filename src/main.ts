@@ -35,6 +35,16 @@ class App implements ScreenSwitcher {
 	  this.rulesScreenController = new RulesScreenController(this);
     this.SimulationScreenController = new SimulationScreenController(this);
 
+       // Initialize topic screens with different configurations
+    this.frictionTopicController = new TopicScreenController(
+      this,
+      frictionConfig,
+    );
+    this.projectileMotionTopicController = new TopicScreenController(
+      this,
+      projectileMotionConfig,
+    );
+
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
 	  this.layer.add(this.rulesScreenController.getView().getGroup());
@@ -44,16 +54,6 @@ class App implements ScreenSwitcher {
 
     // Draw the layer
     this.layer.draw();
-
-    // Initialize topic screens with different configurations
-    this.frictionTopicController = new TopicScreenController(
-      this,
-      frictionConfig,
-    );
-    this.projectileMotionTopicController = new TopicScreenController(
-      this,
-      projectileMotionConfig,
-    );
 
     // Start with the map screen
     this.switchToScreen({ type: "map" });
