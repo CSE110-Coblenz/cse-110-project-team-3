@@ -14,7 +14,7 @@ class App implements ScreenSwitcher {
   private mapScreenController: MapScreenController;
   private rulesScreenController: RulesScreenController;
   private SimulationScreenController: SimulationScreenController;
-  
+
   private frictionTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
 
@@ -32,10 +32,10 @@ class App implements ScreenSwitcher {
 
     // Initialize screen controllers
     this.mapScreenController = new MapScreenController(this);
-	  this.rulesScreenController = new RulesScreenController(this);
+    this.rulesScreenController = new RulesScreenController(this);
     this.SimulationScreenController = new SimulationScreenController(this);
 
-       // Initialize topic screens with different configurations
+    // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
       this,
       frictionConfig,
@@ -47,7 +47,7 @@ class App implements ScreenSwitcher {
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
-	  this.layer.add(this.rulesScreenController.getView().getGroup());
+    this.layer.add(this.rulesScreenController.getView().getGroup());
     this.layer.add(this.SimulationScreenController.getView().getGroup());
     this.layer.add(this.frictionTopicController.getView().getGroup());
     this.layer.add(this.projectileMotionTopicController.getView().getGroup());
@@ -62,7 +62,7 @@ class App implements ScreenSwitcher {
   switchToScreen(screen: Screen): void {
     // Hide all screens
     this.mapScreenController.getView().hide();
-	  this.rulesScreenController.getView().hide();
+    this.rulesScreenController.getView().hide();
     this.SimulationScreenController.getView().hide();
     this.frictionTopicController.getView().hide();
     this.projectileMotionTopicController.getView().hide();

@@ -31,7 +31,7 @@ export class SimulationScreenController extends ScreenController {
   };
 
   private handleNextClick = () => {
-    if (!this.answeredCorrectly) return; 
+    if (!this.answeredCorrectly) return;
     console.log("Simulation: NEXT clicked");
   };
 

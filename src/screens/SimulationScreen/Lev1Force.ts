@@ -2,8 +2,7 @@ import Konva from "konva";
 import type { View } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
 
-export const Lev1text =
-`A ball is launched from ground level at the origin O with an initial angle of 45°. Air resistance is negligible.
+export const Lev1text = `A ball is launched from ground level at the origin O with an initial angle of 45°. Air resistance is negligible.
 An obstacle's top is at point A = (20 m, 10 m).
 What is the minimum launch speed required so that the ball's trajectory passes at or above point A?`;
 
@@ -26,7 +25,7 @@ export class Lev1Force implements View {
 
     const src = new URL("/Force.mp4", import.meta.url).toString();
 
-    // HTMLVideoElement configured for autoplaying loop 
+    // HTMLVideoElement configured for autoplaying loop
     this.videoEl = document.createElement("video");
     this.videoEl.src = src;
     this.videoEl.loop = true;
@@ -64,8 +63,8 @@ export class Lev1Force implements View {
     this.group.on("added", () => requestAnimationFrame(ensureAnimStart));
   }
 
-  getGroup(): Konva.Group { 
-    return this.group; 
+  getGroup(): Konva.Group {
+    return this.group;
   }
 
   show(): void {
@@ -73,7 +72,7 @@ export class Lev1Force implements View {
     if (this.videoEl.paused && this.videoEl.autoplay) this.videoEl.play();
     this.group.getLayer()?.draw();
   }
-  
+
   hide(): void {
     this.group.visible(false);
     this.videoEl.pause();

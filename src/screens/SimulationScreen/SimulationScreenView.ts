@@ -67,7 +67,7 @@ export class SimulationScreenView implements View {
     // Layout
     const RIGHT_PANEL_W = 300;
     const RIGHT_PANEL_PAD = 16;
-    const VIDEO_TOP = 200;   // lowered so it never covers the statement
+    const VIDEO_TOP = 200; // lowered so it never covers the statement
     const VIDEO_BOTTOM = 120; // space for nav buttons
 
     // Video view
@@ -104,10 +104,10 @@ export class SimulationScreenView implements View {
     if (handleNextClick) this.nextBtn.on("click", handleNextClick);
     this.group.add(backBtn, this.nextBtn);
 
-    // Disable NEXT by default 
+    // Disable NEXT by default
     this.setNextEnabled(false);
 
-    // Options 
+    // Options
     const OPT_W = RIGHT_PANEL_W - 2 * RIGHT_PANEL_PAD;
     const OPT_H = 50;
     const OPT_X = STAGE_WIDTH - RIGHT_PANEL_W + RIGHT_PANEL_PAD;
@@ -190,16 +190,14 @@ export class SimulationScreenView implements View {
     });
 
     g.on("mouseenter", () => {
-      if (g.getAttr("disabled") || g.getAttr("locked")) 
-        return;
+      if (g.getAttr("disabled") || g.getAttr("locked")) return;
       document.body.style.cursor = "pointer";
       rect.fill("white");
       g.getLayer()?.batchDraw();
     });
 
     g.on("mouseleave", () => {
-      if (g.getAttr("disabled") || g.getAttr("locked")) 
-        return;
+      if (g.getAttr("disabled") || g.getAttr("locked")) return;
       document.body.style.cursor = "default";
       rect.fill(baseFill);
       g.getLayer()?.batchDraw();
@@ -209,7 +207,7 @@ export class SimulationScreenView implements View {
     return g;
   }
 
-  // Enable/disable NEXT 
+  // Enable/disable NEXT
   public setNextEnabled(enabled: boolean): void {
     this.nextBtn.setAttr("disabled", !enabled);
     this.nextBtn.opacity(enabled ? 1 : 0.5);
