@@ -1,7 +1,8 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
-//import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
+import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
+import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 
 class App implements ScreenSwitcher {
@@ -9,7 +10,8 @@ class App implements ScreenSwitcher {
   private layer: Konva.Layer;
 
   private mapScreenController: MapScreenController;
-  //private referenceScreenController: ReferenceScreenController;
+  private referenceScreenController: ReferenceScreenController;
+  private rulesScreenController: RulesScreenController;
 
   constructor(container: string = "container") {
     // Initialize stage
@@ -25,29 +27,38 @@ class App implements ScreenSwitcher {
 
     // Initialize screen controllers
     this.mapScreenController = new MapScreenController(this);
-    //this.referenceScreenController = new ReferenceScreenController(this);
+	  this.rulesScreenController = new RulesScreenController(this);
+    this.referenceScreenController = new ReferenceScreenController(this);
 
     // add all screen views to the layer
-    this.layer.add(this.mapScreenController.getView().getGroup());
-    //this.layer.add(this.referenceScreenController.getView().getGroup());
+	this.layer.add(this.mapScreenController.getView().getGroup());
+	this.layer.add(this.rulesScreenController.getView().getGroup());
+	this.layer.add(this.referenceScreenController.getView().getGroup());
+
+	// Draw the layer
+	this.layer.draw();
+
     // Start with the map screen
-    this.mapScreenController.getView().show();
-    //this.referenceScreenController.getView().show();
+    this.switchToScreen({ type: "map" });
   }
 
   switchToScreen(screen: Screen): void {
     // Hide all screens
     this.mapScreenController.getView().hide();
-    //this.referenceScreenController.getView().hide();
+    this.referenceScreenController.getView().hide();
+	  this.rulesScreenController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
       case "map":
         this.mapScreenController.getView().show();
         break;
+	    case "rules":
+		    this.rulesScreenController.getView().show();
+		    break;
       // Add cases for other screens as needed
       case "reference":
-        //this.referenceScreenController.getView().show();
+        this.referenceScreenController.getView().show();
         break;
     }
   }
