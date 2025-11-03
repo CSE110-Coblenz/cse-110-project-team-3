@@ -24,7 +24,7 @@ export class Lev1Force implements View {
     const left = opts?.leftOffset ?? 0;
     const right = opts?.rightOffset ?? 0;
 
-    const src = new URL("./Force.mp4", import.meta.url).toString();
+    const src = new URL("/Force.mp4", import.meta.url).toString();
 
     // HTMLVideoElement configured for autoplaying loop 
     this.videoEl = document.createElement("video");
