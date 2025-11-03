@@ -41,6 +41,17 @@ class App implements ScreenSwitcher {
 
     // Display simulation screen
     this.SimulationScreenController.getView().show();
+	this.rulesScreenController = new RulesScreenController(this);
+
+    // add all screen views to the layer
+	this.layer.add(this.mapScreenController.getView().getGroup());
+	this.layer.add(this.rulesScreenController.getView().getGroup());
+
+	// Draw the layer
+	this.layer.draw();
+
+    // Start with the map screen
+    this.switchToScreen({ type: "map" });
   }
 
   switchToScreen(screen: Screen): void {
@@ -48,6 +59,7 @@ class App implements ScreenSwitcher {
     this.mapScreenController.getView().hide();
 	  this.rulesScreenController.getView().hide();
     this.SimulationScreenController.getView().hide();
+	this.rulesScreenController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
@@ -60,6 +72,9 @@ class App implements ScreenSwitcher {
       case "simulation":
         this.SimulationScreenController.getView().show();
         break;
+	  case "rules":
+		this.rulesScreenController.getView().show();
+		break;
       // Add cases for other screens as needed
     }
   }
