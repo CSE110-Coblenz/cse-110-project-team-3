@@ -54,15 +54,15 @@ class App implements ScreenSwitcher {
     this.layer.add(this.SimulationScreenController.getView().getGroup());
     this.layer.add(this.frictionTopicController.getView().getGroup());
     this.layer.add(this.projectileMotionTopicController.getView().getGroup());
+    this.layer.add(this.referenceScreenController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
 
     //this.layer.add(this.mapScreenController.getView().getGroup());
-    this.layer.add(this.referenceScreenController.getView().getGroup());
     // Start with the map screen
-    this.mapScreenController.getView().show();
-    //this.referenceScreenController.getView().show();
+    this.switchToScreen({ type: "map" });
+    // this.referenceScreenController.getView().show();
   }
 
   switchToScreen(screen: Screen): void {
@@ -85,16 +85,8 @@ class App implements ScreenSwitcher {
       case "simulation":
         this.SimulationScreenController.getView().show();
         break;
-      // Add cases for other screens as needed
       case "reference":
         this.referenceScreenController.getView().show();
-        break;
-      case "topic":
-        if (screen.level === "friction") {
-          this.frictionTopicController.getView().show();
-        } else if (screen.level === "projectile motion") {
-          this.projectileMotionTopicController.getView().show();
-        }
         break;
       case "topic":
         if (screen.level === "friction") {
