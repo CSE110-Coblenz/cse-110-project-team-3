@@ -40,11 +40,11 @@ class App implements ScreenSwitcher {
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
       this,
-      frictionConfig
+      frictionConfig,
     );
     this.projectileMotionTopicController = new TopicScreenController(
       this,
-      projectileMotionConfig
+      projectileMotionConfig,
     );
     this.referenceScreenController = new ReferenceScreenController(this);
 
