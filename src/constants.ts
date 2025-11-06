@@ -22,4 +22,5 @@ export const FONT_FAMILY =
 export const SIMULATION_CONSTANTS = {
   ground_level: STAGE_HEIGHT - 200,
   speed_multiplier: 3.0,
+  error_margin: 3.0,
 };
