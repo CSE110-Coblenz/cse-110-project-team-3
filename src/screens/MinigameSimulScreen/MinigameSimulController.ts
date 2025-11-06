@@ -17,6 +17,7 @@ export class MinigameSimulController extends ScreenController {
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
       this.model.getDistanceX(),
+      this.model.getInitialHeight()
     );
   }
 
@@ -27,10 +28,10 @@ export class MinigameSimulController extends ScreenController {
     const angle = this.model.getAngle();
     const gravity = this.model.getGravity();
     const distanceX = this.model.getDistanceX();
+    const initialHeight = this.model.getInitialHeight();
 
     const angleInRadians = (angle * Math.PI) / 180;
     const initialX = projectile.x();
-    const initialY = projectile.y();
 
     const animation = new Konva.Animation((frame) => {
       if (!frame) return;
@@ -38,13 +39,15 @@ export class MinigameSimulController extends ScreenController {
 
       const x = initialX + initialSpeed * Math.cos(angleInRadians) * t;
       const y =
-        initialY -
-        (initialSpeed * Math.sin(angleInRadians) * t - 0.5 * gravity * t * t);
+        SIMULATION_CONSTANTS.ground_level -
+        (initialHeight +
+          initialSpeed * Math.sin(angleInRadians) * t -
+          0.5 * gravity * t * t);
 
       projectile.position({ x, y });
 
       // Stop animation when it hits the ground or exceeds distanceX
-      if (y > SIMULATION_CONSTANTS.ground_level || x > initialX + distanceX) {
+      if (y > SIMULATION_CONSTANTS.ground_level) {
         animation.stop();
       }
     }, this.view.getGroup().getLayer());
