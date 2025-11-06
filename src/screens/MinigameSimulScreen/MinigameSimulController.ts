@@ -17,7 +17,7 @@ export class MinigameSimulController extends ScreenController {
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
       this.model.getDistanceX(),
-      this.model.getInitialHeight()
+      this.model.getInitialHeight(),
     );
   }
 
