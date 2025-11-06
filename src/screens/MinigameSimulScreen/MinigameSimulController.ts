@@ -17,7 +17,7 @@ export class MinigameSimulController extends ScreenController {
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
       this.model.getDistanceX(),
-      this.model.getInitialHeight(),
+      this.model.getInitialHeight()
     );
   }
 
@@ -49,6 +49,15 @@ export class MinigameSimulController extends ScreenController {
       // Stop animation when it hits the ground or exceeds distanceX
       if (y > SIMULATION_CONSTANTS.ground_level) {
         animation.stop();
+        console.log("x", x);
+        console.log("distance_X", initialX + distanceX);
+        if (
+          Math.abs(x - (initialX + distanceX)) <=
+          SIMULATION_CONSTANTS.error_margin
+        ) {
+          console.log("Hit the target!");
+          // TODO: Add a success handler or callback here
+        }
       }
     }, this.view.getGroup().getLayer());
 
