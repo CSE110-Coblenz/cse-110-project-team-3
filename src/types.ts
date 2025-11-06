@@ -26,7 +26,8 @@ export type Screen =
       type: "simulation";
       topic: "friction" | "projectile motion";
       level: "lev1" | "lev2";
-    };
+    }
+  | { type: "minigame" };
 
 export abstract class ScreenController {
   abstract getView(): View;
