@@ -12,7 +12,11 @@ export class MinigameSimulView implements View {
   private group: Konva.Group;
   private projectile: Konva.Circle;
 
-  constructor(handlePlay?: () => void, distanceX: number = 0) {
+  constructor(
+    handlePlay?: () => void,
+    distanceX: number = 0,
+    height: number = 0,
+  ) {
     this.group = new Konva.Group();
 
     // Background
@@ -44,7 +48,7 @@ export class MinigameSimulView implements View {
       image.width(150);
       image.height(150);
       image.x(75);
-      image.y(STAGE_HEIGHT - 300);
+      image.y(SIMULATION_CONSTANTS.ground_level - 100 - height);
       this.group.add(image);
     });
 
@@ -57,10 +61,10 @@ export class MinigameSimulView implements View {
       this.group.add(image);
     });
 
-    // Projectile
+    // Projectile ball
     this.projectile = new Konva.Circle({
-      x: 150, // Starting x position
-      y: SIMULATION_CONSTANTS.ground_level,
+      x: 150,
+      y: SIMULATION_CONSTANTS.ground_level - height,
       radius: 10,
       fill: COLORS.nodeStroke,
     });
@@ -73,7 +77,7 @@ export class MinigameSimulView implements View {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55
+      55,
     );
     if (handlePlay) {
       playButton.on("click", handlePlay);
@@ -86,7 +90,7 @@ export class MinigameSimulView implements View {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 
