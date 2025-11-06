@@ -13,7 +13,13 @@ export const COLORS = {
   buttonText: "#1a1a1a",
   text: "#ffffff",
   black: "#000000",
+  ground: "#e6e6e6",
 };
 
 export const FONT_FAMILY =
   "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace";
+
+export const SIMULATION_CONSTANTS = {
+  ground_level: STAGE_HEIGHT - 200,
+  speed_multiplier: 3.0,
+};
