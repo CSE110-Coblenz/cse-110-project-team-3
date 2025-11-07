@@ -13,7 +13,13 @@ export class MinigameSimulController extends ScreenController {
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
     this.screenSwitcher = screenSwitcher;
-    this.model = new MinigameSimulModel(75.22, 60, 9.8, 500);
+    this.model = new MinigameSimulModel(
+      75.22,
+      60,
+      9.8,
+      500,
+      SIMULATION_CONSTANTS.error_margin
+    );
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
       this.model.getDistanceX(),
@@ -51,12 +57,12 @@ export class MinigameSimulController extends ScreenController {
         animation.stop();
         console.log("x", x);
         console.log("distance_X", initialX + distanceX);
-        if (
-          Math.abs(x - (initialX + distanceX)) <=
-          SIMULATION_CONSTANTS.error_margin
-        ) {
+        if (this.model.isHit(x - initialX)) {
           console.log("Hit the target!");
           // TODO: Add a success handler or callback here
+        } else {
+          console.log("Missed the target.");
+          // TODO: Add a failure handler or callback here
         }
       }
     }, this.view.getGroup().getLayer());
