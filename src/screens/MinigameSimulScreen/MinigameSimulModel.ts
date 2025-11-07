@@ -12,7 +12,7 @@ export class MinigameSimulModel {
     gravity: number,
     distance_x: number,
     initial_height: number = 0,
-    margin_of_error: number = 5
+    margin_of_error: number = 5,
   ) {
     this.initial_speed = initial_speed;
     this.angle = angle;
