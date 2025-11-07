@@ -18,12 +18,12 @@ export class MinigameSimulController extends ScreenController {
       60,
       9.8,
       500,
-      SIMULATION_CONSTANTS.error_margin
+      SIMULATION_CONSTANTS.error_margin,
     );
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
       this.model.getDistanceX(),
-      this.model.getInitialHeight()
+      this.model.getInitialHeight(),
     );
   }
 
