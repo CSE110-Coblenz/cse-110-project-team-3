@@ -4,6 +4,7 @@ export class MinigameSimulModel {
   private gravity: number;
   private initial_height: number;
   private distance_x: number;
+  private margin_of_error: number;
 
   constructor(
     initial_speed: number,
@@ -11,12 +12,14 @@ export class MinigameSimulModel {
     gravity: number,
     distance_x: number,
     initial_height: number = 0,
+    margin_of_error: number = 5
   ) {
     this.initial_speed = initial_speed;
     this.angle = angle;
     this.gravity = gravity;
     this.initial_height = initial_height;
     this.distance_x = distance_x;
+    this.margin_of_error = margin_of_error;
   }
 
   getInitialSpeed(): number {
@@ -37,5 +40,9 @@ export class MinigameSimulModel {
 
   getDistanceX(): number {
     return this.distance_x;
+  }
+
+  isHit(landingDistance: number): boolean {
+    return Math.abs(landingDistance - this.distance_x) <= this.margin_of_error;
   }
 }
