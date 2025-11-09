@@ -58,7 +58,7 @@ export class ReferenceScreenView implements View {
       STAGE_WIDTH - 192,
       STAGE_HEIGHT - 96,
       160,
-      64
+      64,
     );
 
     // Exit button click handler

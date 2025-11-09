@@ -89,7 +89,7 @@ class App implements ScreenSwitcher {
     // Hide all screens
     this.mapScreenController.getView().hide();
     this.referenceScreenController.getView().hide();
-	  this.rulesScreenController.getView().hide();
+    this.rulesScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
     this.SimulationScreenController.getView().hide();
     this.frictionTopicController.getView().hide();
