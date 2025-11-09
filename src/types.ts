@@ -14,10 +14,12 @@ export interface View {
  * - "map": Mapscreen
  * - "topic": Topic screen with specified level
  */
+
 export type Screen =
   | { type: "rules" }
   | { type: "level" }
   | { type: "map" }
+  | { type: "simulation" }
   | { type: "topic"; level: "friction" | "projectile motion" }
   | { type: "reference" };
 

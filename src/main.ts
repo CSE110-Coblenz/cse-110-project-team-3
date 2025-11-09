@@ -3,6 +3,7 @@ import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
 import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
+import { SimulationScreenController } from "./screens/SimulationScreen/SimulationScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
 import { frictionConfig, projectileMotionConfig } from "./configs/topics";
@@ -14,6 +15,8 @@ class App implements ScreenSwitcher {
   private mapScreenController: MapScreenController;
   private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
+  private SimulationScreenController: SimulationScreenController;
+
   private frictionTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
 
@@ -33,6 +36,7 @@ class App implements ScreenSwitcher {
     this.mapScreenController = new MapScreenController(this);
     this.rulesScreenController = new RulesScreenController(this);
     this.referenceScreenController = new ReferenceScreenController(this);
+    this.SimulationScreenController = new SimulationScreenController(this);
 
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
@@ -43,6 +47,7 @@ class App implements ScreenSwitcher {
       this,
       projectileMotionConfig,
     );
+    this.referenceScreenController = new ReferenceScreenController(this);
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
@@ -67,9 +72,17 @@ class App implements ScreenSwitcher {
     this.layer.add(this.projectileMotionTopicController.getView().getGroup());
     this.layer.add(this.referenceScreenController.getView().getGroup());
     this.layer.add(this.rulesScreenController.getView().getGroup());
+    this.layer.add(this.SimulationScreenController.getView().getGroup());
+    this.layer.add(this.frictionTopicController.getView().getGroup());
+    this.layer.add(this.projectileMotionTopicController.getView().getGroup());
 
+    // Draw the layer
+    this.layer.draw();
+
+    //this.layer.add(this.mapScreenController.getView().getGroup());
     // Start with the map screen
     this.switchToScreen({ type: "map" });
+    // this.referenceScreenController.getView().show();
   }
 
   switchToScreen(screen: Screen): void {
@@ -78,18 +91,22 @@ class App implements ScreenSwitcher {
     this.referenceScreenController.getView().hide();
 	  this.rulesScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
+    this.SimulationScreenController.getView().hide();
     this.frictionTopicController.getView().hide();
     this.projectileMotionTopicController.getView().hide();
+    this.referenceScreenController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
       case "map":
         this.mapScreenController.getView().show();
         break;
-	    case "rules":
-		    this.rulesScreenController.getView().show();
-		    break;
-      // Add cases for other screens as needed
+      case "rules":
+        this.rulesScreenController.getView().show();
+        break;
+      case "simulation":
+        this.SimulationScreenController.getView().show();
+        break;
       case "reference":
         this.referenceScreenController.getView().show();
         break;

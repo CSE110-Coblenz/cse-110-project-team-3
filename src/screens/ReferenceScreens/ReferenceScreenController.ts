@@ -1,7 +1,6 @@
 import { ScreenController } from "../../types.ts";
-import type { ScreenSwitcher} from "../../types.ts";
+import type { ScreenSwitcher } from "../../types.ts";
 import { ReferenceScreenView } from "./ReferenceScreenView.ts";
-
 
 /*
 ReferenceController handles the reference screen interactions
