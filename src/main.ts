@@ -59,8 +59,7 @@ class App implements ScreenSwitcher {
     this.layer.draw();
 
     // Start with the map screen
-    //this.switchToScreen({ type: "map" });
-    this.switchToScreen({type: "reference" });
+    this.switchToScreen({ type: "map" });
   }
 
   switchToScreen(screen: Screen): void {
