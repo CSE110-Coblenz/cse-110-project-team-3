@@ -16,7 +16,6 @@ class App implements ScreenSwitcher {
   private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
   private SimulationScreenController: SimulationScreenController;
-
   private frictionTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
 
@@ -47,24 +46,6 @@ class App implements ScreenSwitcher {
       this,
       projectileMotionConfig,
     );
-    this.referenceScreenController = new ReferenceScreenController(this);
-
-    // add all screen views to the layer
-    this.layer.add(this.mapScreenController.getView().getGroup());
-    this.layer.add(this.rulesScreenController.getView().getGroup());
-    this.layer.add(this.referenceScreenController.getView().getGroup());
-    // Draw the layer
-    this.layer.draw();
-
-    // Initialize topic screens with different configurations
-    this.frictionTopicController = new TopicScreenController(
-      this,
-      frictionConfig,
-    );
-    this.projectileMotionTopicController = new TopicScreenController(
-      this,
-      projectileMotionConfig,
-    );
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
@@ -73,16 +54,13 @@ class App implements ScreenSwitcher {
     this.layer.add(this.referenceScreenController.getView().getGroup());
     this.layer.add(this.rulesScreenController.getView().getGroup());
     this.layer.add(this.SimulationScreenController.getView().getGroup());
-    this.layer.add(this.frictionTopicController.getView().getGroup());
-    this.layer.add(this.projectileMotionTopicController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
 
-    //this.layer.add(this.mapScreenController.getView().getGroup());
     // Start with the map screen
     this.switchToScreen({ type: "map" });
-    // this.referenceScreenController.getView().show();
+    
   }
 
   switchToScreen(screen: Screen): void {
@@ -90,11 +68,9 @@ class App implements ScreenSwitcher {
     this.mapScreenController.getView().hide();
     this.referenceScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
-    this.rulesScreenController.getView().hide();
     this.SimulationScreenController.getView().hide();
     this.frictionTopicController.getView().hide();
     this.projectileMotionTopicController.getView().hide();
-    this.referenceScreenController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
