@@ -1,5 +1,5 @@
 import { ScreenController, type ScreenSwitcher } from "../../types";
-import type { TopicScreenConfig } from "./types";
+import type { ScreenConfig } from "../../types";
 import { TopicScreenView } from "./TopicScreenView";
 
 /**
@@ -9,7 +9,7 @@ export class TopicScreenController extends ScreenController {
   private view: TopicScreenView;
   private screenSwitcher: ScreenSwitcher;
 
-  constructor(screenSwitcher: ScreenSwitcher, config: TopicScreenConfig) {
+  constructor(screenSwitcher: ScreenSwitcher, config: ScreenConfig) {
     super();
     this.screenSwitcher = screenSwitcher;
     this.view = new TopicScreenView(config, (buttonId) => {

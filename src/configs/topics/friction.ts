@@ -1,4 +1,4 @@
-import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
+import type { ScreenConfig } from "../../types";
 import { COLORS } from "../../constants";
 
 /**

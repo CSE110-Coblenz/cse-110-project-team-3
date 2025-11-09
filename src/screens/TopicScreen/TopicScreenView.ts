@@ -1,8 +1,9 @@
 import Konva from "konva";
 import type { View } from "../../types";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
-import type { TopicButton, TopicScreenConfig } from "./types";
+import type { Button, ScreenConfig } from "../../types";
 import { COLORS, FONT_FAMILY } from "../../constants";
+import { createKonvaButton } from "../../utils/ui/KonvaButton";
 
 /**
  * Default styles for topic screen elements
@@ -37,11 +38,11 @@ const DEFAULT_STYLES = {
  */
 export class TopicScreenView implements View {
   private group: Konva.Group;
-  private config: TopicScreenConfig;
+  private config: ScreenConfig;
   private onButtonClick: (buttonId: string) => void;
 
   constructor(
-    config: TopicScreenConfig,
+    config: ScreenConfig,
     onButtonClick: (buttonId: string) => void,
   ) {
     this.config = config;
@@ -98,71 +99,16 @@ export class TopicScreenView implements View {
     });
   }
 
-  private createButton(button: TopicButton): Konva.Group {
-    const buttonGroup = new Konva.Group();
-
-    // Calculate button position
-    const buttonWidth = button.style?.width || DEFAULT_STYLES.button.width;
-    const buttonHeight = button.style?.height || DEFAULT_STYLES.button.height;
-
-    // Calculate x position
-    let xPos = STAGE_WIDTH / 2; // Default center
-    if (button.position?.x !== undefined) {
-      xPos = button.position.x * STAGE_WIDTH;
-    }
-
-    // Calculate y position
-    let yPos = DEFAULT_STYLES.description.y + 100;
-    if (button.position?.y !== undefined) {
-      yPos = button.position.y * window.innerHeight;
-    }
-
-    const buttonRect = new Konva.Rect({
-      x: xPos - buttonWidth / 2,
-      y: yPos,
-      width: buttonWidth,
-      height: buttonHeight,
-      fill: button.style?.fill || DEFAULT_STYLES.button.fill,
-      stroke: button.style?.stroke || DEFAULT_STYLES.button.stroke,
-      strokeWidth: DEFAULT_STYLES.button.strokeWidth,
-      cornerRadius: DEFAULT_STYLES.button.cornerRadius,
+  private createButton(button: Button): Konva.Group {
+    // Convert the button config to match the utility's interface
+    return createKonvaButton({
+      ...button,
+      position: {
+        ...button.position,
+        y: button.position?.y ?? (DEFAULT_STYLES.description.y + 100) / STAGE_HEIGHT
+      },
+      onClick: this.onButtonClick
     });
-
-    const buttonText = new Konva.Text({
-      x: xPos,
-      y: yPos + buttonHeight / 2,
-      text: button.label,
-      fontSize: DEFAULT_STYLES.button.fontSize,
-      fontFamily: DEFAULT_STYLES.title.fontFamily,
-      fill: button.style?.textFill || DEFAULT_STYLES.button.textFill,
-      align: "center",
-    });
-    buttonText.offsetX(buttonText.width() / 2);
-    buttonText.offsetY(buttonText.height() / 2);
-
-    buttonGroup.add(buttonRect);
-    buttonGroup.add(buttonText);
-
-    // Add hover effects
-    buttonGroup.on("mouseenter", () => {
-      document.body.style.cursor = "pointer";
-      buttonRect.shadowEnabled(true);
-      buttonRect.shadowBlur(10);
-      buttonRect.shadowColor("black");
-      buttonRect.shadowOpacity(0.3);
-      this.group.getLayer()?.draw();
-    });
-
-    buttonGroup.on("mouseleave", () => {
-      document.body.style.cursor = "default";
-      buttonRect.shadowEnabled(false);
-      this.group.getLayer()?.draw();
-    });
-
-    // Wire up click handler
-    buttonGroup.on("click", () => this.onButtonClick(button.id));
-
-    return buttonGroup;
   }
 
   show(): void {
