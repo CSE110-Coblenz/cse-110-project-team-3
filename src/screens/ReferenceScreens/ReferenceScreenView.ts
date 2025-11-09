@@ -43,7 +43,7 @@ export class ReferenceScreenView implements View {
     const referencesText = new Konva.Text({
       x: STAGE_WIDTH / 2,
       y: STAGE_HEIGHT / 2,
-      text: "Reference content goes here.",
+      text: "Force = mass * acceleration\nVelocity = distance / time\nAcceleration = change in velocity / time\nKinetic Energy = 0.5 * mass * velocity^2\nPotential Energy = mass * gravity * height",
       fontSize: 32,
       fontFamily: FONT_FAMILY,
       fill: COLORS.text,
