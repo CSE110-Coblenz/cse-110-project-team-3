@@ -1,10 +1,10 @@
-import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
+import type { ScreenConfig } from "../../types";
 import { COLORS } from "../../constants";
 
 /**
  * Configuration for the projectile motion topic screen. Find implementation details in "../../screens/TopicScreen/types"
  */
-export const projectileMotionConfig: TopicScreenConfig = {
+export const projectileMotionConfig: ScreenConfig = {
   title: "Projectile Motion",
   description: "Learn about the principles of projectile motion",
   buttons: [

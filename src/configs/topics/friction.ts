@@ -1,10 +1,10 @@
-import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
+import type { ScreenConfig } from "../../types";
 import { COLORS } from "../../constants";
 
 /**
  * Configuration for the friction topic screen. Find implementation details in "../../screens/TopicScreen/types"
  */
-export const frictionConfig: TopicScreenConfig = {
+export const frictionConfig: ScreenConfig = {
   title: "Friction",
   description:
     "the resistance that one surface or object encounters when moving over another.",
@@ -39,7 +39,7 @@ export const frictionConfig: TopicScreenConfig = {
     },
   ],
   style: {
-    titleColor: COLORS.title,
+    titleColor: COLORS.text,
     descriptionColor: COLORS.text,
     backgroundColor: COLORS.bg,
   },
