@@ -16,6 +16,9 @@ export class MinigameSimulView implements View {
     handlePlay?: () => void,
     distanceX: number = 0,
     height: number = 0,
+    initialSpeed: number = 0,
+    angle: number = 0,
+    gravity: number = 0,
   ) {
     this.group = new Konva.Group();
 
@@ -29,6 +32,37 @@ export class MinigameSimulView implements View {
       cornerRadius: 8,
     });
     this.group.add(background);
+
+    // Display parameters
+    const speedText = new Konva.Text({
+      x: 20,
+      y: 20,
+      text: `Initial Speed: ${initialSpeed.toFixed(2)} m/s`,
+      fontSize: 20,
+      fontFamily: FONT_FAMILY,
+      fill: COLORS.text,
+    });
+    this.group.add(speedText);
+
+    const angleText = new Konva.Text({
+      x: 20,
+      y: 50,
+      text: `Angle: ${angle.toFixed(2)} degrees`,
+      fontSize: 20,
+      fontFamily: FONT_FAMILY,
+      fill: COLORS.text,
+    });
+    this.group.add(angleText);
+
+    const gravityText = new Konva.Text({
+      x: 20,
+      y: 80,
+      text: `Gravity: ${gravity.toFixed(2)} m/s²`,
+      fontSize: 20,
+      fontFamily: FONT_FAMILY,
+      fill: COLORS.text,
+    });
+    this.group.add(gravityText);
 
     // Line to indicate the ground
     const groundLine = new Konva.Line({
