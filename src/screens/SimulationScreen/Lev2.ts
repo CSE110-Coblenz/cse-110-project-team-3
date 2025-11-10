@@ -89,7 +89,7 @@ export class Lev2 implements View {
     });
     this.group.add(questionText);
 
-    // video 
+    // video
     const src = new URL("/Force.mp4", import.meta.url).toString();
 
     this.videoEl = document.createElement("video");
@@ -125,7 +125,7 @@ export class Lev2 implements View {
     this.videoEl.addEventListener("ended", () => this.anim?.stop());
     this.group.on("added", () => requestAnimationFrame(ensureAnim));
 
-    // right side options panel 
+    // right side options panel
     const RIGHT_PANEL_PAD = 16;
     const OPT_W = RIGHT_PANEL_W - 2 * RIGHT_PANEL_PAD;
     const OPT_H = 50;
