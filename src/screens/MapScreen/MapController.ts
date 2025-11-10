@@ -20,12 +20,18 @@ export class MapScreenController extends ScreenController {
   private handleNodeClick = (level: string) => {
     console.log(`Node ${level} clicked`);
     switch (level) {
-    case "1":
-      this.screenSwitcher.switchToScreen({ type: "topic", level: "friction"});
-      break;
-    case "2":
-      this.screenSwitcher.switchToScreen({ type: "topic", level: "projectile motion"});
-      break;
+      case "1":
+        this.screenSwitcher.switchToScreen({
+          type: "topic",
+          level: "friction",
+        });
+        break;
+      case "2":
+        this.screenSwitcher.switchToScreen({
+          type: "topic",
+          level: "projectile motion",
+        });
+        break;
     }
   };
 

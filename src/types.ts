@@ -21,7 +21,11 @@ export type Screen =
   | { type: "level" }
   | { type: "map" }
   | { type: "topic"; level: "friction" | "projectile motion" }
-  | { type: "simulation"; topic: "friction" | "projectile motion"; level: "lev1" | "lev2"};
+  | {
+      type: "simulation";
+      topic: "friction" | "projectile motion";
+      level: "lev1" | "lev2";
+    };
 
 export abstract class ScreenController {
   abstract getView(): View;

@@ -16,7 +16,7 @@ export class SimulationScreenView implements View {
   private backBtn: Konva.Group;
 
   constructor(
-    level: "lev1" | "lev2",  
+    level: "lev1" | "lev2",
     handleBackClick?: () => void,
     handleNextClick?: () => void,
   ) {
@@ -24,7 +24,9 @@ export class SimulationScreenView implements View {
 
     // Current content
     if (level === "lev2") {
-      this.content = new Lev2(undefined, (enable) => this.setNextEnabled(enable));
+      this.content = new Lev2(undefined, (enable) =>
+        this.setNextEnabled(enable),
+      );
     } else {
       this.content = new Lev1(); // Lev1 remains exactly as provided
     }

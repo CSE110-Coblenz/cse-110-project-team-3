@@ -8,7 +8,7 @@ export class SimulationScreenController extends ScreenController {
 
   constructor(
     screenSwitcher: ScreenSwitcher,
-    opts: { level: "lev1" | "lev2"; topic: "friction" | "projectile motion" }
+    opts: { level: "lev1" | "lev2"; topic: "friction" | "projectile motion" },
   ) {
     super();
     this.screenSwitcher = screenSwitcher;
