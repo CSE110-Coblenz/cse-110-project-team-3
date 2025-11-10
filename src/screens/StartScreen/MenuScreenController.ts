@@ -35,10 +35,10 @@ export class MenuScreenController extends ScreenController {
     this.view.hide();
   }
 
-  private startGame() {
-    MenuScreenModel.setLastScreen("game");
-    this.screenSwitcher.switchToScreen({ type: "game" });
-  }
+  //private startGame() {
+  //  MenuScreenModel.setLastScreen("game");
+  //  this.screenSwitcher.switchToScreen({ type: "game" });
+  //}
 
   private resume() {
     const last = this.model.getLastScreen();

@@ -1,6 +1,11 @@
 import Konva from "konva";
 import type { View } from "../../types.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants.ts";
+import {
+  COLORS,
+  STAGE_WIDTH,
+  STAGE_HEIGHT,
+  FONT_FAMILY,
+} from "../../constants.ts";
 
 /**
  * MenuScreenView - Konva rendering for the welcome screen
@@ -26,7 +31,8 @@ export class MenuScreenView implements View {
         y: 0,
         width: STAGE_WIDTH,
         height: STAGE_HEIGHT,
-        fill: "#000",
+        fill: COLORS.bg,
+        cornerRadius: 8,
       })
     );
 
@@ -39,67 +45,112 @@ export class MenuScreenView implements View {
       text: "WELCOME\nTO THE GAME!!!",
       fontSize: 48,
       fontStyle: "bold",
-      fontFamily: "Courier New, monospace",
-      fill: "#fff",
+      fontFamily: FONT_FAMILY,
+      fill: COLORS.text,
+      listening: false,
     });
     this.group.add(title);
 
     // Buttons stack
     const centerX = STAGE_WIDTH / 2;
+    const buttonWidth = 300;
+    const buttonHeight = 64;
     let startY = 240;
 
-    const startBtn = this.createButton(centerX, startY, "START", handlers.onStart);
+    const startBtn = this.createPillButton(
+      "START",
+      centerX - buttonWidth / 2,
+      startY,
+      buttonWidth,
+      buttonHeight,
+      handlers.onStart
+    );
     this.group.add(startBtn);
-    startY += 56;
+    startY += 80;
 
-    this.resumeBtn = this.createButton(centerX, startY, "RESUME", handlers.onResume);
+    this.resumeBtn = this.createPillButton(
+      "RESUME",
+      centerX - buttonWidth / 2,
+      startY,
+      buttonWidth,
+      buttonHeight,
+      handlers.onResume
+    );
     this.group.add(this.resumeBtn);
-    startY += 56;
+    startY += 80;
 
-    const rulesBtn = this.createButton(centerX, startY, "RULES", handlers.onRules);
+    const rulesBtn = this.createPillButton(
+      "RULES",
+      centerX - buttonWidth / 2,
+      startY,
+      buttonWidth,
+      buttonHeight,
+      handlers.onRules
+    );
     this.group.add(rulesBtn);
-    startY += 56;
+    startY += 80;
 
-    const quitBtn = this.createButton(centerX, startY, "QUIT", handlers.onQuit);
+    const quitBtn = this.createPillButton(
+      "QUIT",
+      centerX - buttonWidth / 2,
+      startY,
+      buttonWidth,
+      buttonHeight,
+      handlers.onQuit
+    );
     this.group.add(quitBtn);
   }
 
-  /** Generic Konva "button" as a Group (Rect + Text) */
-  private createButton(cx: number, y: number, label: string, onClick: () => void): Konva.Group {
-    const g = new Konva.Group({ x: cx - 150, y, width: 300, height: 42 });
+  /** Create a pill-shaped button matching the style of other screens */
+  private createPillButton(
+    label: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    onClick?: () => void
+  ): Konva.Group {
+    const g = new Konva.Group({ x, y });
 
+    const r = Math.min(height / 2 + 6, 24);
     const rect = new Konva.Rect({
-      width: 300,
-      height: 42,
-      cornerRadius: 8,
-      fill: "#e5e5e5",
-      shadowColor: "black",
+      width,
+      height,
+      cornerRadius: r,
+      fill: COLORS.buttonFill,
+      stroke: COLORS.buttonStroke,
+      strokeWidth: 4,
+      shadowColor: "#000",
+      shadowOpacity: 0.15,
       shadowBlur: 8,
-      shadowOpacity: 0.35,
     });
 
     const text = new Konva.Text({
-      width: 300,
-      height: 42,
+      x: 0,
+      y: 0,
+      width,
+      height,
+      text: label,
+      fill: COLORS.buttonText,
+      fontSize: 32,
+      fontStyle: "bold",
       align: "center",
       verticalAlign: "middle",
-      text: label,
-      fontSize: 18,
-      fontStyle: "bold",
-      fontFamily: "Courier New, monospace",
-      fill: "#111",
+      horizontalAlign: "center",
+      fontFamily: FONT_FAMILY,
     });
 
     // hover + click interactions
-    g.on("mouseenter", () => (document.body.style.cursor = "pointer"));
-    g.on("mouseleave", () => (document.body.style.cursor = "default"));
-    g.on("click", () => {
-      if ((g as any)._disabled) return;
-      onClick();
-    });
+    if (onClick) {
+      g.on("mouseenter", () => (document.body.style.cursor = "pointer"));
+      g.on("mouseleave", () => (document.body.style.cursor = "default"));
+      g.on("click", () => {
+        if ((g as any)._disabled) return;
+        onClick();
+      });
+    }
 
-    g.add(rect);
-    g.add(text);
+    g.add(rect, text);
     return g;
   }
 
@@ -114,8 +165,8 @@ export class MenuScreenView implements View {
     const rect = this.resumeBtn.findOne<Konva.Rect>("Rect");
     const text = this.resumeBtn.findOne<Konva.Text>("Text");
     if (rect && text) {
-      rect.fill(enabled ? "#e5e5e5" : "#bdbdbd");
-      text.fill(enabled ? "#111" : "#555");
+      rect.fill(enabled ? COLORS.buttonFill : "#bdbdbd");
+      text.fill(enabled ? COLORS.buttonText : "#555");
     }
     this.group.getLayer()?.draw();
   }
