@@ -14,6 +14,7 @@ export class MinigameSimulView implements View {
 
   constructor(
     handlePlay?: () => void,
+    handleReset?: () => void,
     distanceX: number = 0,
     height: number = 0,
     initialSpeed: number = 0,
@@ -97,7 +98,7 @@ export class MinigameSimulView implements View {
 
     // Projectile ball
     this.projectile = new Konva.Circle({
-      x: 150,
+      x: SIMULATION_CONSTANTS.starting_x,
       y: SIMULATION_CONSTANTS.ground_level - height,
       radius: 10,
       fill: COLORS.nodeStroke,
@@ -117,6 +118,19 @@ export class MinigameSimulView implements View {
       playButton.on("click", handlePlay);
     }
     this.group.add(playButton);
+
+    const resetButton = this.createPillButton(
+      "RESET",
+      STAGE_WIDTH - 300,
+      STAGE_HEIGHT - 80,
+      130,
+      55,
+    );
+
+    if (handleReset) {
+      resetButton.on("click", handleReset);
+    }
+    this.group.add(resetButton);
   }
 
   private createPillButton(

@@ -19,15 +19,27 @@ export class MinigameSimulController extends ScreenController {
       9.8,
       500,
       SIMULATION_CONSTANTS.error_margin,
+      0,
     );
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
-      this.model.getDistanceX(),
+      () => this.resetSimulation(),
       this.model.getInitialHeight(),
       this.model.getInitialSpeed(),
       this.model.getAngle(),
       this.model.getGravity(),
     );
+  }
+
+  resetSimulation(): void {
+    const projectile = this.view.getProjectile();
+    projectile.hide();
+    projectile.position({
+      x: SIMULATION_CONSTANTS.starting_x,
+      y: SIMULATION_CONSTANTS.ground_level - this.model.getInitialHeight(),
+    });
+    this.view.getGroup().getLayer()?.draw();
+    console.log("Simulation reset.");
   }
 
   playSimulation(): void {
