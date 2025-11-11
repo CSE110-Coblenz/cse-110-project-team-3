@@ -20,6 +20,7 @@ export type Screen =
   | { type: "level" }
   | { type: "map" }
   | { type: "simulation" }
+  | { type: "minigame" }
   | { type: "topic"; level: "friction" | "projectile motion" };
 
 export abstract class ScreenController {
