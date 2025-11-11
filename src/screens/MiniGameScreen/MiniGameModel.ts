@@ -122,4 +122,3 @@ export const DEFAULT_MINIGAME_QUESTIONS: MiniGameQuestion[] = [
     correctIndex: 1,
   },
 ];
-
