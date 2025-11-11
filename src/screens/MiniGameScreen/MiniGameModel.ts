@@ -105,9 +105,9 @@ export const DEFAULT_MINIGAME_QUESTIONS: MiniGameQuestion[] = [
     prompt:
       "Round 1: A 2 kg block slides on a frictionless surface with constant velocity. Which statement is correct?",
     options: [
-      "A) Net force is non-zero",
-      "B) Net force is zero",
-      "C) Kinetic energy is zero",
+      "Net force is non-zero",
+      "Net force is zero",
+      "Kinetic energy is zero",
     ],
     correctIndex: 1,
   },
@@ -115,9 +115,9 @@ export const DEFAULT_MINIGAME_QUESTIONS: MiniGameQuestion[] = [
     prompt:
       "Round 2: A ball is thrown straight up. At the top of its path, which is true?",
     options: [
-      "A) Velocity is zero; acceleration is zero",
-      "B) Velocity is zero; acceleration is downward",
-      "C) Velocity downward; acceleration is zero",
+      "Velocity is zero; acceleration is zero",
+      "Velocity is zero; acceleration is downward",
+      "Velocity downward; acceleration is zero",
     ],
     correctIndex: 1,
   },

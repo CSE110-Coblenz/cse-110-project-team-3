@@ -14,7 +14,8 @@ export class MiniGameView implements View {
   private group: Konva.Group;
 
   private title!: Konva.Text;
-  private livesText!: Konva.Text;
+  private heartsGroup!: Konva.Group;
+  private heartNodes: Konva.Text[] = [];
   private questionText!: Konva.Text;
 
   private optionGroups: Konva.Group[] = [];
@@ -51,18 +52,28 @@ export class MiniGameView implements View {
     this.title.offsetX(this.title.width() / 2);
     this.group.add(this.title);
 
-    // Lives (top-right)
-    this.livesText = new Konva.Text({
-      text: "Lives: 2",
-      fontSize: 20,
-      fontFamily: FONT_FAMILY,
-      fill: COLORS.text,
-      x: STAGE_WIDTH - 20,
-      y: 20,
-      align: "right",
-    });
-    this.livesText.offsetX(this.livesText.width());
-    this.group.add(this.livesText);
+    // Hearts (top-right) — show 3 hearts, dim as lives decrease
+    this.heartsGroup = new Konva.Group({ x: STAGE_WIDTH - 20, y: 20 });
+    // Create three heart text nodes aligned right
+    const HEART_CHAR = "❤"; // Unicode heart
+    const HEART_SIZE = 24;
+    const SPACING = 8;
+    for (let i = 0; i < 3; i++) {
+      const t = new Konva.Text({
+        text: HEART_CHAR,
+        fontSize: HEART_SIZE,
+        fontFamily: FONT_FAMILY,
+        fill: "#ef4444", // red
+        x: -i * (HEART_SIZE + SPACING),
+        y: 0,
+        align: "right",
+      });
+      // Position relative to right edge of group
+      t.offsetX(t.width());
+      this.heartNodes.push(t);
+      this.heartsGroup.add(t);
+    }
+    this.group.add(this.heartsGroup);
 
     // Question prompt
     this.questionText = new Konva.Text({
@@ -217,8 +228,17 @@ export class MiniGameView implements View {
   }
 
   setLives(lives: number): void {
-    this.livesText.text(`Lives: ${lives}`);
-    this.livesText.offsetX(this.livesText.width());
+    // Color active hearts red, inactive hearts dim
+    for (let i = 0; i < this.heartNodes.length; i++) {
+      const heart = this.heartNodes[i];
+      if (i < lives) {
+        heart.fill("#ef4444"); // red
+        heart.opacity(1);
+      } else {
+        heart.fill("#555555"); // dim grey
+        heart.opacity(0.6);
+      }
+    }
     this.group.getLayer()?.batchDraw();
   }
 
@@ -291,4 +311,3 @@ export class MiniGameView implements View {
     this.group.getLayer()?.draw();
   }
 }
-
