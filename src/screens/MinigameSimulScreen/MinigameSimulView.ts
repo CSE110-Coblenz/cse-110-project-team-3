@@ -12,6 +12,7 @@ export class MinigameSimulView implements View {
   private group: Konva.Group;
   private projectile: Konva.Circle;
   private playButton: Konva.Group;
+  private resetButton: Konva.Group;
 
   constructor(
     handlePlay?: () => void,
@@ -20,7 +21,7 @@ export class MinigameSimulView implements View {
     height: number = 0,
     initialSpeed: number = 0,
     angle: number = 0,
-    gravity: number = 0,
+    gravity: number = 0
   ) {
     this.group = new Konva.Group();
 
@@ -123,25 +124,27 @@ export class MinigameSimulView implements View {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55,
+      55
     );
     if (handlePlay) {
       this.playButton.on("click", handlePlay);
     }
     this.group.add(this.playButton);
 
-    const resetButton = this.createPillButton(
+    this.resetButton = this.createPillButton(
       "RESET",
-      STAGE_WIDTH - 300,
+      STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55,
+      55
     );
 
     if (handleReset) {
-      resetButton.on("click", handleReset);
+      this.resetButton.on("click", handleReset);
     }
-    this.group.add(resetButton);
+
+    this.resetButton.hide();
+    this.group.add(this.resetButton);
   }
 
   removePlayButton(): void {
@@ -149,12 +152,16 @@ export class MinigameSimulView implements View {
     this.playButton.destroy();
   }
 
+  addResetButton(): void {
+    this.resetButton.show();
+  }
+
   private createPillButton(
     label: string,
     x: number,
     y: number,
     width: number,
-    height: number,
+    height: number
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 

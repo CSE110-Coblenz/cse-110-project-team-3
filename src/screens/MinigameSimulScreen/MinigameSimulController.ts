@@ -81,6 +81,7 @@ export class MinigameSimulController extends ScreenController {
           // TODO: Add a failure handler or callback here
         }
         this.view.removePlayButton();
+        this.view.addResetButton();
       }
     }, this.view.getGroup().getLayer());
 
