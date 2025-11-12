@@ -1,4 +1,4 @@
-import { MinigameSimulModel } from "../../../src/screens/MinigameSimulScreen/MinigameSimulModel";
+import { MinigameSimulModel } from "../../../src/screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulModel";
 import { describe, it, expect } from "vitest";
 
 describe("MinigameSimulModel", () => {
