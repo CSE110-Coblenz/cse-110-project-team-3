@@ -26,21 +26,22 @@ export class MinigameCompletedScreenView implements View {
     // Title Text
     const titleText = new Konva.Text({
       x: STAGE_WIDTH / 2,
-      y: 50,
-      text: `Mini Game ${level} Completed!`,
+      y: STAGE_HEIGHT / 2 - 100,
+      text: `Mini Game ${level}\nCompleted!`,
       fontSize: 60,
       fontFamily: FONT_FAMILY,
       fill: COLORS.text,
       fontStyle: "bold",
+      align: "center",
     });
     titleText.offsetX(titleText.width() / 2);
     this.group.add(titleText);
 
     // Back to Map Button
     const backButton = this.createPillButton(
-      "BACK TO MAP",
+      "EXIT",
       STAGE_WIDTH / 2 - 96,
-      STAGE_HEIGHT - 150,
+      STAGE_HEIGHT - 100,
       192,
       60
     );
