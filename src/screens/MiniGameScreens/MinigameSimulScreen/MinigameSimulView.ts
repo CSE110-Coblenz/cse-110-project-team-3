@@ -21,7 +21,7 @@ export class MinigameSimulView implements View {
     height: number = 0,
     initialSpeed: number = 0,
     angle: number = 0,
-    gravity: number = 0
+    gravity: number = 0,
   ) {
     this.group = new Konva.Group();
 
@@ -124,7 +124,7 @@ export class MinigameSimulView implements View {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55
+      55,
     );
     if (handlePlay) {
       this.playButton.on("click", handlePlay);
@@ -136,7 +136,7 @@ export class MinigameSimulView implements View {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55
+      55,
     );
 
     if (handleReset) {
@@ -161,7 +161,7 @@ export class MinigameSimulView implements View {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 
