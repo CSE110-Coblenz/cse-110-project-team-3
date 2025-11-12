@@ -6,6 +6,7 @@ import { RulesScreenController } from "./screens/RulesScreen/RulesScreenControll
 import { SimulationScreenController } from "./screens/SimulationScreen/SimulationScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
+import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/TitleScreenController";
 import { frictionConfig, projectileMotionConfig } from "./configs/topics";
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
 
@@ -18,6 +19,7 @@ class App implements ScreenSwitcher {
   private rulesScreenController: RulesScreenController;
   private frictionTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
+  private titleScreenController: TitleScreenController;
 
   private lev1SimulationController: SimulationScreenController;
   private lev2SimulationController: SimulationScreenController;
@@ -44,12 +46,13 @@ class App implements ScreenSwitcher {
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
       this,
-      frictionConfig,
+      frictionConfig
     );
     this.projectileMotionTopicController = new TopicScreenController(
       this,
-      projectileMotionConfig,
+      projectileMotionConfig
     );
+    this.titleScreenController = new TitleScreenController(this);
 
     this.lev1SimulationController = new SimulationScreenController(this, {
       level: "lev1",
@@ -69,12 +72,13 @@ class App implements ScreenSwitcher {
     this.layer.add(this.lev1SimulationController.getView().getGroup());
     this.layer.add(this.lev2SimulationController.getView().getGroup());
     this.layer.add(this.minigameSimulController.getView().getGroup());
+    this.layer.add(this.titleScreenController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "minigame" });
+    this.switchToScreen({ type: "minigame-title" });
   }
 
   switchToScreen(screen: Screen): void {
@@ -88,6 +92,7 @@ class App implements ScreenSwitcher {
     this.lev1SimulationController.getView().hide();
     this.lev2SimulationController.getView().hide();
     this.minigameSimulController.getView().hide();
+    this.titleScreenController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
@@ -118,6 +123,9 @@ class App implements ScreenSwitcher {
             this.lev2SimulationController.getView().show();
           }
         }
+        break;
+      case "minigame-title":
+        this.titleScreenController.getView().show();
         break;
     }
   }

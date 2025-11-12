@@ -22,6 +22,7 @@ export type Screen =
   | { type: "map" }
   | { type: "reference" }
   | { type: "topic"; level: "friction" | "projectile motion" }
+  | { type: "minigame-title" }
   | {
       type: "simulation";
       topic: "friction" | "projectile motion";
