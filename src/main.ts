@@ -37,7 +37,6 @@ class App implements ScreenSwitcher {
     this.mapScreenController = new MapScreenController(this);
     this.rulesScreenController = new RulesScreenController(this);
     this.referenceScreenController = new ReferenceScreenController(this);
-    
 
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
