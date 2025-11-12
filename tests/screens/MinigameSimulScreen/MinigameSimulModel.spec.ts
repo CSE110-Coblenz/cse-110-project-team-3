@@ -76,4 +76,38 @@ describe("MinigameSimulModel", () => {
     const model = new MinigameSimulModel(75.22, 60, 9.8, 500, 0, 5);
     expect(model.isHit(494.9)).toBe(false);
   });
+
+  it("should handle initial_speed of 0", () => {
+    const model = new MinigameSimulModel(0, 45, 9.81, 1000);
+    expect(model.getInitialSpeed()).toBe(0);
+  });
+
+  it("should handle gravity of 0", () => {
+    const model = new MinigameSimulModel(100, 45, 0, 1000);
+    expect(model.getGravity()).toBe(0);
+  });
+
+  it("should handle negative initial_height", () => {
+    const model = new MinigameSimulModel(100, 45, 9.81, 1000, -10);
+    expect(model.getInitialHeight()).toBe(-10);
+  });
+
+  it("should handle negative distance_x", () => {
+    const model = new MinigameSimulModel(100, 45, 9.81, -1000);
+    expect(model.getDistanceX()).toBe(-1000);
+  });
+
+  it("should return true only for exact hit when margin_of_error is 0", () => {
+    const model = new MinigameSimulModel(100, 45, 9.81, 500, 0, 0);
+    expect(model.isHit(500)).toBe(true);
+    expect(model.isHit(500.1)).toBe(false);
+    expect(model.isHit(499.9)).toBe(false);
+  });
+
+  it("should handle negative landingDistance correctly", () => {
+    const model = new MinigameSimulModel(100, 45, 9.81, 10, 0, 5);
+    expect(model.isHit(-10)).toBe(false); // -10 is not within 5 of 10
+    expect(model.isHit(5)).toBe(true); // 5 is within 5 of 10
+    expect(model.isHit(15)).toBe(true); // 15 is within 5 of 10
+  });
 });
