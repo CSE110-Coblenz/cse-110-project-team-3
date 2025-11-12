@@ -39,7 +39,7 @@ export const frictionConfig: TopicScreenConfig = {
     },
   ],
   style: {
-    titleColor: COLORS.title,
+    titleColor: COLORS.text,
     descriptionColor: COLORS.text,
     backgroundColor: COLORS.bg,
   },
