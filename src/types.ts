@@ -9,11 +9,12 @@ export interface View {
 /**
  * Screen types for navigation
  *
- * - "rules": Rulesscreen
- * - "level": Levelscreen
- * - "map": Mapscreen
+ * - "menu": Menu/Start screen
+ * - "rules": Rules screen
+ * - "level": Level screen
+ * - "map": Map screen
  */
-export type Screen = { type: "rules" } | { type: "level" } | { type: "map" };
+export type Screen = { type: "menu" } | { type: "rules" } | { type: "level" } | { type: "map" };
 
 export abstract class ScreenController {
   abstract getView(): View;
