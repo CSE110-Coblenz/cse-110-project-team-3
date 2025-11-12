@@ -24,7 +24,7 @@ export type Screen =
   | { type: "topic"; level: "friction" | "projectile motion" }
   | {
       type: "minigame";
-      screen: "title" | "rules" | "completed";
+      screen: "title" | "rules" | "completed" | "gameover";
       level: number;
     };
 

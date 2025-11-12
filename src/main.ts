@@ -9,6 +9,7 @@ import { TopicScreenController } from "./screens/TopicScreen/TopicScreenControll
 import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/TitleScreenController";
 import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
 import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
+import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
 
 // Import configurations for topics and rules
 import { frictionConfig, projectileMotionConfig } from "./configs/topics";
@@ -31,6 +32,7 @@ class App implements ScreenSwitcher {
   private minigameSimulController: MinigameSimulController;
   private miniGameRuleScreenController?: MiniGameRuleScreenController;
   private completedScreenController?: CompletedScreenController;
+  private gameOverScreenController?: GameOverScreenController;
 
   constructor(container: string = "container") {
     // Initialize stage
@@ -53,11 +55,11 @@ class App implements ScreenSwitcher {
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
       this,
-      frictionConfig,
+      frictionConfig
     );
     this.projectileMotionTopicController = new TopicScreenController(
       this,
-      projectileMotionConfig,
+      projectileMotionConfig
     );
     this.titleScreenController = new TitleScreenController(this);
 
@@ -90,7 +92,7 @@ class App implements ScreenSwitcher {
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "minigame", screen: "title", level: 1 });
+    this.switchToScreen({ type: "minigame", screen: "gameover", level: 1 });
   }
 
   switchToScreen(screen: Screen): void {
@@ -106,6 +108,7 @@ class App implements ScreenSwitcher {
     this.minigameSimulController.getView().hide();
     this.titleScreenController.getView().hide();
     this.miniGameRuleScreenController.getView().hide();
+    this.gameOverScreenController?.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
@@ -142,7 +145,7 @@ class App implements ScreenSwitcher {
           case "title":
             this.titleScreenController = new TitleScreenController(
               this,
-              screen.level,
+              screen.level
             );
             this.layer.add(this.titleScreenController.getView().getGroup());
             this.titleScreenController.getView().show();
@@ -152,20 +155,28 @@ class App implements ScreenSwitcher {
               new MiniGameRuleScreenController(
                 this,
                 miniGameRuleConfig,
-                screen.level,
+                screen.level
               );
             this.layer.add(
-              this.miniGameRuleScreenController.getView().getGroup(),
+              this.miniGameRuleScreenController.getView().getGroup()
             );
             this.miniGameRuleScreenController.getView().show();
             break;
           case "completed":
             this.completedScreenController = new CompletedScreenController(
               this,
-              screen.level,
+              screen.level
             );
             this.layer.add(this.completedScreenController.getView().getGroup());
             this.completedScreenController.getView().show();
+            break;
+          case "gameover":
+            this.gameOverScreenController = new GameOverScreenController(
+              this,
+              screen.level
+            );
+            this.layer.add(this.gameOverScreenController.getView().getGroup());
+            this.gameOverScreenController.getView().show();
             break;
         }
         break;
