@@ -11,7 +11,7 @@ export class MiniGameRuleScreenController extends ScreenController {
   constructor(
     screenSwitcher: ScreenSwitcher,
     ruleConfig: RuleConfig,
-    level: number
+    level: number,
   ) {
     super();
     this.screenSwitcher = screenSwitcher;
@@ -20,7 +20,7 @@ export class MiniGameRuleScreenController extends ScreenController {
     this.view = new MiniGameRuleScreenView(
       this.ruleConfig,
       () => this.handleNextClick(),
-      () => this.handleBackClick()
+      () => this.handleBackClick(),
     );
   }
 

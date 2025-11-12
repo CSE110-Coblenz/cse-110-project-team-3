@@ -42,7 +42,7 @@ export class TitleScreenView implements View {
       STAGE_WIDTH - 192,
       STAGE_HEIGHT - 96,
       160,
-      64
+      64,
     );
     if (handleNextClick) {
       nextButton.on("click", handleNextClick);
@@ -55,7 +55,7 @@ export class TitleScreenView implements View {
       32,
       STAGE_HEIGHT - 96,
       160,
-      64
+      64,
     );
     this.group.add(backButton);
 
@@ -69,7 +69,7 @@ export class TitleScreenView implements View {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 

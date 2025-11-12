@@ -13,7 +13,7 @@ export class TitleScreenController extends ScreenController {
     this.level = level;
     this.view = new TitleScreenView(
       () => this.handleNextClick(),
-      () => this.handleBackClick()
+      () => this.handleBackClick(),
     );
   }
 

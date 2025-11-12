@@ -43,7 +43,7 @@ export class MinigameCompletedScreenView implements View {
       STAGE_WIDTH / 2 - 96,
       STAGE_HEIGHT - 100,
       192,
-      60
+      60,
     );
     if (handleNextClick) {
       backButton.on("click", handleNextClick);
@@ -56,7 +56,7 @@ export class MinigameCompletedScreenView implements View {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 

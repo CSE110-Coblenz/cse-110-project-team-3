@@ -12,7 +12,7 @@ export class CompletedScreenController extends ScreenController {
     this.screenSwitcher = screenSwitcher;
     this.level = level;
     this.view = new MinigameCompletedScreenView(this.level, () =>
-      this.handleBackClick()
+      this.handleBackClick(),
     );
   }
 

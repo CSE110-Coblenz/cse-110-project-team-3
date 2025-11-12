@@ -53,11 +53,11 @@ class App implements ScreenSwitcher {
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
       this,
-      frictionConfig
+      frictionConfig,
     );
     this.projectileMotionTopicController = new TopicScreenController(
       this,
-      projectileMotionConfig
+      projectileMotionConfig,
     );
     this.titleScreenController = new TitleScreenController(this);
 
@@ -142,7 +142,7 @@ class App implements ScreenSwitcher {
           case "title":
             this.titleScreenController = new TitleScreenController(
               this,
-              screen.level
+              screen.level,
             );
             this.layer.add(this.titleScreenController.getView().getGroup());
             this.titleScreenController.getView().show();
@@ -152,17 +152,17 @@ class App implements ScreenSwitcher {
               new MiniGameRuleScreenController(
                 this,
                 miniGameRuleConfig,
-                screen.level
+                screen.level,
               );
             this.layer.add(
-              this.miniGameRuleScreenController.getView().getGroup()
+              this.miniGameRuleScreenController.getView().getGroup(),
             );
             this.miniGameRuleScreenController.getView().show();
             break;
           case "completed":
             this.completedScreenController = new CompletedScreenController(
               this,
-              screen.level
+              screen.level,
             );
             this.layer.add(this.completedScreenController.getView().getGroup());
             this.completedScreenController.getView().show();

@@ -14,7 +14,7 @@ export class MiniGameRuleScreenView implements View {
   constructor(
     rulesConfig: RuleConfig,
     handleNextClick?: () => void,
-    handleBackClick?: () => void
+    handleBackClick?: () => void,
   ) {
     this.group = new Konva.Group();
 
@@ -61,7 +61,7 @@ export class MiniGameRuleScreenView implements View {
       STAGE_WIDTH - 192,
       STAGE_HEIGHT - 96,
       160,
-      64
+      64,
     );
     if (handleNextClick) {
       nextButton.on("click", handleNextClick);
@@ -74,7 +74,7 @@ export class MiniGameRuleScreenView implements View {
       32,
       STAGE_HEIGHT - 96,
       160,
-      64
+      64,
     );
     if (handleBackClick) {
       backButton.on("click", handleBackClick);
@@ -87,7 +87,7 @@ export class MiniGameRuleScreenView implements View {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 
