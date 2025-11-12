@@ -16,7 +16,7 @@ export class TitleScreenController extends ScreenController {
   }
 
   private handleNextClick(): void {
-    console.log("Next button clicked");
+    this.screenSwitcher.switchToScreen({ type: "minigame", screen: "rules" });
     // TODO: Implement next button functionality
   }
 

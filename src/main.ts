@@ -7,8 +7,10 @@ import { SimulationScreenController } from "./screens/SimulationScreen/Simulatio
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
 import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/TitleScreenController";
+import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
 import { frictionConfig, projectileMotionConfig } from "./configs/topics";
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
+import { miniGameRuleConfig } from "./configs/rules";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
@@ -24,6 +26,7 @@ class App implements ScreenSwitcher {
   private lev1SimulationController: SimulationScreenController;
   private lev2SimulationController: SimulationScreenController;
   private minigameSimulController: MinigameSimulController;
+  private miniGameRuleScreenController: MiniGameRuleScreenController;
 
   constructor(container: string = "container") {
     // Initialize stage
@@ -62,6 +65,10 @@ class App implements ScreenSwitcher {
       level: "lev2",
       topic: "projectile motion",
     });
+    this.miniGameRuleScreenController = new MiniGameRuleScreenController(
+      this,
+      miniGameRuleConfig
+    );
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
@@ -73,12 +80,13 @@ class App implements ScreenSwitcher {
     this.layer.add(this.lev2SimulationController.getView().getGroup());
     this.layer.add(this.minigameSimulController.getView().getGroup());
     this.layer.add(this.titleScreenController.getView().getGroup());
+    this.layer.add(this.miniGameRuleScreenController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "minigame-title" });
+    this.switchToScreen({ type: "minigame", screen: "title" });
   }
 
   switchToScreen(screen: Screen): void {
@@ -93,6 +101,7 @@ class App implements ScreenSwitcher {
     this.lev2SimulationController.getView().hide();
     this.minigameSimulController.getView().hide();
     this.titleScreenController.getView().hide();
+    this.miniGameRuleScreenController.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
@@ -124,8 +133,15 @@ class App implements ScreenSwitcher {
           }
         }
         break;
-      case "minigame-title":
-        this.titleScreenController.getView().show();
+      case "minigame":
+        switch (screen.screen) {
+          case "title":
+            this.titleScreenController.getView().show();
+            break;
+          case "rules":
+            this.miniGameRuleScreenController.getView().show();
+            break;
+        }
         break;
     }
   }
