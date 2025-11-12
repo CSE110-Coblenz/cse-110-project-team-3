@@ -11,6 +11,7 @@ import {
 export class MinigameSimulView implements View {
   private group: Konva.Group;
   private projectile: Konva.Circle;
+  private playButton: Konva.Group;
 
   constructor(
     handlePlay?: () => void,
@@ -65,6 +66,16 @@ export class MinigameSimulView implements View {
     });
     this.group.add(gravityText);
 
+    const distanceText = new Konva.Text({
+      x: 20,
+      y: 110,
+      text: `Target Distance: ${distanceX.toFixed(2)} m`,
+      fontSize: 20,
+      fontFamily: FONT_FAMILY,
+      fill: COLORS.text,
+    });
+    this.group.add(distanceText);
+
     // Line to indicate the ground
     const groundLine = new Konva.Line({
       points: [
@@ -107,7 +118,7 @@ export class MinigameSimulView implements View {
     this.projectile.hide();
 
     // Add Play Button
-    const playButton = this.createPillButton(
+    this.playButton = this.createPillButton(
       "PLAY",
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
@@ -115,9 +126,9 @@ export class MinigameSimulView implements View {
       55,
     );
     if (handlePlay) {
-      playButton.on("click", handlePlay);
+      this.playButton.on("click", handlePlay);
     }
-    this.group.add(playButton);
+    this.group.add(this.playButton);
 
     const resetButton = this.createPillButton(
       "RESET",
@@ -131,6 +142,11 @@ export class MinigameSimulView implements View {
       resetButton.on("click", handleReset);
     }
     this.group.add(resetButton);
+  }
+
+  removePlayButton(): void {
+    this.playButton.remove();
+    this.playButton.destroy();
   }
 
   private createPillButton(

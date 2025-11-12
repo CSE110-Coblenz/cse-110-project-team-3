@@ -18,12 +18,13 @@ export class MinigameSimulController extends ScreenController {
       60,
       9.8,
       500,
-      SIMULATION_CONSTANTS.error_margin,
       0,
+      SIMULATION_CONSTANTS.error_margin,
     );
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
       () => this.resetSimulation(),
+      this.model.getDistanceX(),
       this.model.getInitialHeight(),
       this.model.getInitialSpeed(),
       this.model.getAngle(),
@@ -79,6 +80,7 @@ export class MinigameSimulController extends ScreenController {
           console.log("Missed the target.");
           // TODO: Add a failure handler or callback here
         }
+        this.view.removePlayButton();
       }
     }, this.view.getGroup().getLayer());
 
