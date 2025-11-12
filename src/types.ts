@@ -22,7 +22,11 @@ export type Screen =
   | { type: "map" }
   | { type: "reference" }
   | { type: "topic"; level: "friction" | "projectile motion" }
-  | { type: "minigame"; screen: "title" | "rules" };
+  | {
+      type: "minigame";
+      screen: "title" | "rules" | "completed";
+      level: number;
+    };
 
 export type RuleConfig =
   | {

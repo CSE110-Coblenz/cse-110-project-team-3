@@ -1,16 +1,22 @@
 import type { RuleConfig, ScreenSwitcher } from "../../../types";
-import { ScreenController } from "../../../types";
 import { MiniGameRuleScreenView } from "./MiniGameRuleScreenView";
+import { ScreenController } from "../../../types";
 
 export class MiniGameRuleScreenController extends ScreenController {
   private view: MiniGameRuleScreenView;
-  private screenSwitcher: ScreenSwitcher;
   private ruleConfig: RuleConfig;
+  private screenSwitcher: ScreenSwitcher;
+  private level: number;
 
-  constructor(screenSwitcher: ScreenSwitcher, ruleConfig: RuleConfig) {
+  constructor(
+    screenSwitcher: ScreenSwitcher,
+    ruleConfig: RuleConfig,
+    level: number
+  ) {
     super();
     this.screenSwitcher = screenSwitcher;
     this.ruleConfig = ruleConfig;
+    this.level = level;
     this.view = new MiniGameRuleScreenView(
       this.ruleConfig,
       () => this.handleNextClick(),
@@ -19,11 +25,20 @@ export class MiniGameRuleScreenController extends ScreenController {
   }
 
   private handleNextClick(): void {
-    console.log("Next button clicked");
+    // TODO: Swith to the actual game screen, passing the level
+    this.screenSwitcher.switchToScreen({
+      type: "minigame",
+      screen: "completed",
+      level: this.level,
+    });
   }
 
   private handleBackClick(): void {
-    this.screenSwitcher.switchToScreen({ type: "minigame", screen: "title" });
+    this.screenSwitcher.switchToScreen({
+      type: "minigame",
+      screen: "title",
+      level: this.level,
+    });
   }
 
   getView(): MiniGameRuleScreenView {

@@ -1,11 +1,11 @@
 import Konva from "konva";
-import type { View } from "../../../types";
 import {
   COLORS,
   STAGE_HEIGHT,
   STAGE_WIDTH,
   FONT_FAMILY,
 } from "../../../constants";
+import type { View } from "../../../types";
 
 export class TitleScreenView implements View {
   private group: Konva.Group;
@@ -44,18 +44,6 @@ export class TitleScreenView implements View {
       160,
       64
     );
-    nextButton.on("mouseenter", function (e) {
-      const stage = e.target.getStage();
-      if (stage) {
-        stage.container().style.cursor = "pointer";
-      }
-    });
-    nextButton.on("mouseleave", function (e) {
-      const stage = e.target.getStage();
-      if (stage) {
-        stage.container().style.cursor = "default";
-      }
-    });
     if (handleNextClick) {
       nextButton.on("click", handleNextClick);
     }
@@ -69,18 +57,6 @@ export class TitleScreenView implements View {
       160,
       64
     );
-    backButton.on("mouseenter", function (e) {
-      const stage = e.target.getStage();
-      if (stage) {
-        stage.container().style.cursor = "pointer";
-      }
-    });
-    backButton.on("mouseleave", function (e) {
-      const stage = e.target.getStage();
-      if (stage) {
-        stage.container().style.cursor = "default";
-      }
-    });
     this.group.add(backButton);
 
     if (handleBackClick) {
@@ -132,12 +108,10 @@ export class TitleScreenView implements View {
   }
 
   show(): void {
-    this.group.visible(true);
-    this.group.getLayer()?.draw();
+    this.group.show();
   }
 
   hide(): void {
-    this.group.visible(false);
-    this.group.getLayer()?.draw();
+    this.group.hide();
   }
 }

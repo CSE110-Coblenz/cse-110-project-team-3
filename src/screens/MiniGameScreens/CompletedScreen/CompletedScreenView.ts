@@ -1,5 +1,4 @@
 import Konva from "konva";
-import type { RuleConfig } from "../../../types";
 import {
   COLORS,
   STAGE_HEIGHT,
@@ -8,14 +7,10 @@ import {
 } from "../../../constants";
 import type { View } from "../../../types";
 
-export class MiniGameRuleScreenView implements View {
+export class MinigameCompletedScreenView implements View {
   private group: Konva.Group;
 
-  constructor(
-    rulesConfig: RuleConfig,
-    handleNextClick?: () => void,
-    handleBackClick?: () => void
-  ) {
+  constructor(level: number, handleNextClick?: () => void) {
     this.group = new Konva.Group();
 
     // Background
@@ -32,7 +27,7 @@ export class MiniGameRuleScreenView implements View {
     const titleText = new Konva.Text({
       x: STAGE_WIDTH / 2,
       y: 50,
-      text: "Mini Game Rules",
+      text: `Mini Game ${level} Completed!`,
       fontSize: 60,
       fontFamily: FONT_FAMILY,
       fill: COLORS.text,
@@ -41,43 +36,16 @@ export class MiniGameRuleScreenView implements View {
     titleText.offsetX(titleText.width() / 2);
     this.group.add(titleText);
 
-    // Rules Text
-    const rulesText = new Konva.Text({
-      x: 60,
-      y: 150,
-      width: STAGE_WIDTH - 100,
-      text: rulesConfig.rules
-        .map((rule, index) => `${index + 1}. ${rule}`)
-        .join("\n\n"),
-      fontSize: 32,
-      fontFamily: FONT_FAMILY,
-      fill: COLORS.text,
-    });
-    this.group.add(rulesText);
-
-    // Next Button
-    const nextButton = this.createPillButton(
-      "NEXT",
-      STAGE_WIDTH - 192,
-      STAGE_HEIGHT - 96,
-      160,
-      64
+    // Back to Map Button
+    const backButton = this.createPillButton(
+      "BACK TO MAP",
+      STAGE_WIDTH / 2 - 96,
+      STAGE_HEIGHT - 150,
+      192,
+      60
     );
     if (handleNextClick) {
-      nextButton.on("click", handleNextClick);
-    }
-    this.group.add(nextButton);
-
-    // Back Button
-    const backButton = this.createPillButton(
-      "BACK",
-      32,
-      STAGE_HEIGHT - 96,
-      160,
-      64
-    );
-    if (handleBackClick) {
-      backButton.on("click", handleBackClick);
+      backButton.on("click", handleNextClick);
     }
     this.group.add(backButton);
   }

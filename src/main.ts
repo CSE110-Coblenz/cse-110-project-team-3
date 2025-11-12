@@ -8,6 +8,9 @@ import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
 import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/TitleScreenController";
 import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
+import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
+
+// Import configurations for topics and rules
 import { frictionConfig, projectileMotionConfig } from "./configs/topics";
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
 import { miniGameRuleConfig } from "./configs/rules";
@@ -21,12 +24,13 @@ class App implements ScreenSwitcher {
   private rulesScreenController: RulesScreenController;
   private frictionTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
-  private titleScreenController: TitleScreenController;
+  private titleScreenController?: TitleScreenController;
 
   private lev1SimulationController: SimulationScreenController;
   private lev2SimulationController: SimulationScreenController;
   private minigameSimulController: MinigameSimulController;
-  private miniGameRuleScreenController: MiniGameRuleScreenController;
+  private miniGameRuleScreenController?: MiniGameRuleScreenController;
+  private completedScreenController?: CompletedScreenController;
 
   constructor(container: string = "container") {
     // Initialize stage
@@ -86,7 +90,7 @@ class App implements ScreenSwitcher {
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "minigame", screen: "title" });
+    this.switchToScreen({ type: "minigame", screen: "title", level: 1 });
   }
 
   switchToScreen(screen: Screen): void {
@@ -136,10 +140,32 @@ class App implements ScreenSwitcher {
       case "minigame":
         switch (screen.screen) {
           case "title":
+            this.titleScreenController = new TitleScreenController(
+              this,
+              screen.level
+            );
+            this.layer.add(this.titleScreenController.getView().getGroup());
             this.titleScreenController.getView().show();
             break;
           case "rules":
+            this.miniGameRuleScreenController =
+              new MiniGameRuleScreenController(
+                this,
+                miniGameRuleConfig,
+                screen.level
+              );
+            this.layer.add(
+              this.miniGameRuleScreenController.getView().getGroup()
+            );
             this.miniGameRuleScreenController.getView().show();
+            break;
+          case "completed":
+            this.completedScreenController = new CompletedScreenController(
+              this,
+              screen.level
+            );
+            this.layer.add(this.completedScreenController.getView().getGroup());
+            this.completedScreenController.getView().show();
             break;
         }
         break;
