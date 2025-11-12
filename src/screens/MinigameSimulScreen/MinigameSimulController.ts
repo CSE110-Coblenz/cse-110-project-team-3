@@ -9,6 +9,7 @@ export class MinigameSimulController extends ScreenController {
   private view: MinigameSimulView;
   private screenSwitcher: ScreenSwitcher;
   private model: MinigameSimulModel;
+  private lives: number = 3;
 
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
@@ -29,7 +30,21 @@ export class MinigameSimulController extends ScreenController {
       this.model.getInitialSpeed(),
       this.model.getAngle(),
       this.model.getGravity(),
+      (delta) => this.adjustSpeed(delta),
+      (delta) => this.adjustAngle(delta),
     );
+  }
+
+  private adjustSpeed(delta: number): void {
+    const current = this.model.getInitialSpeed();
+    this.model.setInitialSpeed(current + delta);
+    this.view.setSpeedDisplay(this.model.getInitialSpeed());
+  }
+
+  private adjustAngle(delta: number): void {
+    const current = this.model.getAngle();
+    this.model.setAngle(current + delta);
+    this.view.setAngleDisplay(this.model.getAngle());
   }
 
   resetSimulation(): void {
@@ -40,10 +55,17 @@ export class MinigameSimulController extends ScreenController {
       y: SIMULATION_CONSTANTS.ground_level - this.model.getInitialHeight(),
     });
     this.view.getGroup().getLayer()?.draw();
+    // After reset, allow playing again
+    this.view.hideResetButton();
+    if (this.lives > 0) this.view.showPlayButton();
     console.log("Simulation reset.");
   }
 
   playSimulation(): void {
+    if (this.lives <= 0) {
+      console.log("No lives left. Game over.");
+      return;
+    }
     const projectile = this.view.getProjectile();
     projectile.show();
     const initialSpeed = this.model.getInitialSpeed();
@@ -54,6 +76,9 @@ export class MinigameSimulController extends ScreenController {
 
     const angleInRadians = (angle * Math.PI) / 180;
     const initialX = projectile.x();
+
+    // Hide play to prevent multiple concurrent plays
+    this.view.hidePlayButton();
 
     const animation = new Konva.Animation((frame) => {
       if (!frame) return;
@@ -68,19 +93,24 @@ export class MinigameSimulController extends ScreenController {
 
       projectile.position({ x, y });
 
-      // Stop animation when it hits the ground or exceeds distanceX
+      // Stop animation when it hits the ground
       if (y > SIMULATION_CONSTANTS.ground_level) {
         animation.stop();
         console.log("x", x);
         console.log("distance_X", initialX + distanceX);
         if (this.model.isHit(x - initialX)) {
           console.log("Hit the target!");
-          // TODO: Add a success handler or callback here
+          // Success: keep lives unchanged, prompt reset for next round
         } else {
           console.log("Missed the target.");
-          // TODO: Add a failure handler or callback here
+          // Lose a life on miss
+          this.lives = Math.max(0, this.lives - 1);
+          this.view.setLives(this.lives);
+          if (this.lives <= 0) {
+            console.log("Game Over");
+          }
         }
-        this.view.removePlayButton();
+        // Show reset to reposition the projectile; play becomes available after reset (if lives remain)
         this.view.addResetButton();
       }
     }, this.view.getGroup().getLayer());
