@@ -1,6 +1,7 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
+import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
 import { SimulationScreenController } from "./screens/SimulationScreen/SimulationScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
@@ -12,8 +13,8 @@ class App implements ScreenSwitcher {
   private layer: Konva.Layer;
 
   private mapScreenController: MapScreenController;
+  private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
-
   private frictionTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
 
@@ -35,6 +36,7 @@ class App implements ScreenSwitcher {
     // Initialize screen controllers
     this.mapScreenController = new MapScreenController(this);
     this.rulesScreenController = new RulesScreenController(this);
+    this.referenceScreenController = new ReferenceScreenController(this);
 
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
@@ -57,9 +59,11 @@ class App implements ScreenSwitcher {
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
-    this.layer.add(this.rulesScreenController.getView().getGroup());
     this.layer.add(this.frictionTopicController.getView().getGroup());
     this.layer.add(this.projectileMotionTopicController.getView().getGroup());
+    this.layer.add(this.referenceScreenController.getView().getGroup());
+    this.layer.add(this.rulesScreenController.getView().getGroup());
+    this.layer.add(this.SimulationScreenController.getView().getGroup());
 
     this.layer.add(this.Lev1SimulationController.getView().getGroup());
     this.layer.add(this.Lev2SimulationController.getView().getGroup());
@@ -75,6 +79,7 @@ class App implements ScreenSwitcher {
   switchToScreen(screen: Screen): void {
     // Hide all screens
     this.mapScreenController.getView().hide();
+    this.referenceScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
     this.frictionTopicController.getView().hide();
     this.projectileMotionTopicController.getView().hide();
@@ -89,6 +94,9 @@ class App implements ScreenSwitcher {
         break;
       case "rules":
         this.rulesScreenController.getView().show();
+        break;
+      case "reference":
+        this.referenceScreenController.getView().show();
         break;
       case "topic":
         if (screen.level === "friction") {
