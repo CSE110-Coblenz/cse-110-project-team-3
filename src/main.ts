@@ -7,7 +7,7 @@ import { SimulationScreenController } from "./screens/SimulationScreen/Simulatio
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
 import { frictionConfig, projectileMotionConfig } from "./configs/topics";
-import { MinigameSimulController } from "./screens/MinigameSimulScreen/MinigameSimulController.ts";
+import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;

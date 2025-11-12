@@ -1,7 +1,7 @@
 import Konva from "konva";
-import { SIMULATION_CONSTANTS } from "../../constants";
-import type { ScreenSwitcher } from "../../types";
-import { ScreenController } from "../../types";
+import { SIMULATION_CONSTANTS } from "../../../constants";
+import type { ScreenSwitcher } from "../../../types";
+import { ScreenController } from "../../../types";
 import { MinigameSimulModel } from "./MinigameSimulModel";
 import { MinigameSimulView } from "./MinigameSimulView";
 
@@ -19,7 +19,7 @@ export class MinigameSimulController extends ScreenController {
       9.8,
       500,
       0,
-      SIMULATION_CONSTANTS.error_margin,
+      SIMULATION_CONSTANTS.error_margin
     );
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
@@ -28,7 +28,7 @@ export class MinigameSimulController extends ScreenController {
       this.model.getInitialHeight(),
       this.model.getInitialSpeed(),
       this.model.getAngle(),
-      this.model.getGravity(),
+      this.model.getGravity()
     );
   }
 
