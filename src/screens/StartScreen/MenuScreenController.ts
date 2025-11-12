@@ -41,12 +41,18 @@ export class MenuScreenController extends ScreenController {
     const last = this.model.getLastScreen();
     if (!last) return;
 
-    // For now, support simple screen types only
-    if (last === "map" || last === "rules" || last === "reference") {
-      this.screenSwitcher.switchToScreen({ type: last });
+    // Validate that the stored screen type is a valid simple screen type
+    // Note: This only handles simple screen types (map, rules, level, reference)
+    // Complex types (topic, minigame, simulation) would need JSON storage
+    const validSimpleTypes = ["map", "rules", "level", "reference"] as const;
+    if (!validSimpleTypes.includes(last as any)) {
+      console.warn(`Invalid screen type stored: ${last}. Clearing resume state.`);
+      MenuScreenModel.clearLastScreen();
+      this.view.setResumeEnabled(false);
+      return;
     }
-    // If you later want to resume into topics/simulations,
-    // extend MenuScreenModel to store a richer object.
+
+    this.screenSwitcher.switchToScreen({ type: last as "map" | "rules" | "level" | "reference" });
   }
 
   private handleRulesClick(): void {
@@ -57,6 +63,7 @@ export class MenuScreenController extends ScreenController {
   private handleQuitClick(): void {
     // Browser game "quit": clear resume info and stay on menu
     MenuScreenModel.clearLastScreen();
+    this.view.setResumeEnabled(false);
   }
 
   getView(): MenuScreenView {

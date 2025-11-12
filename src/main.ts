@@ -196,10 +196,10 @@ class App implements ScreenSwitcher {
         this.menuScreenController.show();
         break;
       case "map":
-        this.mapScreenController.getView().show();
+        this.mapScreenController.show();
         break;
       case "rules":
-        this.rulesScreenController.getView().show();
+        this.rulesScreenController.show();
         break;
       case "reference":
         if (screen.returnTo) {
@@ -306,4 +306,4 @@ class App implements ScreenSwitcher {
   }
 }
 
-const app = new App();
+new App();
