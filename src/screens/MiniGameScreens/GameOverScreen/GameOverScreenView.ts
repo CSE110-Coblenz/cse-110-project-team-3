@@ -13,7 +13,7 @@ export class GameOverScreenView implements View {
   constructor(
     level: number,
     handleBackClick?: () => void,
-    handleExitClick?: () => void
+    handleExitClick?: () => void,
   ) {
     this.group = new Konva.Group();
 
@@ -47,7 +47,7 @@ export class GameOverScreenView implements View {
       STAGE_WIDTH / 2 - 96,
       STAGE_HEIGHT - 180,
       192,
-      60
+      60,
     );
     if (handleBackClick) {
       backButton.on("click", handleBackClick);
@@ -60,7 +60,7 @@ export class GameOverScreenView implements View {
       STAGE_WIDTH / 2 - 96,
       STAGE_HEIGHT - 100,
       192,
-      60
+      60,
     );
     if (handleExitClick) {
       exitButton.on("click", handleExitClick);
@@ -73,7 +73,7 @@ export class GameOverScreenView implements View {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 

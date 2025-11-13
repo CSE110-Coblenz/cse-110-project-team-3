@@ -61,7 +61,6 @@ class App implements ScreenSwitcher {
       this,
       projectileMotionConfig
     );
-    this.titleScreenController = new TitleScreenController(this);
 
     this.lev1SimulationController = new SimulationScreenController(this, {
       level: "lev1",
@@ -71,10 +70,6 @@ class App implements ScreenSwitcher {
       level: "lev2",
       topic: "projectile motion",
     });
-    this.miniGameRuleScreenController = new MiniGameRuleScreenController(
-      this,
-      miniGameRuleConfig
-    );
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
@@ -85,14 +80,12 @@ class App implements ScreenSwitcher {
     this.layer.add(this.lev1SimulationController.getView().getGroup());
     this.layer.add(this.lev2SimulationController.getView().getGroup());
     this.layer.add(this.minigameSimulController.getView().getGroup());
-    this.layer.add(this.titleScreenController.getView().getGroup());
-    this.layer.add(this.miniGameRuleScreenController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "minigame", screen: "gameover", level: 1 });
+    this.switchToScreen({ type: "minigame", screen: "title", level: 1 });
   }
 
   switchToScreen(screen: Screen): void {
@@ -106,8 +99,8 @@ class App implements ScreenSwitcher {
     this.lev1SimulationController.getView().hide();
     this.lev2SimulationController.getView().hide();
     this.minigameSimulController.getView().hide();
-    this.titleScreenController.getView().hide();
-    this.miniGameRuleScreenController.getView().hide();
+    this.titleScreenController?.getView().hide();
+    this.miniGameRuleScreenController?.getView().hide();
     this.gameOverScreenController?.getView().hide();
 
     // Show the selected screen
@@ -127,9 +120,6 @@ class App implements ScreenSwitcher {
         } else if (screen.level === "projectile motion") {
           this.projectileMotionTopicController.getView().show();
         }
-        break;
-      case "minigame":
-        this.minigameSimulController.getView().show();
         break;
       case "simulation":
         if (screen.topic === "projectile motion") {
@@ -161,6 +151,9 @@ class App implements ScreenSwitcher {
               this.miniGameRuleScreenController.getView().getGroup()
             );
             this.miniGameRuleScreenController.getView().show();
+            break;
+          case "simulation":
+            this.minigameSimulController.getView().show();
             break;
           case "completed":
             this.completedScreenController = new CompletedScreenController(

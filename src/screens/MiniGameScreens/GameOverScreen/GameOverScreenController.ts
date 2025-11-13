@@ -14,7 +14,7 @@ export class GameOverScreenController extends ScreenController {
     this.view = new GameOverScreenView(
       this.level,
       () => this.handleBackClick(),
-      () => this.handleExitClick()
+      () => this.handleExitClick(),
     );
   }
 
