@@ -20,13 +20,15 @@ export type Screen =
   | { type: "rules" }
   | { type: "level" }
   | { type: "map" }
+  | { type: "reference" }
   | { type: "topic"; level: "friction" | "projectile motion" }
   | { type: "minigame" }
   | {
       type: "simulation";
       topic: "friction" | "projectile motion";
       level: "lev1" | "lev2";
-    };
+    }
+  | { type: "minigame" };
 
 export abstract class ScreenController {
   abstract getView(): View;

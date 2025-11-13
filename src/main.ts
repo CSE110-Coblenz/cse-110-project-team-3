@@ -1,24 +1,26 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
+import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
 import { SimulationScreenController } from "./screens/SimulationScreen/SimulationScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
 import { frictionConfig, projectileMotionConfig } from "./configs/topics";
-import { MinigameSimulController } from "./screens/MinigameSimulScreen/MinigameSimulController.ts";
+import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
   private layer: Konva.Layer;
 
   private mapScreenController: MapScreenController;
+  private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
   private frictionTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
 
-  private Lev1SimulationController: SimulationScreenController;
-  private Lev2SimulationController: SimulationScreenController;
+  private lev1SimulationController: SimulationScreenController;
+  private lev2SimulationController: SimulationScreenController;
   private minigameSimulController: MinigameSimulController;
 
   constructor(container: string = "container") {
@@ -36,6 +38,7 @@ class App implements ScreenSwitcher {
     // Initialize screen controllers
     this.mapScreenController = new MapScreenController(this);
     this.rulesScreenController = new RulesScreenController(this);
+    this.referenceScreenController = new ReferenceScreenController(this);
     this.minigameSimulController = new MinigameSimulController(this);
 
     // Initialize topic screens with different configurations
@@ -48,42 +51,42 @@ class App implements ScreenSwitcher {
       projectileMotionConfig,
     );
 
-    this.Lev1SimulationController = new SimulationScreenController(this, {
+    this.lev1SimulationController = new SimulationScreenController(this, {
       level: "lev1",
       topic: "friction",
     });
-    this.Lev2SimulationController = new SimulationScreenController(this, {
+    this.lev2SimulationController = new SimulationScreenController(this, {
       level: "lev2",
       topic: "projectile motion",
     });
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
-    this.layer.add(this.rulesScreenController.getView().getGroup());
     this.layer.add(this.frictionTopicController.getView().getGroup());
     this.layer.add(this.projectileMotionTopicController.getView().getGroup());
-
-    this.layer.add(this.Lev1SimulationController.getView().getGroup());
-    this.layer.add(this.Lev2SimulationController.getView().getGroup());
+    this.layer.add(this.referenceScreenController.getView().getGroup());
+    this.layer.add(this.rulesScreenController.getView().getGroup());
+    this.layer.add(this.lev1SimulationController.getView().getGroup());
+    this.layer.add(this.lev2SimulationController.getView().getGroup());
     this.layer.add(this.minigameSimulController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
 
     // Start with the map screen
-    // this.switchToScreen({ type: "simulation", topic: "projectile motion", level: "lev2"});
     this.switchToScreen({ type: "minigame" });
   }
 
   switchToScreen(screen: Screen): void {
     // Hide all screens
     this.mapScreenController.getView().hide();
+    this.referenceScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
     this.frictionTopicController.getView().hide();
     this.projectileMotionTopicController.getView().hide();
 
-    this.Lev1SimulationController.getView().hide();
-    this.Lev2SimulationController.getView().hide();
+    this.lev1SimulationController.getView().hide();
+    this.lev2SimulationController.getView().hide();
     this.minigameSimulController.getView().hide();
 
     // Show the selected screen
@@ -94,6 +97,9 @@ class App implements ScreenSwitcher {
       case "rules":
         this.rulesScreenController.getView().show();
         break;
+      case "reference":
+        this.referenceScreenController.getView().show();
+        break;
       case "topic":
         if (screen.level === "friction") {
           this.frictionTopicController.getView().show();
@@ -101,12 +107,15 @@ class App implements ScreenSwitcher {
           this.projectileMotionTopicController.getView().show();
         }
         break;
+      case "minigame":
+        this.minigameSimulController.getView().show();
+        break;
       case "simulation":
         if (screen.topic === "projectile motion") {
           if (screen.level === "lev1") {
-            this.Lev1SimulationController.getView().show();
+            this.lev1SimulationController.getView().show();
           } else {
-            this.Lev2SimulationController.getView().show();
+            this.lev2SimulationController.getView().show();
           }
         }
         break;
