@@ -119,9 +119,6 @@ class App implements ScreenSwitcher {
           }
         }
         break;
-      case "minigame":
-        this.minigameSimulController.getView().show();
-        break;
     }
   }
 }
