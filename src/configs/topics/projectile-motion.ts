@@ -6,7 +6,7 @@ import { COLORS } from "../../constants";
  */
 export const projectileMotionConfig: TopicScreenConfig = {
   title: "Projectile Motion",
-  description: "Learn about the principles of projectile motion",
+  description: "\nIn our case we are dealing with no air resistance so to calculate velocity in the x direction we would simply use the equation vₓ = v · cos(θ) where v is our initial velocity. \nTo calculate the velocity in the y direction we would we similarly use vᵧ = v · sin(θ).\n Since the velocity in the y direction will always be 0 at the apex and plugging it into the general formula of vᵧ = vᵧ₀ + g·t we get 0 = v * sin(θ) + gt and solving for t gives us v * sin(θ) / g = t. \nWhen solving for distance we use the equation y = y₀ + v₀·sin(θ)·t + ½ g t². \nSimilarly solving in the x direction we get the equation x = v₀ * cos(0) * t. \nAlternatively to find the range in the x direction we can use the equation: R = v₀² * sin(2θ) / g.",
   buttons: [
     {
       id: "back",

@@ -15,7 +15,7 @@ const DEFAULT_STYLES = {
     y: 100,
   },
   description: {
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: FONT_FAMILY,
     fill: COLORS.text,
     y: 200,
@@ -84,7 +84,7 @@ export class TopicScreenView implements View {
       fontFamily: DEFAULT_STYLES.description.fontFamily,
       fill:
         this.config.style?.descriptionColor || DEFAULT_STYLES.description.fill,
-      align: "center",
+      align: "left",
       width: STAGE_WIDTH * 0.8, // 80% of stage width
       wrap: "word",
     });

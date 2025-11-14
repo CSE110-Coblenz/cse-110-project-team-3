@@ -4,10 +4,13 @@ import { COLORS } from "../../constants";
 /**
  * Configuration for the friction topic screen. Find implementation details in "../../screens/TopicScreen/types"
  */
+
+const fsformula = "fₖ = μₖN";
+
 export const frictionConfig: TopicScreenConfig = {
   title: "Friction",
   description:
-    "the resistance that one surface or object encounters when moving over another.",
+    "When dealing with forces it is important to understand the environment we are in. \nIn a vacuum the formula for a force applied to an object is F = ma. \nWhen an object is pushed in an environment with friction the force applied against that object is called kinetic friction:  fₖ = μₖN \nThe normal force applied to an object is N = mg. \nIn order to overcome the static friction on an object to start moving the force applied has to be greater than the inequality of static friction: fₛ ≤ μₛN.",
   buttons: [
     {
       id: "back",
