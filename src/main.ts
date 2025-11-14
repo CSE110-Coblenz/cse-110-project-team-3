@@ -6,8 +6,15 @@ import { RulesScreenController } from "./screens/RulesScreen/RulesScreenControll
 import { SimulationScreenController } from "./screens/SimulationScreen/SimulationScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
+import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/TitleScreenController";
+import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
+import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
+import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
+
+// Import configurations for topics and rules
 import { frictionConfig, projectileMotionConfig } from "./configs/topics";
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
+import { miniGameRuleConfig } from "./configs/rules";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
@@ -18,10 +25,14 @@ class App implements ScreenSwitcher {
   private rulesScreenController: RulesScreenController;
   private frictionTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
+  private titleScreenController?: TitleScreenController;
 
   private lev1SimulationController: SimulationScreenController;
   private lev2SimulationController: SimulationScreenController;
   private minigameSimulController: MinigameSimulController;
+  private miniGameRuleScreenController?: MiniGameRuleScreenController;
+  private completedScreenController?: CompletedScreenController;
+  private gameOverScreenController?: GameOverScreenController;
 
   constructor(container: string = "container") {
     // Initialize stage
@@ -88,6 +99,9 @@ class App implements ScreenSwitcher {
     this.lev1SimulationController.getView().hide();
     this.lev2SimulationController.getView().hide();
     this.minigameSimulController.getView().hide();
+    this.titleScreenController?.getView().hide();
+    this.miniGameRuleScreenController?.getView().hide();
+    this.gameOverScreenController?.getView().hide();
 
     // Show the selected screen
     switch (screen.type) {
@@ -107,9 +121,6 @@ class App implements ScreenSwitcher {
           this.projectileMotionTopicController.getView().show();
         }
         break;
-      case "minigame":
-        this.minigameSimulController.getView().show();
-        break;
       case "simulation":
         if (screen.topic === "projectile motion") {
           if (screen.level === "lev1") {
@@ -117,6 +128,49 @@ class App implements ScreenSwitcher {
           } else {
             this.lev2SimulationController.getView().show();
           }
+        }
+        break;
+      case "minigame":
+        switch (screen.screen) {
+          case "title":
+            this.titleScreenController = new TitleScreenController(
+              this,
+              screen.level,
+            );
+            this.layer.add(this.titleScreenController.getView().getGroup());
+            this.titleScreenController.getView().show();
+            break;
+          case "rules":
+            this.miniGameRuleScreenController =
+              new MiniGameRuleScreenController(
+                this,
+                miniGameRuleConfig,
+                screen.level,
+              );
+            this.layer.add(
+              this.miniGameRuleScreenController.getView().getGroup(),
+            );
+            this.miniGameRuleScreenController.getView().show();
+            break;
+          case "simulation":
+            this.minigameSimulController.getView().show();
+            break;
+          case "completed":
+            this.completedScreenController = new CompletedScreenController(
+              this,
+              screen.level,
+            );
+            this.layer.add(this.completedScreenController.getView().getGroup());
+            this.completedScreenController.getView().show();
+            break;
+          case "gameover":
+            this.gameOverScreenController = new GameOverScreenController(
+              this,
+              screen.level,
+            );
+            this.layer.add(this.gameOverScreenController.getView().getGroup());
+            this.gameOverScreenController.getView().show();
+            break;
         }
         break;
     }
