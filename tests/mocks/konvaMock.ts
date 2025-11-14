@@ -40,13 +40,15 @@ export class FakeNode {
     if (typeof v === "number") this._y = v;
     return this._y;
   }
+
+  getLayer() {
+    return null;
+  }
 }
 
-export class FakeGroup {
+export class FakeGroup extends FakeNode {
   children: any[] = [];
   handlers = new Map<string, ((e?: any) => void)[]>();
-  config: any;
-  _visible = true;
 
   add(...nodes: any[]) {
     this.children.push(...nodes);
@@ -65,20 +67,14 @@ export class FakeGroup {
     handlers.forEach((h) => h(evt));
   }
 
-  visible(_v?: boolean) {
-    return true;
-  }
-
-  getLayer() {
-    return null;
-  }
-
-  hide() {
-    this._visible = false;
-  }
-
-  show() {
-    this._visible = true;
+  getClientRect() {
+    // We just need *something* with a height; tests don't assert the value.
+    return {
+      x: this._x,
+      y: this._y,
+      width: this.config?.width ?? 0,
+      height: this.config?.height ?? 80, // arbitrary non-zero height
+    };
   }
 }
 
@@ -86,8 +82,7 @@ export class FakeRect {
   constructor(public config: any) {}
 }
 
-export class FakeText {
-  constructor(public config: any) {}
+export class FakeText extends FakeNode {
   text() {
     return this.config.text;
   }
