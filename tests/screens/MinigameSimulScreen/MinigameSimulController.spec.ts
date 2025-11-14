@@ -97,7 +97,7 @@ vi.mock(
         _initialHeight: number,
         _initialSpeed: number,
         _angle: number,
-        _gravity: number
+        _gravity: number,
       ) {
         this.projectile = new FakeProjectile();
         this.layer = new FakeLayer();
@@ -133,7 +133,7 @@ vi.mock(
     return {
       MinigameSimulView: FakeMinigameSimulView,
     };
-  }
+  },
 );
 
 import { MinigameSimulController } from "../../../src/screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";

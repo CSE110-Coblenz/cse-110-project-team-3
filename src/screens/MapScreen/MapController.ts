@@ -37,6 +37,7 @@ export class MapScreenController extends ScreenController {
 
   private handleReferenceClick = () => {
     console.log("Reference button clicked");
+    this.screenSwitcher.switchToScreen({ type: "reference" });
   };
 
   private handleRulesClick = () => {
