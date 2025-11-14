@@ -14,7 +14,7 @@ export interface View {
  * - "rules": Rulesscreen
  * - "level": Levelscreen
  * - "map": Mapscreen
- * - "topic": Topic screen with specified level
+ * - "topic": Topic screen with specifexport ty
  * - "simulation": simulation screen for specified level
  */
 
@@ -332,7 +332,7 @@ export interface ButtonPosition {
  * - position: Optional position of the button on the screen
  * - style: Optional styling for the button
  */
-export interface Button {
+export interface NavButton {
   id: string;
   label: string;
   target: Screen;
@@ -354,10 +354,10 @@ export interface Button {
  * - buttons: Array of buttons to display on the screen
  * - style: Optional styling for the screen
  */
-export interface ScreenConfig {
+export interface TopicScreenConfig {
   title: string;
   description: string;
-  buttons: Button[];
+  buttons: NavButton[];    // Array of buttons on the screen
   style?: {
     titleColor: string;
     descriptionColor: string;

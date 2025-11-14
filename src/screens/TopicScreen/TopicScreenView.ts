@@ -1,48 +1,19 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
-import type { Button, ScreenConfig } from "../../types";
-import { COLORS, FONT_FAMILY } from "../../constants";
-import { createKonvaButton } from "../../utils/ui/KonvaButton";
-
-/**
- * Default styles for topic screen elements
- */
-const DEFAULT_STYLES = {
-  title: {
-    fontSize: 48,
-    fontFamily: FONT_FAMILY,
-    fill: COLORS.text,
-    y: 100,
-  },
-  description: {
-    fontSize: 24,
-    fontFamily: FONT_FAMILY,
-    fill: COLORS.text,
-    y: 200,
-  },
-  button: {
-    width: 200,
-    height: 60,
-    fill: COLORS.buttonFill,
-    stroke: COLORS.buttonStroke,
-    strokeWidth: 3,
-    cornerRadius: 10,
-    textFill: COLORS.buttonText,
-    fontSize: 24,
-  },
-};
+import { STAGE_WIDTH, STAGE_HEIGHT, COLORS, TOPIC_DEFAULT_STYLES } from "../../constants";
+import type { TopicScreenConfig } from "../../types";
+import { createKonvaButton } from "../../utils/ui/NavigationButton";
 
 /**
  * A configurable view for topic-based screens
  */
 export class TopicScreenView implements View {
   private group: Konva.Group;
-  private config: ScreenConfig;
+  private config: TopicScreenConfig;
   private onButtonClick: (buttonId: string) => void;
 
   constructor(
-    config: ScreenConfig,
+    config: TopicScreenConfig,
     onButtonClick: (buttonId: string) => void,
   ) {
     this.config = config;
@@ -59,18 +30,18 @@ export class TopicScreenView implements View {
       y: 0,
       width: STAGE_WIDTH,
       height: STAGE_HEIGHT,
-      fill: this.config.style?.backgroundColor || "#ffffff",
+      fill: this.config.style?.backgroundColor || COLORS.bg,
     });
     this.group.add(background);
 
     // Title
     const title = new Konva.Text({
-      x: STAGE_WIDTH - STAGE_WIDTH / 2,
-      y: DEFAULT_STYLES.title.y,
+      x: TOPIC_DEFAULT_STYLES.title.x,
+      y: TOPIC_DEFAULT_STYLES.title.y,
       text: this.config.title,
-      fontSize: DEFAULT_STYLES.title.fontSize,
-      fontFamily: DEFAULT_STYLES.title.fontFamily,
-      fill: this.config.style?.titleColor || DEFAULT_STYLES.title.fill,
+      fontSize: TOPIC_DEFAULT_STYLES.title.fontSize,
+      fontFamily: TOPIC_DEFAULT_STYLES.title.fontFamily,
+      fill: this.config.style?.titleColor || TOPIC_DEFAULT_STYLES.title.fill,
       align: "center",
     });
     title.offsetX(title.width() / 2);
@@ -78,13 +49,13 @@ export class TopicScreenView implements View {
 
     // Description
     const description = new Konva.Text({
-      x: STAGE_WIDTH / 2,
-      y: DEFAULT_STYLES.description.y,
+      x: TOPIC_DEFAULT_STYLES.description.x,
+      y: TOPIC_DEFAULT_STYLES.description.y,
       text: this.config.description,
-      fontSize: DEFAULT_STYLES.description.fontSize,
-      fontFamily: DEFAULT_STYLES.description.fontFamily,
+      fontSize: TOPIC_DEFAULT_STYLES.description.fontSize,
+      fontFamily: TOPIC_DEFAULT_STYLES.description.fontFamily,
       fill:
-        this.config.style?.descriptionColor || DEFAULT_STYLES.description.fill,
+        this.config.style?.descriptionColor || TOPIC_DEFAULT_STYLES.description.fill,
       align: "center",
       width: STAGE_WIDTH * 0.8, // 80% of stage width
       wrap: "word",
@@ -94,20 +65,8 @@ export class TopicScreenView implements View {
 
     // Buttons
     this.config.buttons.forEach((buttonConfig) => {
-      const buttonGroup = this.createButton(buttonConfig);
+      const buttonGroup = createKonvaButton(buttonConfig, this.onButtonClick);
       this.group.add(buttonGroup);
-    });
-  }
-
-  private createButton(button: Button): Konva.Group {
-    // Convert the button config to match the utility's interface
-    return createKonvaButton({
-      ...button,
-      position: {
-        ...button.position,
-        y: button.position?.y ?? (DEFAULT_STYLES.description.y + 100) / STAGE_HEIGHT
-      },
-      onClick: this.onButtonClick
     });
   }
 

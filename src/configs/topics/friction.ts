@@ -1,42 +1,15 @@
-import type { ScreenConfig } from "../../types";
+import type { TopicScreenConfig } from "../../types";
+import { FrictionTopicNavigationButtons } from "../../configs/NavigationButtons/Topic";
 import { COLORS } from "../../constants";
 
 /**
  * Configuration for the friction topic screen. Find implementation details in "../../screens/TopicScreen/types"
  */
 export const frictionConfig: TopicScreenConfig = {
-  title: "Friction Force",
-  description: "TODO",
-  buttons: [
-    {
-      id: "back",
-      label: "Back",
-      target: { type: "map" },
-      position: {
-        x: 0.225,
-        y: 0.725,
-      },
-      style: {
-        fill: COLORS.buttonFill,
-        color: COLORS.buttonStroke,
-        textFill: COLORS.buttonText,
-      },
-    },
-    {
-      id: "simulation",
-      label: "Simulation",
-      target: { type: "simulation", topic: "friction" },
-      position: {
-        x: 0.775,
-        y: 0.725,
-      },
-      style: {
-        fill: COLORS.buttonFill,
-        color: COLORS.buttonStroke,
-        textFill: COLORS.buttonText,
-      },
-    },
-  ],
+  title: "Friction",
+  description:
+    "the resistance that one surface or object encounters when moving over another.",
+  buttons: FrictionTopicNavigationButtons,
   style: {
     titleColor: COLORS.text,
     descriptionColor: COLORS.text,

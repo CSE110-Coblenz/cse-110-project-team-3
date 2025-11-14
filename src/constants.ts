@@ -35,3 +35,32 @@ export const SIMULATION_CONSTANTS = {
   projectile_speed_step: 1,
   simulation_min_distance_to_target: 200,
 };
+
+export const TOPIC_DEFAULT_STYLES = {
+  title: {
+    fontSize: 48,
+    fontFamily: FONT_FAMILY,
+    fill: COLORS.text,
+    x: STAGE_WIDTH - STAGE_WIDTH / 2,
+    y: 100,
+  },
+  description: {
+    fontSize: 24,
+    fontFamily: FONT_FAMILY,
+    fill: COLORS.text,
+    x: STAGE_WIDTH / 2,
+    y: 200,
+  },
+};
+
+export const NAVIGATION_BUTTON_DEFAULT_STYLES = {
+  width: 200,
+  height: 60,
+  fill: COLORS.buttonFill,
+  stroke: COLORS.buttonStroke,
+  strokeWidth: 3,
+  cornerRadius: 10,
+  textFill: COLORS.buttonText,
+  fontSize: 24,
+  fontFamily: FONT_FAMILY
+};

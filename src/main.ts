@@ -307,3 +307,5 @@ class App implements ScreenSwitcher {
 }
 
 const app = new App();
+// use this format to test your screen. I had a specifier for topic, level, so you dont need to add that.
+app.switchToScreen({ type: "map" });
