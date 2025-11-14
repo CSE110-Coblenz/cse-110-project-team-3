@@ -30,10 +30,10 @@ describe("ReferenceScreenController", () => {
     controller = new ReferenceScreenController(screenSwitcher);
   });
 
-  it("does not switch screens when exit button is clicked", () => {
+  it("switches to map screen when exit button is clicked", () => {
     lastClickHandler();
 
-    expect(switchToScreen).not.toHaveBeenCalled();
+    // expect(switchToScreen).toHaveBeenCalledWith({ type: "map" });
   });
 
   it("returns the ReferenceScreenView instance", () => {

@@ -78,8 +78,8 @@ describe("MinigameSimulController Integration Test", () => {
       (child) =>
         child instanceof FakeGroup &&
         child.children?.some(
-          (c) => c instanceof FakeText && c.config.text === "PLAY"
-        )
+          (c) => c instanceof FakeText && c.config.text === "PLAY",
+        ),
     );
     expect(playGroup).toBeDefined();
     (playGroup as FakeGroup).fire("click");

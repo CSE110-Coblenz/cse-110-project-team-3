@@ -22,8 +22,8 @@ describe("Map Screen UI Integration Test", () => {
       (child) =>
         child instanceof FakeGroup &&
         child.children?.some(
-          (c) => c instanceof FakeText && c.config.text === "RULES"
-        )
+          (c) => c instanceof FakeText && c.config.text === "RULES",
+        ),
     );
 
     expect(rulesGroup).toBeDefined();
@@ -48,8 +48,8 @@ describe("Map Screen UI Integration Test", () => {
       (child) =>
         child instanceof FakeGroup &&
         child.children?.some(
-          (c) => c instanceof FakeText && c.config.text === "REFERENCE"
-        )
+          (c) => c instanceof FakeText && c.config.text === "REFERENCE",
+        ),
     );
 
     expect(referenceGroup).toBeDefined();
@@ -72,8 +72,8 @@ describe("Map Screen UI Integration Test", () => {
       (child) =>
         child instanceof FakeGroup &&
         child.children?.some(
-          (c) => c instanceof FakeText && c.config.text === "EXIT"
-        )
+          (c) => c instanceof FakeText && c.config.text === "EXIT",
+        ),
     );
 
     expect(exitGroup).toBeDefined();

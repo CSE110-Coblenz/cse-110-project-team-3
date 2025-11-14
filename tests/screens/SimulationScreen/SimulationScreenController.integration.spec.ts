@@ -16,7 +16,7 @@ import { SimulationScreenController } from "../../../src/screens/SimulationScree
 // Helper: find a Group that contains a FakeText child with given label
 function findGroupWithText(
   root: FakeGroup,
-  label: string
+  label: string,
 ): FakeGroup | undefined {
   const stack: FakeNode[] = [root];
 
@@ -25,7 +25,7 @@ function findGroupWithText(
     if (!(node instanceof FakeGroup)) continue;
 
     const hasText = node.children.some(
-      (c) => c instanceof FakeText && c.config.text === label
+      (c) => c instanceof FakeText && c.config.text === label,
     );
     if (hasText) return node;
 
