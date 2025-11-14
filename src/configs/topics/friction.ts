@@ -5,8 +5,6 @@ import { COLORS } from "../../constants";
  * Configuration for the friction topic screen. Find implementation details in "../../screens/TopicScreen/types"
  */
 
-const fsformula = "fₖ = μₖN";
-
 export const frictionConfig: TopicScreenConfig = {
   title: "Friction",
   description:
