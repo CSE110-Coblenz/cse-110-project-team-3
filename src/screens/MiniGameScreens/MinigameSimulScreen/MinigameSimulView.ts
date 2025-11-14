@@ -186,7 +186,12 @@ export class MinigameSimulView implements View {
     speedTrack.on("mousedown", (evt) => {
       const p = this.group.getStage()?.getPointerPosition();
       if (!p) return;
-      this.speedKnob.x(Math.max(this.speedTrackX, Math.min(p.x, this.speedTrackX + this.speedTrackWidth)));
+      this.speedKnob.x(
+        Math.max(
+          this.speedTrackX,
+          Math.min(p.x, this.speedTrackX + this.speedTrackWidth),
+        ),
+      );
       this.handleSpeedDrag();
     });
 
@@ -227,16 +232,27 @@ export class MinigameSimulView implements View {
     angleTrack.on("mousedown", () => {
       const p = this.group.getStage()?.getPointerPosition();
       if (!p) return;
-      this.angleKnob.x(Math.max(this.angleTrackX, Math.min(p.x, this.angleTrackX + this.angleTrackWidth)));
+      this.angleKnob.x(
+        Math.max(
+          this.angleTrackX,
+          Math.min(p.x, this.angleTrackX + this.angleTrackWidth),
+        ),
+      );
       this.handleAngleDrag();
     });
 
     // Speed controls next to slider
-    const speedMinus = controlButton("-", this.speedTrackX + this.speedTrackWidth + 20, 20, () =>
-      this.onSpeedChange?.(-1),
+    const speedMinus = controlButton(
+      "-",
+      this.speedTrackX + this.speedTrackWidth + 20,
+      20,
+      () => this.onSpeedChange?.(-1),
     );
-    const speedPlus = controlButton("+", this.speedTrackX + this.speedTrackWidth + 54, 20, () =>
-      this.onSpeedChange?.(1),
+    const speedPlus = controlButton(
+      "+",
+      this.speedTrackX + this.speedTrackWidth + 54,
+      20,
+      () => this.onSpeedChange?.(1),
     );
     this.group.add(speedMinus);
     this.group.add(speedPlus);
