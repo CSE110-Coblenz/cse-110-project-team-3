@@ -13,6 +13,31 @@ export class MinigameSimulView implements View {
   private projectile: Konva.Circle;
   private playButton: Konva.Group;
   private resetButton: Konva.Group;
+  private speedText: Konva.Text;
+  private angleText: Konva.Text;
+  private heartsGroup: Konva.Group;
+  private onSpeedChange?: (delta: number) => void;
+  private onAngleChange?: (delta: number) => void;
+  private currentSpeed: number = 0;
+  private currentAngle: number = 0;
+  // Slider state
+  private speedTrackX = 360;
+  private speedTrackY = 32;
+  private speedTrackWidth = 200;
+  private speedMin = 0;
+  private speedMax = 300;
+  private speedStep = 1;
+  private speedKnob!: Konva.Circle;
+  private lastSpeedValue?: number;
+
+  private angleTrackX = 360;
+  private angleTrackY = 62;
+  private angleTrackWidth = 200;
+  private angleMin = 0;
+  private angleMax = 90;
+  private angleStep = 5;
+  private angleKnob!: Konva.Circle;
+  private lastAngleValue?: number;
 
   constructor(
     handlePlay?: () => void,
@@ -22,8 +47,14 @@ export class MinigameSimulView implements View {
     initialSpeed: number = 0,
     angle: number = 0,
     gravity: number = 0,
+    onSpeedChange?: (delta: number) => void,
+    onAngleChange?: (delta: number) => void,
   ) {
     this.group = new Konva.Group();
+    this.onSpeedChange = onSpeedChange;
+    this.onAngleChange = onAngleChange;
+    this.currentSpeed = initialSpeed;
+    this.currentAngle = angle;
 
     // Background
     const background = new Konva.Rect({
@@ -37,25 +68,27 @@ export class MinigameSimulView implements View {
     this.group.add(background);
 
     // Display parameters
-    const speedText = new Konva.Text({
+    this.speedText = new Konva.Text({
       x: 20,
       y: 20,
-      text: `Initial Speed: ${initialSpeed.toFixed(2)} m/s`,
+      text: `Initial Speed: ${Math.round(initialSpeed)} m/s`,
       fontSize: 20,
       fontFamily: FONT_FAMILY,
       fill: COLORS.text,
     });
-    this.group.add(speedText);
+    this.group.add(this.speedText);
+    // remove prompt; slider handles input
 
-    const angleText = new Konva.Text({
+    this.angleText = new Konva.Text({
       x: 20,
       y: 50,
-      text: `Angle: ${angle.toFixed(2)} degrees`,
+      text: `Angle: ${Math.round(angle / 5) * 5} degrees`,
       fontSize: 20,
       fontFamily: FONT_FAMILY,
       fill: COLORS.text,
     });
-    this.group.add(angleText);
+    this.group.add(this.angleText);
+    // remove prompt; slider handles input
 
     const gravityText = new Konva.Text({
       x: 20,
@@ -76,6 +109,169 @@ export class MinigameSimulView implements View {
       fill: COLORS.text,
     });
     this.group.add(distanceText);
+
+    // Hearts (lives) display at top-right
+    this.heartsGroup = new Konva.Group({ x: STAGE_WIDTH - 140, y: 20 });
+    this.group.add(this.heartsGroup);
+    this.setLives(3);
+
+    // Simple +/- controls for speed and angle
+    const controlButton = (
+      label: string,
+      x: number,
+      y: number,
+      onClick?: () => void,
+    ) => {
+      const g = new Konva.Group({ x, y });
+      const rect = new Konva.Rect({
+        width: 28,
+        height: 24,
+        cornerRadius: 6,
+        fill: COLORS.buttonFill,
+        stroke: COLORS.buttonStroke,
+        strokeWidth: 2,
+        shadowOpacity: 0.1,
+        shadowBlur: 4,
+      });
+      const t = new Konva.Text({
+        text: label,
+        fontSize: 18,
+        fontFamily: FONT_FAMILY,
+        fill: COLORS.buttonText,
+        width: 28,
+        height: 24,
+        align: "center",
+        verticalAlign: "middle",
+      });
+      g.add(rect);
+      g.add(t);
+      if (onClick) g.on("click", onClick);
+      return g;
+    };
+
+    // Speed slider
+    const speedTrack = new Konva.Rect({
+      x: this.speedTrackX,
+      y: this.speedTrackY,
+      width: this.speedTrackWidth,
+      height: 6,
+      fill: COLORS.buttonStroke,
+      cornerRadius: 3,
+    });
+    this.group.add(speedTrack);
+    this.speedKnob = new Konva.Circle({
+      x: this.valueToX(
+        this.currentSpeed,
+        this.speedTrackX,
+        this.speedTrackWidth,
+        this.speedMin,
+        this.speedMax,
+      ),
+      y: this.speedTrackY + 3,
+      radius: 10,
+      fill: COLORS.buttonFill,
+      stroke: COLORS.buttonText,
+      strokeWidth: 2,
+      draggable: true,
+      dragBoundFunc: (pos) => {
+        const clampedX = Math.max(
+          this.speedTrackX,
+          Math.min(pos.x, this.speedTrackX + this.speedTrackWidth),
+        );
+        return { x: clampedX, y: this.speedTrackY + 3 };
+      },
+    });
+    this.group.add(this.speedKnob);
+    this.speedKnob.on("dragmove", () => this.handleSpeedDrag());
+    speedTrack.on("mousedown", (evt) => {
+      const p = this.group.getStage()?.getPointerPosition();
+      if (!p) return;
+      this.speedKnob.x(
+        Math.max(
+          this.speedTrackX,
+          Math.min(p.x, this.speedTrackX + this.speedTrackWidth),
+        ),
+      );
+      this.handleSpeedDrag();
+    });
+
+    // Angle slider
+    const angleTrack = new Konva.Rect({
+      x: this.angleTrackX,
+      y: this.angleTrackY,
+      width: this.angleTrackWidth,
+      height: 6,
+      fill: COLORS.buttonStroke,
+      cornerRadius: 3,
+    });
+    this.group.add(angleTrack);
+    this.angleKnob = new Konva.Circle({
+      x: this.valueToX(
+        this.currentAngle,
+        this.angleTrackX,
+        this.angleTrackWidth,
+        this.angleMin,
+        this.angleMax,
+      ),
+      y: this.angleTrackY + 3,
+      radius: 10,
+      fill: COLORS.buttonFill,
+      stroke: COLORS.buttonText,
+      strokeWidth: 2,
+      draggable: true,
+      dragBoundFunc: (pos) => {
+        const clampedX = Math.max(
+          this.angleTrackX,
+          Math.min(pos.x, this.angleTrackX + this.angleTrackWidth),
+        );
+        return { x: clampedX, y: this.angleTrackY + 3 };
+      },
+    });
+    this.group.add(this.angleKnob);
+    this.angleKnob.on("dragmove", () => this.handleAngleDrag());
+    angleTrack.on("mousedown", () => {
+      const p = this.group.getStage()?.getPointerPosition();
+      if (!p) return;
+      this.angleKnob.x(
+        Math.max(
+          this.angleTrackX,
+          Math.min(p.x, this.angleTrackX + this.angleTrackWidth),
+        ),
+      );
+      this.handleAngleDrag();
+    });
+
+    // Speed controls next to slider
+    const speedMinus = controlButton(
+      "-",
+      this.speedTrackX + this.speedTrackWidth + 20,
+      20,
+      () => this.onSpeedChange?.(-1),
+    );
+    const speedPlus = controlButton(
+      "+",
+      this.speedTrackX + this.speedTrackWidth + 54,
+      20,
+      () => this.onSpeedChange?.(1),
+    );
+    this.group.add(speedMinus);
+    this.group.add(speedPlus);
+
+    // Angle controls next to slider (step = 5)
+    const angleMinus = controlButton(
+      "-",
+      this.angleTrackX + this.angleTrackWidth + 20,
+      50,
+      () => this.onAngleChange?.(-5),
+    );
+    const anglePlus = controlButton(
+      "+",
+      this.angleTrackX + this.angleTrackWidth + 54,
+      50,
+      () => this.onAngleChange?.(5),
+    );
+    this.group.add(angleMinus);
+    this.group.add(anglePlus);
 
     // Line to indicate the ground
     const groundLine = new Konva.Line({
@@ -147,13 +343,133 @@ export class MinigameSimulView implements View {
     this.group.add(this.resetButton);
   }
 
-  removePlayButton(): void {
-    this.playButton.remove();
-    this.playButton.destroy();
+  hidePlayButton(): void {
+    this.playButton.hide();
   }
 
   addResetButton(): void {
     this.resetButton.show();
+  }
+
+  hideResetButton(): void {
+    this.resetButton.hide();
+  }
+
+  showPlayButton(): void {
+    this.playButton.show();
+  }
+
+  setSpeedDisplay(value: number): void {
+    const intVal = Math.round(value);
+    this.speedText.text(`Initial Speed: ${intVal} m/s`);
+    this.currentSpeed = value;
+    // update slider knob
+    if (this.speedKnob) {
+      this.speedKnob.x(
+        this.valueToX(
+          intVal,
+          this.speedTrackX,
+          this.speedTrackWidth,
+          this.speedMin,
+          this.speedMax,
+        ),
+      );
+    }
+    this.group.getLayer()?.draw();
+  }
+
+  setAngleDisplay(value: number): void {
+    const stepped = Math.round(value / 5) * 5;
+    this.angleText.text(`Angle: ${stepped} degrees`);
+    this.currentAngle = value;
+    // update slider knob
+    if (this.angleKnob) {
+      this.angleKnob.x(
+        this.valueToX(
+          stepped,
+          this.angleTrackX,
+          this.angleTrackWidth,
+          this.angleMin,
+          this.angleMax,
+        ),
+      );
+    }
+    this.group.getLayer()?.draw();
+  }
+
+  // Helpers for sliders
+  private valueToX(
+    value: number,
+    trackX: number,
+    trackW: number,
+    min: number,
+    max: number,
+  ): number {
+    const t = (value - min) / (max - min);
+    return trackX + t * trackW;
+  }
+
+  private xToValue(
+    x: number,
+    trackX: number,
+    trackW: number,
+    min: number,
+    max: number,
+    step: number,
+  ): number {
+    const t = (x - trackX) / trackW;
+    const raw = min + t * (max - min);
+    const stepped = Math.round(raw / step) * step;
+    return Math.max(min, Math.min(stepped, max));
+  }
+
+  private handleSpeedDrag(): void {
+    const v = this.xToValue(
+      this.speedKnob.x(),
+      this.speedTrackX,
+      this.speedTrackWidth,
+      this.speedMin,
+      this.speedMax,
+      this.speedStep,
+    );
+    if (this.lastSpeedValue !== v) {
+      const delta = v - this.currentSpeed;
+      this.onSpeedChange?.(delta);
+      this.lastSpeedValue = v;
+    }
+  }
+
+  private handleAngleDrag(): void {
+    const v = this.xToValue(
+      this.angleKnob.x(),
+      this.angleTrackX,
+      this.angleTrackWidth,
+      this.angleMin,
+      this.angleMax,
+      this.angleStep,
+    );
+    if (this.lastAngleValue !== v) {
+      const delta = v - this.currentAngle;
+      this.onAngleChange?.(delta);
+      this.lastAngleValue = v;
+    }
+  }
+
+  setLives(lives: number): void {
+    this.heartsGroup.destroyChildren();
+    const heartChar = "❤"; // red heart
+    for (let i = 0; i < 3; i++) {
+      const t = new Konva.Text({
+        x: i * 40,
+        y: 0,
+        text: heartChar,
+        fontSize: 28,
+        fontFamily: FONT_FAMILY,
+        fill: i < lives ? "#ff4d4f" : "#555555",
+      });
+      this.heartsGroup.add(t);
+    }
+    this.group.getLayer()?.draw();
   }
 
   private createPillButton(
