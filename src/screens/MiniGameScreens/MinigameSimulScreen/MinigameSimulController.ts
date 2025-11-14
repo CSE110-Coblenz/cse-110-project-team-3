@@ -15,8 +15,8 @@ export class MinigameSimulController extends ScreenController {
     super();
     this.screenSwitcher = screenSwitcher;
     this.model = new MinigameSimulModel(
-      75.22,
-      60,
+      0,
+      0,
       9.8,
       500,
       0,

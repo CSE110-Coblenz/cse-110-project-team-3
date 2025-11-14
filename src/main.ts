@@ -74,7 +74,7 @@ class App implements ScreenSwitcher {
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "minigame" });
+    this.switchToScreen({ type: "map" });
   }
 
   switchToScreen(screen: Screen): void {
@@ -124,5 +124,3 @@ class App implements ScreenSwitcher {
 }
 
 const app = new App();
-// use this format to test your screen. I had a specifier for topic, level, so you dont need to add that.
-// app.switchToScreen({ type: "topic", level: "friction" });
