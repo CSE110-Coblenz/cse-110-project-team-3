@@ -27,9 +27,10 @@ describe("TopicScreenController", () => {
 
   const config: TopicScreenConfig = {
     title: "Test Topic",
+    description: "Test Description",
     buttons: [
-      { id: "button1", text: "Button 1", target: { type: "test-screen1" } },
-      { id: "button2", text: "Button 2", target: { type: "test-screen2" } },
+      { id: "button1", label: "Button 1", target: { type: "test-screen1" } },
+      { id: "button2", label: "Button 2", target: { type: "test-screen2" } },
     ],
   };
 

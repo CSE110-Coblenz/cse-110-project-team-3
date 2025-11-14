@@ -1,6 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
 import type { ScreenSwitcher } from "../../../src/types";
-import { createKonvaMock, FakeGroup, FakeText } from "../../mocks/konvaMock";
+import {
+  createKonvaMock,
+  FakeGroup,
+  FakeNode,
+  FakeText,
+} from "../../mocks/konvaMock";
 
 vi.mock("konva", () => createKonvaMock());
 
@@ -11,18 +16,18 @@ function findGroupWithText(
   root: FakeGroup,
   label: string
 ): FakeGroup | undefined {
-  const stack: any[] = [root];
+  const stack: FakeNode[] = [root];
 
   while (stack.length) {
     const node = stack.pop();
     if (!(node instanceof FakeGroup)) continue;
 
     const hasText = node.children.some(
-      (c: any) => c instanceof FakeText && c.config.text === label
+      (c) => c instanceof FakeText && c.config.text === label
     );
     if (hasText) return node;
 
-    node.children.forEach((child: any) => {
+    node.children.forEach((child) => {
       if (child instanceof FakeGroup) stack.push(child);
     });
   }
