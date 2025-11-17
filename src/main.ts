@@ -90,7 +90,7 @@ class App implements ScreenSwitcher {
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "simulation", topic: "projectile motion", level: "lev2" });
+    this.switchToScreen({ type: "simulation", topic: "friction", level: "lev1" });
   }
 
   switchToScreen(screen: Screen): void {
