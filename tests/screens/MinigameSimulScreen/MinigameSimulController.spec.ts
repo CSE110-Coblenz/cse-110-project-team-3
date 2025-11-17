@@ -196,4 +196,3 @@ describe("MinigameSimulController", () => {
     expect(anim.stopped).toBe(true);
   });
 });
-
