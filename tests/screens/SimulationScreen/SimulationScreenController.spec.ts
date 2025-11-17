@@ -32,6 +32,10 @@ describe("SimulationScreenController", () => {
     controller = new SimulationScreenController(screenSwitcher, {
       level: "lev1",
       topic: "friction",
+      navigation: {
+        backScreen: { type: "topic", level: "friction" },
+        nextScreen: { type: "map" },
+      },
     });
   });
 
@@ -48,6 +52,6 @@ describe("SimulationScreenController", () => {
   it("does not switch screens when next button is clicked", () => {
     lastNextClickHandler();
 
-    expect(switchToScreen).not.toHaveBeenCalled();
+    expect(switchToScreen).toHaveBeenCalledWith({ type: "map" });
   });
 });

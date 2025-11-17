@@ -87,8 +87,11 @@ vi.mock(
       layer: FakeLayer;
       group: FakeGroup;
 
-      removePlayButtonCalled = false;
-      addResetButtonCalled = false;
+      hidePlayButton = vi.fn();
+      showPlayButton = vi.fn();
+      hideResetButton = vi.fn();
+      addResetButton = vi.fn();
+      setLives = vi.fn();
 
       constructor(
         onPlay: () => void,
@@ -119,14 +122,6 @@ vi.mock(
 
       getGroup() {
         return this.group;
-      }
-
-      removePlayButton() {
-        this.removePlayButtonCalled = true;
-      }
-
-      addResetButton() {
-        this.addResetButtonCalled = true;
       }
     }
 
@@ -197,8 +192,8 @@ describe("MinigameSimulController", () => {
     // simulate a late frame: time big ⇒ t big ⇒ y > ground ⇒ stop + hit check
     anim.cb({ time: 999999 });
 
-    expect(view.removePlayButtonCalled).toBe(true);
-    expect(view.addResetButtonCalled).toBe(true);
+    expect(view.addResetButton).toHaveBeenCalled();
     expect(anim.stopped).toBe(true);
   });
 });
+

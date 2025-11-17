@@ -129,6 +129,11 @@ export class FakeGroup extends FakeNode {
     return this;
   }
 
+  destroyChildren() {
+    this.children.forEach((child) => child.remove());
+    this.children = [];
+  }
+
   findOne<T extends FakeNode>(selector: string): T | undefined {
     // Super simple selector, just matches class name.
     // e.g., ".Rect" or "Rect"

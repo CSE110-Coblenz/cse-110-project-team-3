@@ -6,6 +6,8 @@ import {
   FakeNode,
   FakeText,
 } from "../../mocks/konvaMock";
+import { frictionLev1SimulationConfig } from "../../../src/configs/simulations/lev1-friction";
+import { projectileLev2SimulationConfig } from "../../../src/configs/simulations/lev2-projectile";
 
 // 1. Mock Konva BEFORE importing controller/view
 vi.mock("konva", () => createKonvaMock());
@@ -42,10 +44,10 @@ describe("SimulationScreenController + SimulationScreenView integration", () => 
     const switchToScreen = vi.fn();
     const screenSwitcher: ScreenSwitcher = { switchToScreen };
 
-    const controller = new SimulationScreenController(screenSwitcher, {
-      level: "lev1",
-      topic: "friction",
-    });
+    const controller = new SimulationScreenController(
+      screenSwitcher,
+      frictionLev1SimulationConfig,
+    );
 
     const view = controller.getView();
     const rootGroup = view.getGroup() as unknown as FakeGroup;
@@ -66,10 +68,10 @@ describe("SimulationScreenController + SimulationScreenView integration", () => 
     const switchToScreen = vi.fn();
     const screenSwitcher: ScreenSwitcher = { switchToScreen };
 
-    const controller = new SimulationScreenController(screenSwitcher, {
-      level: "lev2",
-      topic: "projectile motion",
-    });
+    const controller = new SimulationScreenController(
+      screenSwitcher,
+      projectileLev2SimulationConfig,
+    );
 
     const view = controller.getView();
     const rootGroup = view.getGroup() as unknown as FakeGroup;
@@ -90,10 +92,10 @@ describe("SimulationScreenController + SimulationScreenView integration", () => 
     const switchToScreen = vi.fn();
     const screenSwitcher: ScreenSwitcher = { switchToScreen };
 
-    const controller = new SimulationScreenController(screenSwitcher, {
-      level: "lev1",
-      topic: "friction",
-    });
+    const controller = new SimulationScreenController(
+      screenSwitcher,
+      frictionLev1SimulationConfig,
+    );
 
     const view = controller.getView();
     const rootGroup = view.getGroup() as unknown as FakeGroup;
