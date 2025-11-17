@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { SIMULATION_CONSTANTS } from "../../../constants";
+import { SIMULATION_CONSTANTS, STAGE_WIDTH } from "../../../constants";
 import type { ScreenSwitcher } from "../../../types";
 import { ScreenController } from "../../../types";
 import { MinigameSimulModel } from "./MinigameSimulModel";
@@ -15,13 +15,30 @@ export class MinigameSimulController extends ScreenController {
   constructor(screenSwitcher: ScreenSwitcher, level: number) {
     super();
     this.screenSwitcher = screenSwitcher;
+    // Randomize target distance each game so the problem varies
+    const targetHalfWidth = 15;
+    const maxDistance = Math.max(
+      100,
+      Math.floor(
+        STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x + targetHalfWidth - 20,
+      ),
+    );
+    const minDistance = 200;
+    const distanceX = Math.max(
+      minDistance,
+      Math.min(
+        maxDistance,
+        Math.floor(Math.random() * (maxDistance - minDistance + 1)) +
+          minDistance,
+      ),
+    );
     this.level = level;
     
     this.model = new MinigameSimulModel(
       0,
       0,
       9.8,
-      500,
+      distanceX,
       0,
       SIMULATION_CONSTANTS.error_margin,
     );
