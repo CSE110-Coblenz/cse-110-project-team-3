@@ -8,13 +8,12 @@ export class RulesScreenController extends ScreenController {
 
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
-    this.view = new RulesScreenView(
-      () => this.handleExitClick()
-    );
+    this.view = new RulesScreenView(() => this.handleExitClick());
     this.screenSwitcher = screenSwitcher;
   }
   private handleExitClick = () => {
     console.log("Exit button clicked");
+    this.screenSwitcher.switchToScreen({ type: "map" });
   };
 
   getView(): RulesScreenView {

@@ -1,9 +1,20 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
+import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
 import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
 import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
+import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
+import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/TitleScreenController";
+import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
+import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
+import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
+
+// Import configurations for topics and rules
+import { frictionConfig, projectileMotionConfig } from "./configs/topics";
+import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
+import { miniGameRuleConfig } from "./configs/rules";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
@@ -11,7 +22,18 @@ class App implements ScreenSwitcher {
 
   private menuScreenController: MenuScreenController;
   private mapScreenController: MapScreenController;
+  private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
+  private frictionTopicController: TopicScreenController;
+  private projectileMotionTopicController: TopicScreenController;
+  private titleScreenController?: TitleScreenController;
+
+  private lev1SimulationController: SimulationScreenController;
+  private lev2SimulationController: SimulationScreenController;
+  private minigameSimulController: MinigameSimulController;
+  private miniGameRuleScreenController?: MiniGameRuleScreenController;
+  private completedScreenController?: CompletedScreenController;
+  private gameOverScreenController?: GameOverScreenController;
 
   constructor(container: string = "container") {
     // Initialize stage
@@ -64,4 +86,4 @@ class App implements ScreenSwitcher {
   }
 }
 
-new App();
+const app = new App();
