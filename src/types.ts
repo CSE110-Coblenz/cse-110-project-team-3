@@ -1,3 +1,4 @@
+
 import type { Group } from "konva/lib/Group";
 import { COLORS, FONT_FAMILY, STAGE_HEIGHT, STAGE_WIDTH } from "./constants";
 import Konva from "konva";
@@ -11,11 +12,14 @@ export interface View {
 /**
  * Screen types for navigation
  *
- * - "rules": Rulesscreen
- * - "level": Levelscreen
- * - "map": Mapscreen
+ * - "menu": Menu/Start screen
+ * - "rules": Rules screen
+ * - "level": Level screen
+ * - "map": Map screen
+ * - "reference": Reference screen with optional return navigation
  * - "topic": Topic screen with specified level
- * - "simulation": simulation screen for specified level
+ * - "simulation": Simulation screen for specified level
+ * - "minigame": Minigame screen with sub-screen and level
  */
 
 export type Screen =
