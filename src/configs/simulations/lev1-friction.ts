@@ -3,13 +3,12 @@ import type { SimulationScreenConfig } from "../../screens/SimulationScreen/type
 export const frictionLev1SimulationConfig: SimulationScreenConfig = {
   id: "lev1-friction",
   title: "SIMULATION: Friction",
-  description: 
-  `A 5 kg crate rests on a roungh horizontal surface with a coefficient of static friction μs = 0.4 and kinetic friction μk = 0.3. 
+  description: `A 5 kg crate rests on a roungh horizontal surface with a coefficient of static friction μs = 0.4 and kinetic friction μk = 0.3. 
 You apply a horizontal force to the crate 
 What is the minimum force required to start moving the crate?`,
 
   video: {
-    src: "/Force.mp4", 
+    src: "/Force.mp4",
     loop: true,
     muted: true,
   },
@@ -35,6 +34,6 @@ What is the minimum force required to start moving the crate?`,
 
   navigation: {
     backScreen: { type: "topic", level: "friction" },
-    nextScreen: { type: "map"}
+    nextScreen: { type: "map" },
   },
 };

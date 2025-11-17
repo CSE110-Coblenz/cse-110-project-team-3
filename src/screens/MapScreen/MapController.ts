@@ -33,9 +33,9 @@ export class MapScreenController extends ScreenController {
         });
         break;
       case "Game 1":
-        this.screenSwitcher.switchToScreen({ 
-          type: "minigame", 
-          screen: "title", 
+        this.screenSwitcher.switchToScreen({
+          type: "minigame",
+          screen: "title",
           level: 1,
         });
     }

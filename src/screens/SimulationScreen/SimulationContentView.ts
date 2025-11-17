@@ -6,7 +6,7 @@ import {
   FONT_FAMILY,
   COLORS,
 } from "../../constants";
-import type { SimulationScreenConfig, SimulationOptionConfig} from "./types";
+import type { SimulationScreenConfig, SimulationOptionConfig } from "./types";
 
 export class SimulationContentView implements View {
   private group = new Konva.Group();
@@ -185,7 +185,10 @@ export class SimulationContentView implements View {
   }
 
   // option selection
-  private handleOptionClick(option: SimulationOptionConfig, node: Konva.Group): void {
+  private handleOptionClick(
+    option: SimulationOptionConfig,
+    node: Konva.Group,
+  ): void {
     // Ignore if already answered correctly
     if (this.answeredCorrectly) return;
 
