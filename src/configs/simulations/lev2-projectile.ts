@@ -34,6 +34,6 @@ What is the minimum launch speed required so that the ball's trajectory passes a
 
   navigation: {
     backScreen: { type: "topic", level: "projectile motion" },
-    nextScreen: { type: "map"}
+    nextScreen: { type: "map" },
   },
 };

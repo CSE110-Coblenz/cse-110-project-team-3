@@ -4,12 +4,12 @@ export type SimulationOptionId = "A" | "B" | "C";
 
 export interface SimulationOptionConfig {
   id: SimulationOptionId; // "A" | "B" | "C"
-  label: string;            
+  label: string;
   isCorrect: boolean;
 }
 
 export interface SimulationVideoConfig {
-  src: string;  // "/Force.mp4"
+  src: string; // "/Force.mp4"
   loop?: boolean;
   muted?: boolean;
 }

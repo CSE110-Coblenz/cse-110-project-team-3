@@ -10,7 +10,7 @@ export class MinigameSimulController extends ScreenController {
   private screenSwitcher: ScreenSwitcher;
   private model: MinigameSimulModel;
   private lives: number = 3;
-  private level: number; 
+  private level: number;
 
   constructor(screenSwitcher: ScreenSwitcher, level: number) {
     super();
@@ -33,7 +33,7 @@ export class MinigameSimulController extends ScreenController {
       ),
     );
     this.level = level;
-    
+
     this.model = new MinigameSimulModel(
       0,
       0,
@@ -114,7 +114,7 @@ export class MinigameSimulController extends ScreenController {
       projectile.position({ x, y });
 
       // Stop animation when it hits the ground
-    if (y > SIMULATION_CONSTANTS.ground_level) {
+      if (y > SIMULATION_CONSTANTS.ground_level) {
         animation.stop();
         console.log("x", x);
         console.log("distance_X", initialX + distanceX);
@@ -134,17 +134,17 @@ export class MinigameSimulController extends ScreenController {
           if (this.lives <= 0) {
             console.log("Game Over");
             this.screenSwitcher.switchToScreen({
-                type: "minigame",
-                screen: "gameover",
-                level: this.level,
+              type: "minigame",
+              screen: "gameover",
+              level: this.level,
             });
             return;
           }
         }
-      
-      // Show reset to reposition the projectile; play becomes available after reset (if lives remain)
-      this.view.addResetButton();
-    }
+
+        // Show reset to reposition the projectile; play becomes available after reset (if lives remain)
+        this.view.addResetButton();
+      }
     }, this.view.getGroup().getLayer());
 
     animation.start();

@@ -16,7 +16,10 @@ import { frictionConfig, projectileMotionConfig } from "./configs/topics";
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
 import { miniGameRuleConfig } from "./configs/rules";
 
-import {frictionLev1SimulationConfig, projectileLev2SimulationConfig} from "./configs/simulations";
+import {
+  frictionLev1SimulationConfig,
+  projectileLev2SimulationConfig,
+} from "./configs/simulations";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
@@ -90,7 +93,7 @@ class App implements ScreenSwitcher {
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "map"});
+    this.switchToScreen({ type: "map" });
   }
 
   switchToScreen(screen: Screen): void {
@@ -150,18 +153,22 @@ class App implements ScreenSwitcher {
             this.titleScreenController.getView().show();
             break;
           case "rules":
-            this.miniGameRuleScreenController = new MiniGameRuleScreenController(
-              this,
-              miniGameRuleConfig,
-              screen.level,
-            );
+            this.miniGameRuleScreenController =
+              new MiniGameRuleScreenController(
+                this,
+                miniGameRuleConfig,
+                screen.level,
+              );
             this.layer.add(
               this.miniGameRuleScreenController.getView().getGroup(),
             );
             this.miniGameRuleScreenController.getView().show();
             break;
           case "simulation":
-            this.minigameSimulController = new MinigameSimulController(this, screen.level);
+            this.minigameSimulController = new MinigameSimulController(
+              this,
+              screen.level,
+            );
             this.layer.add(this.minigameSimulController.getView().getGroup());
             this.minigameSimulController.getView().show();
             break;

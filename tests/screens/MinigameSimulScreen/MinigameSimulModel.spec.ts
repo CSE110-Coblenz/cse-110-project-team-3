@@ -110,7 +110,7 @@ describe("MinigameSimulModel", () => {
     expect(model.isHit(5)).toBe(true); // 5 is within 5 of 10
     expect(model.isHit(15)).toBe(true); // 15 is within 5 of 10
   });
-  
+
   it("setInitialSpeed should round and clamp to [0, 300]", () => {
     const model = new MinigameSimulModel(10, 45, 9.81, 100);
     model.setInitialSpeed(123.4);
