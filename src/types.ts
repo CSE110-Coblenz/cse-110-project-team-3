@@ -1,3 +1,4 @@
+
 import type { Group } from "konva/lib/Group";
 
 export interface View {
@@ -9,12 +10,33 @@ export interface View {
 /**
  * Screen types for navigation
  *
- * - "menu": Menu/Start screen
- * - "rules": Rules screen
- * - "level": Level screen
- * - "map": Map screen
+ * - "rules": Rulesscreen
+ * - "level": Levelscreen
+ * - "map": Mapscreen
+ * - "topic": Topic screen with specified level
+ * - "simulation": simulation screen for specified level
  */
-export type Screen = { type: "menu" } | { type: "rules" } | { type: "level" } | { type: "map" };
+
+export type Screen =
+  | { type: "rules" }
+  | { type: "level" }
+  | { type: "map" }
+  | { type: "reference" }
+  | { type: "topic"; level: "friction" | "projectile motion" }
+  | {
+      type: "minigame";
+      screen: "title" | "rules" | "completed" | "gameover" | "simulation";
+      level: number;
+    }
+  | {
+      type: "simulation";
+      topic: "friction" | "projectile motion";
+      level: "lev1" | "lev2";
+    };
+
+export type RuleConfig = {
+  rules: string[];
+};
 
 export abstract class ScreenController {
   abstract getView(): View;
