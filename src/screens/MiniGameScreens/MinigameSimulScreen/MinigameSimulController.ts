@@ -10,8 +10,9 @@ export class MinigameSimulController extends ScreenController {
   private screenSwitcher: ScreenSwitcher;
   private model: MinigameSimulModel;
   private lives: number = 3;
+  private level: number; 
 
-  constructor(screenSwitcher: ScreenSwitcher) {
+  constructor(screenSwitcher: ScreenSwitcher, level: number) {
     super();
     this.screenSwitcher = screenSwitcher;
     // Randomize target distance each game so the problem varies
@@ -31,6 +32,8 @@ export class MinigameSimulController extends ScreenController {
           minDistance,
       ),
     );
+    this.level = level;
+    
     this.model = new MinigameSimulModel(
       0,
       0,
@@ -111,13 +114,18 @@ export class MinigameSimulController extends ScreenController {
       projectile.position({ x, y });
 
       // Stop animation when it hits the ground
-      if (y > SIMULATION_CONSTANTS.ground_level) {
+    if (y > SIMULATION_CONSTANTS.ground_level) {
         animation.stop();
         console.log("x", x);
         console.log("distance_X", initialX + distanceX);
         if (this.model.isHit(x - initialX)) {
           console.log("Hit the target!");
           // Success: keep lives unchanged, prompt reset for next round
+          this.screenSwitcher.switchToScreen({
+            type: "minigame",
+            screen: "completed",
+            level: this.level,
+          });
         } else {
           console.log("Missed the target.");
           // Lose a life on miss
@@ -125,11 +133,18 @@ export class MinigameSimulController extends ScreenController {
           this.view.setLives(this.lives);
           if (this.lives <= 0) {
             console.log("Game Over");
+            this.screenSwitcher.switchToScreen({
+                type: "minigame",
+                screen: "gameover",
+                level: this.level,
+            });
+            return;
           }
         }
-        // Show reset to reposition the projectile; play becomes available after reset (if lives remain)
-        this.view.addResetButton();
-      }
+      
+      // Show reset to reposition the projectile; play becomes available after reset (if lives remain)
+      this.view.addResetButton();
+    }
     }, this.view.getGroup().getLayer());
 
     animation.start();
