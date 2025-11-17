@@ -26,8 +26,22 @@ export class MinigameSimulModel {
     return this.initial_speed;
   }
 
+  setInitialSpeed(v: number): void {
+    // integer m/s, prevent negative, cap reasonable upper bound
+    const rounded = Math.round(v);
+    const clamped = Math.max(0, Math.min(rounded, 300));
+    this.initial_speed = clamped;
+  }
+
   getAngle(): number {
     return this.angle;
+  }
+
+  setAngle(v: number): void {
+    // multiples of 5 within [0,90]
+    const roundedTo5 = Math.round(v / 5) * 5;
+    const clamped = Math.max(0, Math.min(roundedTo5, 90));
+    this.angle = clamped;
   }
 
   getGravity(): number {

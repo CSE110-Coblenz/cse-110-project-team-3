@@ -6,31 +6,26 @@ import {
   STAGE_WIDTH,
   FONT_FAMILY,
 } from "../../constants";
-import { Lev1 } from "./Lev1";
-import { Lev2 } from "./Lev2";
+import type { SimulationScreenConfig } from "./types";
+import { SimulationContentView } from "./SimulationContentView";
 
 export class SimulationScreenView implements View {
   private group: Konva.Group;
-  private content: View;
+  private content: SimulationContentView;
   private nextBtn: Konva.Group;
   private backBtn: Konva.Group;
 
   constructor(
-    level: "lev1" | "lev2",
+    config: SimulationScreenConfig,
     handleBackClick?: () => void,
     handleNextClick?: () => void,
   ) {
     this.group = new Konva.Group();
 
     // Current content
-    if (level === "lev2") {
-      this.content = new Lev2(undefined, (enable) =>
-        this.setNextEnabled(enable),
-      );
-    } else {
-      this.content = new Lev1(); // Lev1 remains exactly as provided
-    }
-
+    this.content = new SimulationContentView(config, () =>
+      this.setNextEnabled(true),
+    );
     this.group.add(this.content.getGroup());
 
     // Navigation buttons
@@ -103,7 +98,6 @@ export class SimulationScreenView implements View {
       fontFamily: FONT_FAMILY,
     });
 
-    // hover come da tua richiesta
     g.on("mouseenter", () => {
       if (g.getAttr("disabled") || g.getAttr("locked")) return;
       document.body.style.cursor = "pointer";
@@ -122,7 +116,7 @@ export class SimulationScreenView implements View {
     return g;
   }
 
-  // Called by Lev2 when the correct answer is selected.
+  // Called when the correct answer is selected.
   public setNextEnabled(enabled: boolean): void {
     this.nextBtn.setAttr("disabled", !enabled);
     this.nextBtn.opacity(enabled ? 1 : 0.5);
