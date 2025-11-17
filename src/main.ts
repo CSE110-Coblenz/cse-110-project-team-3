@@ -16,6 +16,8 @@ import { frictionConfig, projectileMotionConfig } from "./configs/topics";
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
 import { miniGameRuleConfig } from "./configs/rules";
 
+import {frictionLev1SimulationConfig, projectileLev2SimulationConfig} from "./configs/simulations";
+
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
   private layer: Konva.Layer;
@@ -64,14 +66,14 @@ class App implements ScreenSwitcher {
       projectileMotionConfig,
     );
 
-    this.lev1SimulationController = new SimulationScreenController(this, {
-      level: "lev1",
-      topic: "friction",
-    });
-    this.lev2SimulationController = new SimulationScreenController(this, {
-      level: "lev2",
-      topic: "projectile motion",
-    });
+    this.lev1SimulationController = new SimulationScreenController(
+      this,
+      frictionLev1SimulationConfig,
+    );
+    this.lev2SimulationController = new SimulationScreenController(
+      this,
+      projectileLev2SimulationConfig,
+    );
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
@@ -79,6 +81,7 @@ class App implements ScreenSwitcher {
     this.layer.add(this.projectileMotionTopicController.getView().getGroup());
     this.layer.add(this.referenceScreenController.getView().getGroup());
     this.layer.add(this.rulesScreenController.getView().getGroup());
+
     this.layer.add(this.lev1SimulationController.getView().getGroup());
     this.layer.add(this.lev2SimulationController.getView().getGroup());
     //this.layer.add(this.minigameSimulController.getView().getGroup());
@@ -87,7 +90,7 @@ class App implements ScreenSwitcher {
     this.layer.draw();
 
     // Start with the map screen
-    this.switchToScreen({ type: "map" });
+    this.switchToScreen({ type: "simulation", topic: "projectile motion", level: "lev2" });
   }
 
   switchToScreen(screen: Screen): void {
@@ -126,14 +129,16 @@ class App implements ScreenSwitcher {
         }
         break;
       case "simulation":
-        if (screen.topic === "projectile motion") {
-          if (screen.level === "lev1") {
-            this.lev1SimulationController.getView().show();
-          } else {
-            this.lev2SimulationController.getView().show();
-          }
+        if (screen.topic === "friction" && screen.level === "lev1") {
+          this.lev1SimulationController.getView().show();
+        } else if (
+          screen.topic === "projectile motion" &&
+          screen.level === "lev2"
+        ) {
+          this.lev2SimulationController.getView().show();
         }
         break;
+
       case "minigame":
         switch (screen.screen) {
           case "title":
