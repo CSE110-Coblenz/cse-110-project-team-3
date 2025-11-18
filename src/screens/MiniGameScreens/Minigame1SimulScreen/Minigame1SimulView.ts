@@ -73,7 +73,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     const distanceText = new Konva.Text({
       x: 20,
       y: 110,
-      text: `Target Distance: ${distanceX.toFixed(2)}`,
+      text: `Target Distance: ${distanceX.toFixed(2)} m`,
       fontSize: 20,
       fontFamily: FONT_FAMILY,
       fill: COLORS.text,
@@ -225,7 +225,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
 
   setSpeedDisplay(value: number): void {
     const intVal = Math.round(value);
-    this.speedText.text(`Initial Speed: ${intVal} px/s`);
+    this.speedText.text(`Initial Speed: ${intVal} m/s`);
     this.currentSpeed = value;
     // update slider knob
     if (this.speedKnob) {
