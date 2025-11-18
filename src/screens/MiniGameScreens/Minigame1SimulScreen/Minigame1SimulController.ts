@@ -89,6 +89,8 @@ export class Minigame1SimulController extends MinigameController {
     // Show current speed text
     this.view.showCurrentSpeedText();
 
+    const targetDistance = this.model.getDistanceX();
+
     const animation = new Konva.Animation((frame) => {
       if (!frame) return;
       const t = (frame.time / 1000) * SIMULATION_CONSTANTS.speed_multiplier;
@@ -98,6 +100,13 @@ export class Minigame1SimulController extends MinigameController {
 
       this.view.updateCurrentSpeed(currentVelocity);
       box.x(initialX + distance);
+
+      // Stop animation if block passes target
+      if (box.x() - initialX >= targetDistance) {
+        animation.stop();
+        this.handleHit(true);
+        return;
+      }
 
       // Stop animation when the box stops
       if (currentVelocity <= 0) {
