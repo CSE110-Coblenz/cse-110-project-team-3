@@ -5,8 +5,6 @@ import { MinigameController } from "../../../types";
 import { Minigame1SimulModel } from "./Minigame1SimulModel";
 import { Minigame1SimulView } from "./Minigame1SimulView";
 
-const STARTING_X = 50;
-
 export class Minigame1SimulController extends MinigameController {
   private view: Minigame1SimulView;
   private model: Minigame1SimulModel;
@@ -16,7 +14,7 @@ export class Minigame1SimulController extends MinigameController {
 
     // Randomize target distance each game
     const minDistance = 100;
-    const maxDistance = STAGE_WIDTH - STARTING_X - 100;
+    const maxDistance = STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x - 100;
     const distancePixels =
       Math.floor(Math.random() * (maxDistance - minDistance + 1)) + minDistance;
 
@@ -26,7 +24,7 @@ export class Minigame1SimulController extends MinigameController {
       9.8, // Gravity (still in m/s^2, but will be used to calculate pixel acceleration)
       distancePixels, // distance in pixels
       1, // Mass
-      SIMULATION_CONSTANTS.error_margin * 2, // error margin in pixels
+      SIMULATION_CONSTANTS.error_margin * 2 // error margin in pixels
     );
 
     this.view = new Minigame1SimulView(
@@ -36,7 +34,7 @@ export class Minigame1SimulController extends MinigameController {
       this.model.getMass(),
       this.model.getFrictionCoefficient(),
       this.model.getInitialSpeed(),
-      (delta) => this.adjustSpeed(delta),
+      (delta) => this.adjustSpeed(delta)
     );
   }
 
@@ -49,7 +47,7 @@ export class Minigame1SimulController extends MinigameController {
   resetSimulation(): void {
     const box = this.view.getBox();
     box.position({
-      x: STARTING_X,
+      x: SIMULATION_CONSTANTS.starting_x,
       y: SIMULATION_CONSTANTS.ground_level - 50,
     });
     this.view.hideCurrentSpeedText();
