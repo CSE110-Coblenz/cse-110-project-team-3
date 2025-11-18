@@ -33,7 +33,7 @@ export class MinigameSimulView implements View {
   private angleTrackX = 360;
   private angleTrackY = 62;
   private angleTrackWidth = 200;
-  private angleMin = 0;
+  private angleMin = 5;
   private angleMax = 90;
   private angleStep = 5;
   private angleKnob!: Konva.Circle;
