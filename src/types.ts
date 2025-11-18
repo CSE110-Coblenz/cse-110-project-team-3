@@ -107,7 +107,7 @@ export abstract class BaseMinigameSimulModel {
     initial_speed: number,
     distance_x: number,
     margin_of_error: number,
-    gravity: number,
+    gravity: number
   ) {
     this.initial_speed = initial_speed;
     this.distance_x = distance_x;
@@ -173,7 +173,7 @@ export abstract class BaseMinigameSimulView implements View {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55,
+      55
     );
     if (handlePlay) {
       this.playButton.on("click", handlePlay);
@@ -186,7 +186,7 @@ export abstract class BaseMinigameSimulView implements View {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55,
+      55
     );
     if (handleReset) {
       this.resetButton.on("click", handleReset);
@@ -233,7 +233,7 @@ export abstract class BaseMinigameSimulView implements View {
     x: number,
     y: number,
     width: number,
-    height: number,
+    height: number
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 
@@ -271,7 +271,7 @@ export abstract class BaseMinigameSimulView implements View {
     trackX: number,
     trackW: number,
     min: number,
-    max: number,
+    max: number
   ): number {
     const t = (value - min) / (max - min);
     return trackX + t * trackW;
@@ -283,7 +283,7 @@ export abstract class BaseMinigameSimulView implements View {
     trackW: number,
     min: number,
     max: number,
-    step: number,
+    step: number
   ): number {
     const t = (x - trackX) / trackW;
     const raw = min + t * (max - min);

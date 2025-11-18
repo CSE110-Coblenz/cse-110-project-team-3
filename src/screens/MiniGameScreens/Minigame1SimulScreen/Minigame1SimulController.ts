@@ -22,11 +22,11 @@ export class Minigame1SimulController extends MinigameController {
 
     this.model = new Minigame1SimulModel(
       10,
-      0.1, // Friction coefficient
+      0.3, // Friction coefficient
       9.8, // Gravity (still in m/s^2, but will be used to calculate pixel acceleration)
       distancePixels, // distance in pixels
       1, // Mass
-      SIMULATION_CONSTANTS.error_margin * 2, // error margin in pixels
+      SIMULATION_CONSTANTS.error_margin * 2 // error margin in pixels
     );
 
     this.view = new Minigame1SimulView(
@@ -36,7 +36,7 @@ export class Minigame1SimulController extends MinigameController {
       this.model.getMass(),
       this.model.getFrictionCoefficient(),
       this.model.getInitialSpeed(),
-      (delta) => this.adjustSpeed(delta),
+      (delta) => this.adjustSpeed(delta)
     );
   }
 
@@ -52,6 +52,7 @@ export class Minigame1SimulController extends MinigameController {
       x: STARTING_X,
       y: SIMULATION_CONSTANTS.ground_level - 50,
     });
+    this.view.hideCurrentSpeedText();
     this.view.getGroup().getLayer()?.draw();
 
     // After reset, allow playing again
@@ -85,6 +86,9 @@ export class Minigame1SimulController extends MinigameController {
     // Hide play to prevent multiple concurrent plays
     this.view.hidePlayButton();
 
+    // Show current speed text
+    this.view.showCurrentSpeedText();
+
     const animation = new Konva.Animation((frame) => {
       if (!frame) return;
       const t = (frame.time / 1000) * SIMULATION_CONSTANTS.speed_multiplier;
@@ -92,11 +96,13 @@ export class Minigame1SimulController extends MinigameController {
       const distance = initialSpeed * t + 0.5 * acceleration * t * t;
       const currentVelocity = initialSpeed + acceleration * t;
 
+      this.view.updateCurrentSpeed(currentVelocity);
       box.x(initialX + distance);
 
       // Stop animation when the box stops
       if (currentVelocity <= 0) {
         animation.stop();
+        this.view.updateCurrentSpeed(0);
         const finalDistance = box.x() - initialX;
         this.handleHit(this.model.isHit(finalDistance));
       }
