@@ -20,9 +20,6 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
   private speedTrackX = 360;
   private speedTrackY = 32;
   private speedTrackWidth = 200;
-  private speedMin = 0;
-  private speedMax = 200; // Assuming speed max
-  private speedStep = 1;
   private speedKnob!: Konva.Circle;
   private lastSpeedValue?: number;
 
@@ -140,8 +137,8 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
         this.currentSpeed,
         this.speedTrackX,
         this.speedTrackWidth,
-        this.speedMin,
-        this.speedMax,
+        SIMULATION_CONSTANTS.speed_min,
+        SIMULATION_CONSTANTS.speed_max,
       ),
       y: this.speedTrackY + 3,
       radius: 10,
@@ -234,8 +231,8 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
           intVal,
           this.speedTrackX,
           this.speedTrackWidth,
-          this.speedMin,
-          this.speedMax,
+          SIMULATION_CONSTANTS.speed_min,
+          SIMULATION_CONSTANTS.speed_max,
         ),
       );
     }
@@ -247,9 +244,9 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       this.speedKnob.x(),
       this.speedTrackX,
       this.speedTrackWidth,
-      this.speedMin,
-      this.speedMax,
-      this.speedStep,
+      SIMULATION_CONSTANTS.speed_min,
+      SIMULATION_CONSTANTS.speed_max,
+      SIMULATION_CONSTANTS.speed_step,
     );
     if (this.lastSpeedValue !== v) {
       const delta = v - this.currentSpeed;

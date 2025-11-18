@@ -24,4 +24,13 @@ export const SIMULATION_CONSTANTS = {
   starting_x: 150,
   speed_multiplier: 3.0,
   error_margin: 3.0,
+  speed_min: 0,
+  speed_max: 200,
+  speed_step: 1,
+  angle_min: 0,
+  angle_max: 90,
+  angle_step: 5,
+  projectile_speed_min: 0,
+  projectile_speed_max: 200,
+  projectile_speed_step: 1,
 };

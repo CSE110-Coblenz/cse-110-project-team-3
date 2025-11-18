@@ -19,18 +19,12 @@ export class MinigameSimulView extends BaseMinigameSimulView {
   private speedTrackX = 360;
   private speedTrackY = 32;
   private speedTrackWidth = 200;
-  private speedMin = 0;
-  private speedMax = 200;
-  private speedStep = 1;
   private speedKnob!: Konva.Circle;
   private lastSpeedValue?: number;
 
   private angleTrackX = 360;
   private angleTrackY = 62;
   private angleTrackWidth = 200;
-  private angleMin = 5;
-  private angleMax = 90;
-  private angleStep = 5;
   private angleKnob!: Konva.Circle;
   private lastAngleValue?: number;
 
@@ -142,8 +136,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
         this.currentSpeed,
         this.speedTrackX,
         this.speedTrackWidth,
-        this.speedMin,
-        this.speedMax
+        SIMULATION_CONSTANTS.projectile_speed_min,
+        SIMULATION_CONSTANTS.projectile_speed_max
       ),
       y: this.speedTrackY + 3,
       radius: 10,
