@@ -49,6 +49,11 @@ export abstract class ScreenController {
   }
 }
 
+export abstract class MinigameController extends ScreenController {
+  abstract playSimulation(): void;
+  abstract resetSimulation(): void;
+}
+
 export interface ScreenSwitcher {
   switchToScreen(screen: Screen): void;
 }

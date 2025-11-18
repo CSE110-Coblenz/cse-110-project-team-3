@@ -1,11 +1,11 @@
 import Konva from "konva";
 import { SIMULATION_CONSTANTS, STAGE_WIDTH } from "../../../constants";
 import type { ScreenSwitcher } from "../../../types";
-import { ScreenController } from "../../../types";
+import { MinigameController } from "../../../types";
 import { MinigameSimulModel } from "./MinigameSimulModel";
 import { MinigameSimulView } from "./MinigameSimulView";
 
-export class MinigameSimulController extends ScreenController {
+export class MinigameSimulController extends MinigameController {
   private view: MinigameSimulView;
   private screenSwitcher: ScreenSwitcher;
   private model: MinigameSimulModel;
@@ -20,8 +20,8 @@ export class MinigameSimulController extends ScreenController {
     const maxDistance = Math.max(
       100,
       Math.floor(
-        STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x + targetHalfWidth - 20,
-      ),
+        STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x + targetHalfWidth - 20
+      )
     );
     const minDistance = 200;
     const distanceX = Math.max(
@@ -29,8 +29,8 @@ export class MinigameSimulController extends ScreenController {
       Math.min(
         maxDistance,
         Math.floor(Math.random() * (maxDistance - minDistance + 1)) +
-          minDistance,
-      ),
+          minDistance
+      )
     );
     this.level = level;
 
@@ -40,7 +40,7 @@ export class MinigameSimulController extends ScreenController {
       9.8,
       distanceX,
       0,
-      SIMULATION_CONSTANTS.error_margin,
+      SIMULATION_CONSTANTS.error_margin
     );
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
@@ -52,7 +52,7 @@ export class MinigameSimulController extends ScreenController {
       this.model.getAngle(),
       this.model.getGravity(),
       (delta) => this.adjustSpeed(delta),
-      (delta) => this.adjustAngle(delta),
+      (delta) => this.adjustAngle(delta)
     );
   }
 
