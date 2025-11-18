@@ -26,7 +26,7 @@ export class Minigame1SimulController extends MinigameController {
       9.8, // Gravity (still in m/s^2, but will be used to calculate pixel acceleration)
       distancePixels, // distance in pixels
       1, // Mass
-      SIMULATION_CONSTANTS.error_margin * 2 // error margin in pixels
+      SIMULATION_CONSTANTS.error_margin * 2, // error margin in pixels
     );
 
     this.view = new Minigame1SimulView(
@@ -36,7 +36,7 @@ export class Minigame1SimulController extends MinigameController {
       this.model.getMass(),
       this.model.getFrictionCoefficient(),
       this.model.getInitialSpeed(),
-      (delta) => this.adjustSpeed(delta)
+      (delta) => this.adjustSpeed(delta),
     );
   }
 

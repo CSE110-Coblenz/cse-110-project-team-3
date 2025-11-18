@@ -10,7 +10,7 @@ export class MinigameSimulModel extends BaseMinigameSimulModel {
     gravity: number,
     distance_x: number,
     initial_height: number = 0,
-    margin_of_error: number = 5
+    margin_of_error: number = 5,
   ) {
     super(initial_speed, distance_x, margin_of_error, gravity);
     this.angle = angle;
