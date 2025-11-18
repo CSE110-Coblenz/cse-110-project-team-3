@@ -9,15 +9,10 @@ const STARTING_X = 50;
 
 export class Minigame1SimulController extends MinigameController {
   private view: Minigame1SimulView;
-  private screenSwitcher: ScreenSwitcher;
   private model: Minigame1SimulModel;
-  private lives: number = 3;
-  private level: number;
 
   constructor(screenSwitcher: ScreenSwitcher, level: number) {
-    super();
-    this.screenSwitcher = screenSwitcher;
-    this.level = level;
+    super(screenSwitcher, level);
 
     // Randomize target distance each game
     const minDistance = 100;
@@ -103,29 +98,7 @@ export class Minigame1SimulController extends MinigameController {
       if (currentVelocity <= 0) {
         animation.stop();
         const finalDistance = box.x() - initialX;
-
-        if (this.model.isHit(finalDistance)) {
-          console.log("Hit the target!");
-          this.screenSwitcher.switchToScreen({
-            type: "minigame",
-            screen: "completed",
-            level: this.level,
-          });
-        } else {
-          console.log("Missed the target.");
-          this.lives = Math.max(0, this.lives - 1);
-          this.view.setLives(this.lives);
-          if (this.lives <= 0) {
-            console.log("Game Over");
-            this.screenSwitcher.switchToScreen({
-              type: "minigame",
-              screen: "gameover",
-              level: this.level,
-            });
-            return;
-          }
-        }
-        this.view.addResetButton();
+        this.handleHit(this.model.isHit(finalDistance));
       }
     }, this.view.getGroup().getLayer());
 
