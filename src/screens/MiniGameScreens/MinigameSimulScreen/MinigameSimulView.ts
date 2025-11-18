@@ -25,7 +25,7 @@ export class MinigameSimulView implements View {
   private speedTrackY = 32;
   private speedTrackWidth = 200;
   private speedMin = 0;
-  private speedMax = 300;
+  private speedMax = 200;
   private speedStep = 1;
   private speedKnob!: Konva.Circle;
   private lastSpeedValue?: number;
@@ -49,7 +49,7 @@ export class MinigameSimulView implements View {
     angle: number = 0,
     gravity: number = 0,
     onSpeedChange?: (delta: number) => void,
-    onAngleChange?: (delta: number) => void,
+    onAngleChange?: (delta: number) => void
   ) {
     this.group = new Konva.Group();
     this.onSpeedChange = onSpeedChange;
@@ -121,7 +121,7 @@ export class MinigameSimulView implements View {
       label: string,
       x: number,
       y: number,
-      onClick?: () => void,
+      onClick?: () => void
     ) => {
       const g = new Konva.Group({ x, y });
       const rect = new Konva.Rect({
@@ -166,7 +166,7 @@ export class MinigameSimulView implements View {
         this.speedTrackX,
         this.speedTrackWidth,
         this.speedMin,
-        this.speedMax,
+        this.speedMax
       ),
       y: this.speedTrackY + 3,
       radius: 10,
@@ -177,7 +177,7 @@ export class MinigameSimulView implements View {
       dragBoundFunc: (pos) => {
         const clampedX = Math.max(
           this.speedTrackX,
-          Math.min(pos.x, this.speedTrackX + this.speedTrackWidth),
+          Math.min(pos.x, this.speedTrackX + this.speedTrackWidth)
         );
         return { x: clampedX, y: this.speedTrackY + 3 };
       },
@@ -190,8 +190,8 @@ export class MinigameSimulView implements View {
       this.speedKnob.x(
         Math.max(
           this.speedTrackX,
-          Math.min(p.x, this.speedTrackX + this.speedTrackWidth),
-        ),
+          Math.min(p.x, this.speedTrackX + this.speedTrackWidth)
+        )
       );
       this.handleSpeedDrag();
     });
@@ -212,7 +212,7 @@ export class MinigameSimulView implements View {
         this.angleTrackX,
         this.angleTrackWidth,
         this.angleMin,
-        this.angleMax,
+        this.angleMax
       ),
       y: this.angleTrackY + 3,
       radius: 10,
@@ -223,7 +223,7 @@ export class MinigameSimulView implements View {
       dragBoundFunc: (pos) => {
         const clampedX = Math.max(
           this.angleTrackX,
-          Math.min(pos.x, this.angleTrackX + this.angleTrackWidth),
+          Math.min(pos.x, this.angleTrackX + this.angleTrackWidth)
         );
         return { x: clampedX, y: this.angleTrackY + 3 };
       },
@@ -236,8 +236,8 @@ export class MinigameSimulView implements View {
       this.angleKnob.x(
         Math.max(
           this.angleTrackX,
-          Math.min(p.x, this.angleTrackX + this.angleTrackWidth),
-        ),
+          Math.min(p.x, this.angleTrackX + this.angleTrackWidth)
+        )
       );
       this.handleAngleDrag();
     });
@@ -247,13 +247,13 @@ export class MinigameSimulView implements View {
       "-",
       this.speedTrackX + this.speedTrackWidth + 20,
       20,
-      () => this.onSpeedChange?.(-1),
+      () => this.onSpeedChange?.(-1)
     );
     const speedPlus = controlButton(
       "+",
       this.speedTrackX + this.speedTrackWidth + 54,
       20,
-      () => this.onSpeedChange?.(1),
+      () => this.onSpeedChange?.(1)
     );
     this.group.add(speedMinus);
     this.group.add(speedPlus);
@@ -263,13 +263,13 @@ export class MinigameSimulView implements View {
       "-",
       this.angleTrackX + this.angleTrackWidth + 20,
       50,
-      () => this.onAngleChange?.(-5),
+      () => this.onAngleChange?.(-5)
     );
     const anglePlus = controlButton(
       "+",
       this.angleTrackX + this.angleTrackWidth + 54,
       50,
-      () => this.onAngleChange?.(5),
+      () => this.onAngleChange?.(5)
     );
     this.group.add(angleMinus);
     this.group.add(anglePlus);
@@ -321,7 +321,7 @@ export class MinigameSimulView implements View {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55,
+      55
     );
     if (handlePlay) {
       this.playButton.on("click", handlePlay);
@@ -347,7 +347,7 @@ export class MinigameSimulView implements View {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55,
+      55
     );
 
     if (handleReset) {
@@ -386,8 +386,8 @@ export class MinigameSimulView implements View {
           this.speedTrackX,
           this.speedTrackWidth,
           this.speedMin,
-          this.speedMax,
-        ),
+          this.speedMax
+        )
       );
     }
     this.group.getLayer()?.draw();
@@ -405,8 +405,8 @@ export class MinigameSimulView implements View {
           this.angleTrackX,
           this.angleTrackWidth,
           this.angleMin,
-          this.angleMax,
-        ),
+          this.angleMax
+        )
       );
     }
     this.group.getLayer()?.draw();
@@ -418,7 +418,7 @@ export class MinigameSimulView implements View {
     trackX: number,
     trackW: number,
     min: number,
-    max: number,
+    max: number
   ): number {
     const t = (value - min) / (max - min);
     return trackX + t * trackW;
@@ -430,7 +430,7 @@ export class MinigameSimulView implements View {
     trackW: number,
     min: number,
     max: number,
-    step: number,
+    step: number
   ): number {
     const t = (x - trackX) / trackW;
     const raw = min + t * (max - min);
@@ -445,7 +445,7 @@ export class MinigameSimulView implements View {
       this.speedTrackWidth,
       this.speedMin,
       this.speedMax,
-      this.speedStep,
+      this.speedStep
     );
     if (this.lastSpeedValue !== v) {
       const delta = v - this.currentSpeed;
@@ -461,7 +461,7 @@ export class MinigameSimulView implements View {
       this.angleTrackWidth,
       this.angleMin,
       this.angleMax,
-      this.angleStep,
+      this.angleStep
     );
     if (this.lastAngleValue !== v) {
       const delta = v - this.currentAngle;
@@ -492,7 +492,7 @@ export class MinigameSimulView implements View {
     x: number,
     y: number,
     width: number,
-    height: number,
+    height: number
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 
