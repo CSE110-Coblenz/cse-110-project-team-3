@@ -1,0 +1,138 @@
+import Konva from "konva";
+import { SIMULATION_CONSTANTS, STAGE_WIDTH } from "../../../constants";
+import type { ScreenSwitcher } from "../../../types";
+import { MinigameController } from "../../../types";
+import { Minigame1SimulModel } from "./Minigame1SimulModel";
+import { Minigame1SimulView } from "./Minigame1SimulView";
+
+const STARTING_X = 50;
+
+export class Minigame1SimulController extends MinigameController {
+  private view: Minigame1SimulView;
+  private screenSwitcher: ScreenSwitcher;
+  private model: Minigame1SimulModel;
+  private lives: number = 3;
+  private level: number;
+
+  constructor(screenSwitcher: ScreenSwitcher, level: number) {
+    super();
+    this.screenSwitcher = screenSwitcher;
+    this.level = level;
+
+    // Randomize target distance each game
+    const minDistance = 100;
+    const maxDistance = STAGE_WIDTH - STARTING_X - 100;
+    const distancePixels =
+      Math.floor(Math.random() * (maxDistance - minDistance + 1)) + minDistance;
+
+    this.model = new Minigame1SimulModel(
+      10,
+      0.1, // Friction coefficient
+      9.8, // Gravity (still in m/s^2, but will be used to calculate pixel acceleration)
+      distancePixels, // distance in pixels
+      1, // Mass
+      SIMULATION_CONSTANTS.error_margin * 2, // error margin in pixels
+    );
+
+    this.view = new Minigame1SimulView(
+      () => this.playSimulation(),
+      () => this.resetSimulation(),
+      this.model.getDistanceX(),
+      this.model.getMass(),
+      this.model.getFrictionCoefficient(),
+      this.model.getInitialSpeed(),
+      (delta) => this.adjustSpeed(delta),
+    );
+  }
+
+  private adjustSpeed(delta: number): void {
+    const current = this.model.getInitialSpeed();
+    this.model.setInitialSpeed(current + delta);
+    this.view.setSpeedDisplay(this.model.getInitialSpeed());
+  }
+
+  resetSimulation(): void {
+    const box = this.view.getBox();
+    box.position({
+      x: STARTING_X,
+      y: SIMULATION_CONSTANTS.ground_level - 50,
+    });
+    this.view.getGroup().getLayer()?.draw();
+
+    // After reset, allow playing again
+    this.view.hideResetButton();
+    if (this.lives > 0) this.view.showPlayButton();
+    console.log("Simulation reset.");
+  }
+
+  playSimulation(): void {
+    if (this.lives <= 0) {
+      console.log("No lives left. Game over.");
+      return;
+    }
+
+    const initialSpeedValue = this.model.getInitialSpeed();
+    if (initialSpeedValue <= 0) {
+      console.log("Initial speed must be greater than 0 to play.");
+      return;
+    }
+
+    const box = this.view.getBox();
+    box.show();
+    this.view.getGroup().getLayer()?.draw();
+    const initialX = box.x();
+
+    const initialSpeed = initialSpeedValue;
+    const friction = this.model.getFrictionCoefficient();
+    const gravity = this.model.getGravity();
+    const acceleration = -friction * gravity; // a = -mu * g, assuming gravity is scaled to pixels
+
+    // Hide play to prevent multiple concurrent plays
+    this.view.hidePlayButton();
+
+    const animation = new Konva.Animation((frame) => {
+      if (!frame) return;
+      const t = (frame.time / 1000) * SIMULATION_CONSTANTS.speed_multiplier;
+
+      const distance = initialSpeed * t + 0.5 * acceleration * t * t;
+      const currentVelocity = initialSpeed + acceleration * t;
+
+      box.x(initialX + distance);
+
+      // Stop animation when the box stops
+      if (currentVelocity <= 0) {
+        animation.stop();
+        const finalDistance = box.x() - initialX;
+
+        if (this.model.isHit(finalDistance)) {
+          console.log("Hit the target!");
+          this.screenSwitcher.switchToScreen({
+            type: "minigame",
+            screen: "completed",
+            level: this.level,
+          });
+        } else {
+          console.log("Missed the target.");
+          this.lives = Math.max(0, this.lives - 1);
+          this.view.setLives(this.lives);
+          if (this.lives <= 0) {
+            console.log("Game Over");
+            this.screenSwitcher.switchToScreen({
+              type: "minigame",
+              screen: "gameover",
+              level: this.level,
+            });
+            return;
+          }
+        }
+        this.view.addResetButton();
+      }
+    }, this.view.getGroup().getLayer());
+
+    animation.start();
+  }
+
+  getView(): Minigame1SimulView {
+    return this.view;
+  }
+}
