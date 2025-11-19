@@ -20,7 +20,7 @@ export type Screen =
   | { type: "rules" }
   | { type: "level" }
   | { type: "map" }
-  | { type: "reference" }
+  | { type: "reference"; returnTo?: Screen }
   | { type: "topic"; level: "friction" | "projectile motion" }
   | {
       type: "minigame";

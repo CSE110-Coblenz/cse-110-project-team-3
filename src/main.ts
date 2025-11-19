@@ -122,6 +122,9 @@ class App implements ScreenSwitcher {
         this.rulesScreenController.getView().show();
         break;
       case "reference":
+        if (screen.returnTo) {
+          this.referenceScreenController.setReturnTo(screen.returnTo);
+        }
         this.referenceScreenController.getView().show();
         break;
       case "topic":
