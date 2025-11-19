@@ -21,12 +21,10 @@ export class SimulationScreenController extends ScreenController {
   }
 
   private handleBackClick = () => {
-    console.log("Simulation: BACK clicked");
     this.screenSwitcher.switchToScreen(this.config.navigation.backScreen);
   };
 
   private handleNextClick = () => {
-    console.log("Simulation: NEXT clicked");
     this.screenSwitcher.switchToScreen(this.config.navigation.nextScreen);
   };
 

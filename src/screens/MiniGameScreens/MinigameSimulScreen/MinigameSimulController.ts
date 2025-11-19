@@ -75,7 +75,6 @@ export class MinigameSimulController extends MinigameController {
     // After reset, allow playing again
     this.view.hideResetButton();
     if (this.lives > 0) this.view.showPlayButton();
-    console.log("Simulation reset.");
   }
 
   handleReferenceClick(): void {

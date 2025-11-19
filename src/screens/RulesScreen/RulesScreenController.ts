@@ -12,7 +12,6 @@ export class RulesScreenController extends ScreenController {
     this.screenSwitcher = screenSwitcher;
   }
   private handleExitClick = () => {
-    console.log("Exit button clicked");
     this.screenSwitcher.switchToScreen({ type: "map" });
   };
 

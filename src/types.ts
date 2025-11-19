@@ -73,18 +73,15 @@ export abstract class MinigameController extends ScreenController {
 
   protected handleHit(hit: boolean): void {
     if (hit) {
-      console.log("Hit the target!");
       this.screenSwitcher.switchToScreen({
         type: "minigame",
         screen: "completed",
         level: this.level,
       });
     } else {
-      console.log("Missed the target.");
       this.lives = Math.max(0, this.lives - 1);
       this.getView().setLives(this.lives);
       if (this.lives <= 0) {
-        console.log("Game Over");
         this.screenSwitcher.switchToScreen({
           type: "minigame",
           screen: "gameover",

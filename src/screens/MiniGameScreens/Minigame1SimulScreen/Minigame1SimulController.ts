@@ -56,7 +56,6 @@ export class Minigame1SimulController extends MinigameController {
     // After reset, allow playing again
     this.view.hideResetButton();
     if (this.lives > 0) this.view.showPlayButton();
-    console.log("Simulation reset.");
   }
 
   playSimulation(): void {
@@ -67,7 +66,6 @@ export class Minigame1SimulController extends MinigameController {
 
     const initialSpeedValue = this.model.getInitialSpeed();
     if (initialSpeedValue <= 0) {
-      console.log("Initial speed must be greater than 0 to play.");
       return;
     }
 

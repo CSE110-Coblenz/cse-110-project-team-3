@@ -18,7 +18,6 @@ export class MapScreenController extends ScreenController {
   }
 
   private handleNodeClick = (level: string) => {
-    console.log(`Node ${level} clicked`);
     switch (level) {
       case "1":
         this.screenSwitcher.switchToScreen({
@@ -42,12 +41,10 @@ export class MapScreenController extends ScreenController {
   };
 
   private handleReferenceClick = () => {
-    console.log("Reference button clicked");
     this.screenSwitcher.switchToScreen({ type: "reference" });
   };
 
   private handleRulesClick = () => {
-    console.log("Rules button clicked");
     this.screenSwitcher.switchToScreen({ type: "rules" });
   };
 
