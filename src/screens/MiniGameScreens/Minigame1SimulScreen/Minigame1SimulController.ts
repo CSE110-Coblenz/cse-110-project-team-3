@@ -21,8 +21,8 @@ export class Minigame1SimulController extends MinigameController {
     this.model = new Minigame1SimulModel(
       10,
       0.3, // Friction coefficient
-      9.8, // Gravity (still in m/s^2, but will be used to calculate pixel acceleration)
-      distancePixels, // distance in pixels
+      9.8, // Gravity
+      distancePixels, // distances
       1, // Mass
       SIMULATION_CONSTANTS.error_margin * 2, // error margin in pixels
     );

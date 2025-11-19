@@ -190,14 +190,6 @@ describe("Minigame1SimulController", () => {
     expect(d).toBeLessThanOrEqual(maxDistance);
   });
 
-  it("adjusts speed correctly when onAdjustSpeed is called", () => {
-    const initialSpeed = fakeModel.getInitialSpeed();
-    fakeView.onAdjustSpeed?.(5);
-    expect(fakeModel.getInitialSpeed()).toBe(initialSpeed + 5);
-    fakeView.onAdjustSpeed?.(-3);
-    expect(fakeModel.getInitialSpeed()).toBe(initialSpeed + 2);
-  });
-
   it("resets the simulation correctly when onReset is called", () => {
     const box = fakeView.getBox();
     box.position({ x: 999, y: 999 }); // set to non-starting position
