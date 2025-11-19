@@ -1,16 +1,19 @@
 import Konva from "konva";
-import type { View } from "../../types";
+import type { View, NavButton } from "../../types";
 import {
   COLORS,
   STAGE_HEIGHT,
   STAGE_WIDTH,
   FONT_FAMILY,
 } from "../../constants";
+import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
+import { RulesScreenNavigationButtons } from "../../configs/NavigationButtons/Rules.ts";
+
 
 export class RulesScreenView implements View {
   private group: Konva.Group;
 
-  constructor(handleExitClick?: () => void) {
+  constructor(handleButtonClick?: (buttonId: string) => void) {
     this.group = new Konva.Group();
 
     // Layout constants to match the mock
@@ -103,61 +106,13 @@ export class RulesScreenView implements View {
       cursorY += h + ITEM_GAP;
     });
 
-    const BTN_W = 180;
-    const BTN_H = 60;
-    const exitBtn = this.createPillButton(
-      "EXIT",
-      (STAGE_WIDTH - BTN_W) / 2,
-      STAGE_HEIGHT - 100,
-      BTN_W,
-      BTN_H,
-    );
-    if (handleExitClick) {
-      exitBtn.on("click", handleExitClick);
+    // Create navigation buttons from configuration
+    if (handleButtonClick) {
+      RulesScreenNavigationButtons.forEach((buttonConfig: NavButton) => {
+        const button = createKonvaButton(buttonConfig, handleButtonClick);
+        this.group.add(button);
+      });
     }
-    this.group.add(exitBtn);
-  }
-
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const r = Math.min(height / 2 + 6, 24);
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: r,
-      fill: COLORS.buttonFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
-      shadowBlur: 8,
-    });
-
-    const text = new Konva.Text({
-      x: 0,
-      y: 0,
-      width,
-      height,
-      text: label,
-      fill: COLORS.buttonText,
-      fontSize: 32,
-      fontStyle: "bold",
-      align: "center",
-      verticalAlign: "middle",
-      horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
-    });
-
-    g.add(rect, text);
-
-    return g;
   }
 
   getGroup(): Konva.Group {

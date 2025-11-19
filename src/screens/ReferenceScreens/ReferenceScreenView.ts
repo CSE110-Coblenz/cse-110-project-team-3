@@ -1,11 +1,13 @@
 import Konva from "konva";
-import type { View } from "../../types.ts";
+import type { View, NavButton } from "../../types.ts";
 import {
   COLORS,
   STAGE_HEIGHT,
   STAGE_WIDTH,
   FONT_FAMILY,
 } from "../../constants";
+import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
+import { ReferenceScreenNavigationButtons } from "../../configs/NavigationButtons/Reference.ts";
 
 /*
 ReferenceScreenView makes the reference screen view
@@ -13,7 +15,7 @@ ReferenceScreenView makes the reference screen view
 export class ReferenceScreenView implements View {
   private group: Konva.Group;
 
-  constructor(handleExitClick?: () => void) {
+  constructor(handleButtonClick?: (buttonId: string) => void) {
     this.group = new Konva.Group({ visible: true });
 
     //background
@@ -39,6 +41,7 @@ export class ReferenceScreenView implements View {
     });
     titleText.offsetX(titleText.width() / 2);
     this.group.add(titleText);
+
     // middle text
     const referencesText = new Konva.Text({
       x: STAGE_WIDTH / 2,
@@ -53,60 +56,13 @@ export class ReferenceScreenView implements View {
     referencesText.offsetY(referencesText.height() / 2);
     this.group.add(referencesText);
 
-    const exitBtn = this.createPillButton(
-      "EXIT",
-      STAGE_WIDTH - 192,
-      STAGE_HEIGHT - 96,
-      160,
-      64,
-    );
-
-    // Exit button click handler
-    if (handleExitClick) {
-      exitBtn.on("click", handleExitClick);
+    // Create navigation buttons from configuration
+    if (handleButtonClick) {
+      ReferenceScreenNavigationButtons.forEach((buttonConfig: NavButton) => {
+        const button = createKonvaButton(buttonConfig, handleButtonClick);
+        this.group.add(button);
+      });
     }
-    this.group.add(exitBtn);
-  }
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const r = Math.min(height / 2 + 6, 24);
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: r,
-      fill: COLORS.buttonFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
-      shadowBlur: 8,
-    });
-
-    const text = new Konva.Text({
-      x: 0,
-      y: 0,
-      width,
-      height,
-      text: label,
-      fill: COLORS.buttonText,
-      fontSize: 32,
-      fontStyle: "bold",
-      align: "center",
-      verticalAlign: "middle",
-      horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
-    });
-
-    g.add(rect, text);
-
-    return g;
   }
 
   /*

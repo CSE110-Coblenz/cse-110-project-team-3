@@ -1,6 +1,7 @@
 import { ScreenController } from "../../types.ts";
 import type { ScreenSwitcher, Screen } from "../../types.ts";
 import { ReferenceScreenView } from "./ReferenceScreenView.ts";
+import { ReferenceScreenNavigationButtons } from "../../configs/NavigationButtons/Reference.ts";
 
 /*
 ReferenceController handles the reference screen interactions
@@ -14,7 +15,9 @@ export class ReferenceScreenController extends ScreenController {
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
     this.screenSwitcher = screenSwitcher;
-    this.view = new ReferenceScreenView(() => this.handleExitClick());
+    this.view = new ReferenceScreenView((buttonId: string) =>
+      this.handleButtonClick(buttonId)
+    );
   }
 
   /*
@@ -25,11 +28,30 @@ export class ReferenceScreenController extends ScreenController {
   }
 
   /*
-    Handles the exit button click to be implemented after game view is implemented?
+    Handles button clicks based on configuration
     */
-  private handleExitClick(): void {
-    this.screenSwitcher.switchToScreen(this.currentReturnTo);
-  }
+  private handleButtonClick = (buttonId: string) => {
+    console.log(`Button ${buttonId} clicked`);
+
+    // Find the button configuration
+    const buttonConfig = ReferenceScreenNavigationButtons.find(
+      (btn) => btn.id === buttonId
+    );
+
+    if (!buttonConfig) {
+      console.warn(`No configuration found for button: ${buttonId}`);
+      return;
+    }
+
+    // Special handling for exit button - use currentReturnTo instead of config target
+    if (buttonId === "exit") {
+      this.screenSwitcher.switchToScreen(this.currentReturnTo);
+      return;
+    }
+
+    // For other buttons, navigate to the target screen from config
+    this.screenSwitcher.switchToScreen(buttonConfig.target);
+  };
 
   /*
     Gets the reference screen view

@@ -1,11 +1,13 @@
 import Konva from "konva";
-import type { View } from "../../types";
+import type { View, NavButton } from "../../types";
 import {
   COLORS,
   STAGE_HEIGHT,
   STAGE_WIDTH,
   FONT_FAMILY,
 } from "../../constants";
+import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
+import { MapScreenNavigationButtons } from "../../configs/NavigationButtons/Map.ts";
 
 type NodeDescription = {
   group: Konva.Group;
@@ -19,9 +21,7 @@ export class MapScreenView implements View {
   private group: Konva.Group;
 
   constructor(
-    handleReferenceClick?: () => void,
-    handleRulesClick?: () => void,
-    handleExitClick?: () => void,
+    handleButtonClick?: (buttonId: string) => void,
     handleNodeClick?: (level: string) => void,
   ) {
     this.group = new Konva.Group();
@@ -62,40 +62,6 @@ export class MapScreenView implements View {
       handleNodeClick,
     );
 
-    // Level Buttons
-    const refBtn = this.createPillButton(
-      "REFERENCE",
-      STAGE_WIDTH - 260,
-      24,
-      220,
-      64,
-    );
-    const rulesBtn = this.createPillButton(
-      "RULES",
-      32,
-      STAGE_HEIGHT - 92,
-      160,
-      64,
-    );
-    const exitBtn = this.createPillButton(
-      "EXIT",
-      STAGE_WIDTH - 192,
-      STAGE_HEIGHT - 96,
-      160,
-      64,
-    );
-
-    // Link handle clicks
-    if (handleReferenceClick) {
-      refBtn.on("click", handleReferenceClick);
-    }
-    if (handleRulesClick) {
-      rulesBtn.on("click", handleRulesClick);
-    }
-    if (handleExitClick) {
-      exitBtn.on("click", handleExitClick);
-    }
-
     // Arrows (add BEFORE nodes so nodes sit on top)
     const arrowAB = this.createArrow(
       nodeA.x + nodeA.width,
@@ -110,10 +76,19 @@ export class MapScreenView implements View {
       nodeC.y + nodeC.height / 2,
     );
 
-    // Add all elements to the main group
-    this.group.add(refBtn, rulesBtn, exitBtn);
-    this.group.add(nodeA.group, nodeB.group, nodeC.group);
+    // Add arrows
     this.group.add(arrowAB, arrowBC);
+
+    // Add nodes
+    this.group.add(nodeA.group, nodeB.group, nodeC.group);
+
+    // Create navigation buttons from configuration
+    if (handleButtonClick) {
+      MapScreenNavigationButtons.forEach((buttonConfig: NavButton) => {
+        const button = createKonvaButton(buttonConfig, handleButtonClick);
+        this.group.add(button);
+      });
+    }
   }
 
   private createNode(
@@ -174,48 +149,6 @@ export class MapScreenView implements View {
     }
 
     return { group, x, y, height, width };
-  }
-
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const r = Math.min(height / 2 + 6, 24);
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: r,
-      fill: COLORS.buttonFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
-      shadowBlur: 8,
-    });
-
-    const text = new Konva.Text({
-      x: 0,
-      y: 0,
-      width,
-      height,
-      text: label,
-      fill: COLORS.buttonText,
-      fontSize: 32,
-      fontStyle: "bold",
-      align: "center",
-      verticalAlign: "middle",
-      horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
-    });
-
-    g.add(rect, text);
-
-    return g;
   }
 
   private createArrow(

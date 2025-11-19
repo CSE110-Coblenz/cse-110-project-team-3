@@ -1,6 +1,7 @@
 import type { ScreenSwitcher } from "../../types";
 import { ScreenController } from "../../types";
 import { MapScreenView } from "./MapView";
+import { MapScreenNavigationButtons } from "../../configs/NavigationButtons/Map.ts";
 
 export class MapScreenController extends ScreenController {
   private view: MapScreenView;
@@ -9,13 +10,28 @@ export class MapScreenController extends ScreenController {
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
     this.view = new MapScreenView(
-      () => this.handleReferenceClick(),
-      () => this.handleRulesClick(),
-      () => this.handleExitClick(),
+      (buttonId: string) => this.handleButtonClick(buttonId),
       (level: string) => this.handleNodeClick(level),
     );
     this.screenSwitcher = screenSwitcher;
   }
+
+  private handleButtonClick = (buttonId: string) => {
+    console.log(`Button ${buttonId} clicked`);
+    
+    // Find the button configuration
+    const buttonConfig = MapScreenNavigationButtons.find(
+      (btn) => btn.id === buttonId
+    );
+
+    if (!buttonConfig) {
+      console.warn(`No configuration found for button: ${buttonId}`);
+      return;
+    }
+
+    // Navigate to the target screen
+    this.screenSwitcher.switchToScreen(buttonConfig.target);
+  };
 
   private handleNodeClick = (level: string) => {
     switch (level) {
@@ -38,18 +54,6 @@ export class MapScreenController extends ScreenController {
           level: 1,
         });
     }
-  };
-
-  private handleReferenceClick = () => {
-    this.screenSwitcher.switchToScreen({ type: "reference" });
-  };
-
-  private handleRulesClick = () => {
-    this.screenSwitcher.switchToScreen({ type: "rules" });
-  };
-
-  private handleExitClick = () => {
-    console.log("Exit button clicked");
   };
 
   getView(): MapScreenView {

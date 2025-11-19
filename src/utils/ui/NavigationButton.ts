@@ -3,16 +3,14 @@ import { NAVIGATION_BUTTON_DEFAULT_STYLES, STAGE_WIDTH, STAGE_HEIGHT } from "../
 import type { NavButton } from "../../types";
 
 /**
- * Creates a Konva button group with hover effects
+ * Creates a Konva button group with hover effects (pill-button style)
  * @param config Button configuration
  * @returns Konva.Group containing the button
  */
 export function createKonvaButton(config: NavButton, onClick: (buttonId: string) => void): Konva.Group {
-    const buttonGroup = new Konva.Group();
-
     // Calculate button dimensions
-    const buttonWidth = NAVIGATION_BUTTON_DEFAULT_STYLES.width;
-    const buttonHeight = NAVIGATION_BUTTON_DEFAULT_STYLES.height;
+    const buttonWidth = config.style?.width || NAVIGATION_BUTTON_DEFAULT_STYLES.width;
+    const buttonHeight = config.style?.height || NAVIGATION_BUTTON_DEFAULT_STYLES.height;
 
     // Calculate position
     let xPos = STAGE_WIDTH / 2; // Default center
@@ -25,51 +23,56 @@ export function createKonvaButton(config: NavButton, onClick: (buttonId: string)
         yPos = config.position.y * STAGE_HEIGHT;
     }
 
-    // Create button rectangle
+    const buttonGroup = new Konva.Group({ x: xPos, y: yPos });
+
+    // Use config styles or fall back to defaults, matching SimulationScreenView
+    const baseFill = config.style?.fill || NAVIGATION_BUTTON_DEFAULT_STYLES.fill;
+    const strokeColor = config.style?.stroke || NAVIGATION_BUTTON_DEFAULT_STYLES.stroke;
+    const textFill = config.style?.textFill || NAVIGATION_BUTTON_DEFAULT_STYLES.textFill;
+
+    // Create pill-shaped button rectangle with shadow
     const buttonRect = new Konva.Rect({
-        x: xPos - buttonWidth / 2,
-        y: yPos,
         width: buttonWidth,
         height: buttonHeight,
-        fill: NAVIGATION_BUTTON_DEFAULT_STYLES.fill,
-        stroke: NAVIGATION_BUTTON_DEFAULT_STYLES.stroke,
-        strokeWidth: NAVIGATION_BUTTON_DEFAULT_STYLES.strokeWidth,
-        cornerRadius: NAVIGATION_BUTTON_DEFAULT_STYLES.cornerRadius,
+        cornerRadius: Math.min(buttonHeight / 2 + 6, 24), // Pill shape like SimulationScreenView
+        fill: baseFill,
+        stroke: strokeColor,
+        strokeWidth: 4,
+        shadowColor: "#000",
+        shadowOpacity: 0.15,
+        shadowBlur: 8,
     });
 
-    // Create button text
+    // Create button text with centered alignment
     const buttonText = new Konva.Text({
-        x: xPos,
-        y: yPos + buttonHeight / 2,
+        width: buttonWidth,
+        height: buttonHeight,
         text: config.label,
+        fill: textFill,
         fontSize: NAVIGATION_BUTTON_DEFAULT_STYLES.fontSize,
-        fontFamily: NAVIGATION_BUTTON_DEFAULT_STYLES.fontFamily,
-        fill: NAVIGATION_BUTTON_DEFAULT_STYLES.textFill,
+        fontStyle: "bold",
         align: "center",
+        verticalAlign: "middle",
+        fontFamily: NAVIGATION_BUTTON_DEFAULT_STYLES.fontFamily,
     });
-
-    // Center text
-    buttonText.offsetX(buttonText.width() / 2);
-    buttonText.offsetY(buttonText.height() / 2);
 
     // Add elements to group
     buttonGroup.add(buttonRect);
     buttonGroup.add(buttonText);
 
-    // Add hover effects
+    // Add hover effects matching SimulationScreenView style
     buttonGroup.on("mouseenter", () => {
+        if (buttonGroup.getAttr("disabled") || buttonGroup.getAttr("locked")) return;
         document.body.style.cursor = "pointer";
-        buttonRect.shadowEnabled(true);
-        buttonRect.shadowBlur(10);
-        buttonRect.shadowColor("black");
-        buttonRect.shadowOpacity(0.3);
-        buttonGroup.getLayer()?.draw();
+        buttonRect.fill("white");
+        buttonGroup.getLayer()?.batchDraw();
     });
 
     buttonGroup.on("mouseleave", () => {
+        if (buttonGroup.getAttr("disabled") || buttonGroup.getAttr("locked")) return;
         document.body.style.cursor = "default";
-        buttonRect.shadowEnabled(false);
-        buttonGroup.getLayer()?.draw();
+        buttonRect.fill(baseFill);
+        buttonGroup.getLayer()?.batchDraw();
     });
 
     // Wire up click handler if provided

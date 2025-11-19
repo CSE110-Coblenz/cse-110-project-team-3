@@ -6,8 +6,8 @@ export const FrictionTopicNavigationButtons: NavButton[] = [
       label: "Back",
       target: { type: "map" },
       position: {
-        x: 0.225,
-        y: 0.725,
+        x: 0.05,
+        y: 0.85,
       },
     },
 
@@ -17,8 +17,8 @@ export const FrictionTopicNavigationButtons: NavButton[] = [
       target: { type: "simulation", topic: "friction", level: "lev1" },
 
       position: {
-        x: 0.775,
-        y: 0.725,
+        x: 0.7,
+        y: 0.85,
       },
     },
   ]
@@ -29,8 +29,8 @@ export const ProjMotionTopicNavigationButtons: NavButton[] = [
       label: "Back",
       target: { type: "map" },
       position: {
-        x: 0.225,
-        y: 0.725,
+        x: 0.05,
+        y: 0.85,
       },
     },
     {
@@ -38,8 +38,8 @@ export const ProjMotionTopicNavigationButtons: NavButton[] = [
       label: "Simulation",
       target: { type: "simulation", topic: "projectile motion", level: "lev2" },
       position: {
-        x: 0.775,
-        y: 0.725,
+        x: 0.7,
+        y: 0.85,
       },
     },
   ]
