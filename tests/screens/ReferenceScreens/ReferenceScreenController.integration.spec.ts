@@ -13,7 +13,7 @@ vi.mock("konva", () => createKonvaMock());
 // Helper: DFS to find a Group that contains a FakeText child with given label
 function findGroupWithText(
   root: FakeGroup,
-  label: string
+  label: string,
 ): FakeGroup | undefined {
   const stack: FakeNode[] = [root];
 
@@ -22,7 +22,7 @@ function findGroupWithText(
     if (!(node instanceof FakeGroup)) continue;
 
     const hasText = node.children.some(
-      (c) => c instanceof FakeText && c.config.text === label
+      (c) => c instanceof FakeText && c.config.text === label,
     );
     if (hasText) return node;
 
@@ -50,7 +50,8 @@ describe("ReferenceScreenController Integration Test", () => {
     const rootGroup = view.getGroup() as unknown as FakeGroup;
 
     const titleText = rootGroup.children.find(
-      (child) => child instanceof FakeText && child.config.text === "References"
+      (child) =>
+        child instanceof FakeText && child.config.text === "References",
     ) as FakeText;
     expect(titleText).toBeDefined();
     expect(titleText.text()).toBe("References");

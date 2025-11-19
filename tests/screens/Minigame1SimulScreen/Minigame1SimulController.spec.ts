@@ -118,7 +118,7 @@ vi.mock(
       _g: number,
       distancePixels: number,
       _mass: number,
-      _errorMargin: number
+      _errorMargin: number,
     ) {
       // sync the singleton fakeModel with constructor args
       fakeModel.distanceX = distancePixels;
@@ -130,7 +130,7 @@ vi.mock(
     return {
       Minigame1SimulModel: vi.fn(FakeMinigame1SimulModel),
     };
-  }
+  },
 );
 
 // Mock view module
@@ -144,7 +144,7 @@ vi.mock(
       _mass: number,
       _mu: number,
       initialSpeed: number,
-      adjustSpeed: (delta: number) => void
+      adjustSpeed: (delta: number) => void,
     ) {
       fakeView.onPlay = onPlay;
       fakeView.onReset = onReset;
@@ -156,7 +156,7 @@ vi.mock(
     return {
       Minigame1SimulView: vi.fn(FakeMinigame1SimulView),
     };
-  }
+  },
 );
 
 import { Minigame1SimulController } from "../../../src/screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController";
