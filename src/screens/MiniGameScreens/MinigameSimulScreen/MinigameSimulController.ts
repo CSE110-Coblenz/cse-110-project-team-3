@@ -45,6 +45,7 @@ export class MinigameSimulController extends ScreenController {
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
       () => this.resetSimulation(),
+      () => this.handleReferenceClick(),
       this.model.getDistanceX(),
       this.model.getInitialHeight(),
       this.model.getInitialSpeed(),
@@ -79,6 +80,13 @@ export class MinigameSimulController extends ScreenController {
     this.view.hideResetButton();
     if (this.lives > 0) this.view.showPlayButton();
     console.log("Simulation reset.");
+  }
+
+  handleReferenceClick(): void {
+    this.screenSwitcher.switchToScreen({
+      type: "reference",
+      returnTo: { type: "minigame", screen: "simulation", level: this.level },
+    });
   }
 
   playSimulation(): void {
