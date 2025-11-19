@@ -42,6 +42,7 @@ export class MinigameSimulView implements View {
   constructor(
     handlePlay?: () => void,
     handleReset?: () => void,
+    handleReferenceClick?: () => void,
     distanceX: number = 0,
     height: number = 0,
     initialSpeed: number = 0,
@@ -327,6 +328,20 @@ export class MinigameSimulView implements View {
     }
     this.group.add(this.playButton);
 
+    // Add Reference Button
+    const referenceButton = this.createPillButton(
+      "REFERENCE",
+      20,
+      STAGE_HEIGHT - 80,
+      200,
+      55,
+    );
+    if (handleReferenceClick) {
+      referenceButton.on("click", handleReferenceClick);
+    }
+    this.group.add(referenceButton);
+
+    // Add Reset Button (initially hidden)
     this.resetButton = this.createPillButton(
       "RESET",
       STAGE_WIDTH - 150,

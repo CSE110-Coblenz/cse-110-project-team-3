@@ -1,5 +1,5 @@
 import { ScreenController } from "../../types.ts";
-import type { ScreenSwitcher } from "../../types.ts";
+import type { ScreenSwitcher, Screen } from "../../types.ts";
 import { ReferenceScreenView } from "./ReferenceScreenView.ts";
 
 /*
@@ -9,6 +9,7 @@ ReferenceController handles the reference screen interactions
 export class ReferenceScreenController extends ScreenController {
   private view: ReferenceScreenView;
   private screenSwitcher: ScreenSwitcher;
+  private currentReturnTo: Screen = { type: "map" }; // Default return to map
 
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
@@ -17,10 +18,17 @@ export class ReferenceScreenController extends ScreenController {
   }
 
   /*
+    Sets the screen to return to when the exit button is clicked.
+    */
+  public setReturnTo(screen: Screen): void {
+    this.currentReturnTo = screen;
+  }
+
+  /*
     Handles the exit button click to be implemented after game view is implemented?
     */
   private handleExitClick(): void {
-    this.screenSwitcher.switchToScreen({ type: "map" });
+    this.screenSwitcher.switchToScreen(this.currentReturnTo);
   }
 
   /*

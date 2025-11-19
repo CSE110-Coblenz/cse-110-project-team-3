@@ -33,11 +33,14 @@ describe("ReferenceScreenController", () => {
   it("switches to map screen when exit button is clicked", () => {
     lastClickHandler();
 
-    // expect(switchToScreen).toHaveBeenCalledWith({ type: "map" });
+    expect(switchToScreen).toHaveBeenCalledWith({ type: "map" });
   });
 
-  it("returns the ReferenceScreenView instance", () => {
-    const view = controller.getView();
-    expect(view).toBeInstanceOf(Object); // We mocked ReferenceScreenView, so we check for Object
+  it("switches to the screen specified by setReturnTo when exit button is clicked", () => {
+    const minigameScreen = { type: "minigame", level: 1 };
+    controller.setReturnTo(minigameScreen);
+    lastClickHandler();
+
+    expect(switchToScreen).toHaveBeenCalledWith(minigameScreen);
   });
 });
