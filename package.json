@@ -20,7 +20,7 @@
     "vitest": "^4.0.8"
   },
   "dependencies": {
-    "konva": "^10.0.8",
+    "konva": "10.0.8",
     "vite": "^7.1.12"
   },
   "description": "Fresh repository with main branch.",
