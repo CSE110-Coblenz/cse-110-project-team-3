@@ -3,6 +3,7 @@ import {
   COLORS,
   SIMULATION_CONSTANTS,
   STAGE_WIDTH,
+  STAGE_HEIGHT,
   FONT_FAMILY,
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
@@ -182,8 +183,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
         this.currentAngle,
         this.angleTrackX,
         this.angleTrackWidth,
-        this.angleMin,
-        this.angleMax
+        SIMULATION_CONSTANTS.angle_min,
+        SIMULATION_CONSTANTS.angle_max
       ),
       y: this.angleTrackY + 3,
       radius: 10,
@@ -355,8 +356,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
           intVal,
           this.speedTrackX,
           this.speedTrackWidth,
-          this.speedMin,
-          this.speedMax
+          SIMULATION_CONSTANTS.projectile_speed_min,
+          SIMULATION_CONSTANTS.projectile_speed_max
         )
       );
     }
@@ -374,8 +375,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
           stepped,
           this.angleTrackX,
           this.angleTrackWidth,
-          this.angleMin,
-          this.angleMax
+          SIMULATION_CONSTANTS.angle_min,
+          SIMULATION_CONSTANTS.angle_max
         )
       );
     }
@@ -387,9 +388,9 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       this.speedKnob.x(),
       this.speedTrackX,
       this.speedTrackWidth,
-      this.speedMin,
-      this.speedMax,
-      this.speedStep
+      SIMULATION_CONSTANTS.projectile_speed_min,
+      SIMULATION_CONSTANTS.projectile_speed_max,
+      SIMULATION_CONSTANTS.speed_step
     );
     if (this.lastSpeedValue !== v) {
       const delta = v - this.currentSpeed;
@@ -403,9 +404,9 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       this.angleKnob.x(),
       this.angleTrackX,
       this.angleTrackWidth,
-      this.angleMin,
-      this.angleMax,
-      this.angleStep
+      SIMULATION_CONSTANTS.angle_min,
+      SIMULATION_CONSTANTS.angle_max,
+      SIMULATION_CONSTANTS.angle_step
     );
     if (this.lastAngleValue !== v) {
       const delta = v - this.currentAngle;
