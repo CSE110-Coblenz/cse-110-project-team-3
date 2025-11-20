@@ -13,19 +13,26 @@ export class Minigame1SimulController extends MinigameController {
     super(screenSwitcher, level);
 
     // Randomize target distance each game
-    const minDistance = 100;
+    const minDistance = SIMULATION_CONSTANTS.simulation_min_distance_to_target;
     const maxDistance = STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x - 100;
     const distancePixels =
       Math.floor(Math.random() * (maxDistance - minDistance + 1)) + minDistance;
 
+    // Randomize mass and friction coefficient for more variability
+    // Mass between 1 and 15 kg, rounded to 2 decimal places
+    // Friction coefficient between 0.1 and 0.9, rounded to 2 decimal places
+    const mass = Math.round((Math.random() * 14 + 1) * 100) / 100;
+    const frictionCoefficient =
+      Math.round((Math.random() * 0.8 + 0.1) * 100) / 100;
+
     this.model = new Minigame1SimulModel(
-      10,
-      0.3, // Friction coefficient
+      SIMULATION_CONSTANTS.speed_min, // Initial speed
+      frictionCoefficient, // Friction coefficient
       9.8, // Gravity
       distancePixels, // distances
-      1, // Mass
+      mass, // Mass
       75, // Gap X
-      SIMULATION_CONSTANTS.error_margin * 2, // error margin in pixels
+      SIMULATION_CONSTANTS.error_margin, // error margin in pixels
     );
 
     this.view = new Minigame1SimulView(

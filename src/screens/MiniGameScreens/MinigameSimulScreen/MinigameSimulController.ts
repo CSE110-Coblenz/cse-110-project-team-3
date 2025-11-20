@@ -20,7 +20,7 @@ export class MinigameSimulController extends MinigameController {
         STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x + targetHalfWidth - 20,
       ),
     );
-    const minDistance = 200;
+    const minDistance = SIMULATION_CONSTANTS.simulation_min_distance_to_target;
     const distanceX = Math.max(
       minDistance,
       Math.min(
@@ -31,8 +31,8 @@ export class MinigameSimulController extends MinigameController {
     );
 
     this.model = new MinigameSimulModel(
-      0,
-      0,
+      SIMULATION_CONSTANTS.projectile_speed_min,
+      SIMULATION_CONSTANTS.angle_min,
       9.8,
       distanceX,
       0,

@@ -89,7 +89,6 @@ class App implements ScreenSwitcher {
 
     this.layer.add(this.lev1SimulationController.getView().getGroup());
     this.layer.add(this.lev2SimulationController.getView().getGroup());
-    //this.layer.add(this.minigameSimulController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
