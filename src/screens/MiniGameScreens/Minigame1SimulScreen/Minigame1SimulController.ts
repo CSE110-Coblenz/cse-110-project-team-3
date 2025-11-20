@@ -25,7 +25,7 @@ export class Minigame1SimulController extends MinigameController {
       distancePixels, // distances
       1, // Mass
       75, // Gap X
-      SIMULATION_CONSTANTS.error_margin * 2 // error margin in pixels
+      SIMULATION_CONSTANTS.error_margin * 2, // error margin in pixels
     );
 
     this.view = new Minigame1SimulView(
@@ -36,7 +36,7 @@ export class Minigame1SimulController extends MinigameController {
       this.model.getFrictionCoefficient(),
       this.model.getInitialSpeed(),
       this.model.getGapX(),
-      (delta) => this.adjustSpeed(delta)
+      (delta) => this.adjustSpeed(delta),
     );
   }
 

@@ -76,9 +76,7 @@ class FakeModel {
     return this.gapX;
   }
   isHit(distance: number) {
-    return (
-      distance >= this.distanceX && distance <= this.distanceX + this.gapX
-    );
+    return distance >= this.distanceX && distance <= this.distanceX + this.gapX;
   }
 }
 

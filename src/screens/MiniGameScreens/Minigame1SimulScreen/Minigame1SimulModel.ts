@@ -12,7 +12,7 @@ export class Minigame1SimulModel extends BaseMinigameSimulModel {
     distance_x: number,
     mass: number,
     gap_x: number,
-    margin_of_error: number = 5
+    margin_of_error: number = 5,
   ) {
     super(initial_speed, distance_x, margin_of_error, gravity);
     this.friction_coefficient = friction_coefficient;

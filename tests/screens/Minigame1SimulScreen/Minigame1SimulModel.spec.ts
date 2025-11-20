@@ -42,7 +42,15 @@ describe("Minigame1SimulModel", () => {
   describe("isHit", () => {
     const distanceX = 1000;
     const gapX = 50;
-    const model = new Minigame1SimulModel(100, 0.5, 9.81, distanceX, 10, gapX, 10);
+    const model = new Minigame1SimulModel(
+      100,
+      0.5,
+      9.81,
+      distanceX,
+      10,
+      gapX,
+      10,
+    );
 
     it("should return true for a hit at the start of the target range", () => {
       expect(model.isHit(distanceX)).toBe(true);
