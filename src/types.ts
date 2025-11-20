@@ -21,16 +21,16 @@ export type Screen =
   | { type: "level" }
   | { type: "map" }
   | { type: "reference"; returnTo?: Screen }
-  | { type: "topic"; level: "friction" | "projectile motion" }
   | {
       type: "minigame";
       screen: "title" | "rules" | "completed" | "gameover" | "simulation";
       level: number;
     }
+  | { type: "topic"; level: "force" | "friction" | "distance" | "gravity" | "projectile motion" | "trajectory" }
   | {
       type: "simulation";
-      topic: "friction" | "projectile motion";
-      level: "lev1" | "lev2";
+      topic: "force" | "friction" | "distance" | "gravity" | "projectile motion" | "trajectory";
+      level: "lev1" | "lev2" | "lev3" | "lev4" | "lev5" | "lev6";
     };
 
 export type RuleConfig = {

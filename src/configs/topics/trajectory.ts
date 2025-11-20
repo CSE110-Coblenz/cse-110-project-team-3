@@ -1,11 +1,9 @@
 import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
 import { COLORS } from "../../constants";
 
-/**
- * Configuration for the friction topic screen. Find implementation details in "../../screens/TopicScreen/types"
- */
-export const frictionConfig: TopicScreenConfig = {
-  title: "Friction Force",
+
+export const trajectoryConfig: TopicScreenConfig = {
+  title: "Projectile Trajectory",
   description:
     "TODO",
   buttons: [
@@ -26,7 +24,7 @@ export const frictionConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "friction", level: "lev2" },
+      target: { type: "simulation", topic: "trajectory", level: "lev6" },
       position: {
         x: 0.775,
         y: 0.725,

@@ -1,18 +1,16 @@
 import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
 import { COLORS } from "../../constants";
 
-/**
- * Configuration for the friction topic screen. Find implementation details in "../../screens/TopicScreen/types"
- */
-export const frictionConfig: TopicScreenConfig = {
-  title: "Friction Force",
+
+export const gravityConfig: TopicScreenConfig = {
+  title: "Gravity and Vertical Motion",
   description:
     "TODO",
   buttons: [
     {
       id: "back",
       label: "Back",
-      target: { type: "map" },
+      target: { type: "map"},
       position: {
         x: 0.225,
         y: 0.725,
@@ -26,7 +24,7 @@ export const frictionConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "friction", level: "lev2" },
+      target: { type: "simulation", topic: "gravity", level: "lev4" },
       position: {
         x: 0.775,
         y: 0.725,

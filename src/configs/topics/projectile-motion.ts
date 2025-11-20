@@ -6,12 +6,12 @@ import { COLORS } from "../../constants";
  */
 export const projectileMotionConfig: TopicScreenConfig = {
   title: "Projectile Motion",
-  description: "Learn about the principles of projectile motion",
+  description: "TODO",
   buttons: [
     {
       id: "back",
       label: "Back",
-      target: { type: "topic", level: "friction" },
+      target: { type: "map" },
       position: {
         x: 0.225,
         y: 0.725,
@@ -25,7 +25,7 @@ export const projectileMotionConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "topic", level: "friction" },
+      target: { type: "simulation", topic: "projectile motion", level: "lev5" },
       position: {
         x: 0.775,
         y: 0.725,
