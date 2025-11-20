@@ -32,11 +32,18 @@ export class MapScreenController extends ScreenController {
           level: "projectile motion",
         });
         break;
+      case "Game 1":
+        this.screenSwitcher.switchToScreen({
+          type: "minigame",
+          screen: "title",
+          level: 1,
+        });
     }
   };
 
   private handleReferenceClick = () => {
     console.log("Reference button clicked");
+    this.screenSwitcher.switchToScreen({ type: "reference" });
   };
 
   private handleRulesClick = () => {

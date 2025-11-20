@@ -110,4 +110,36 @@ describe("MinigameSimulModel", () => {
     expect(model.isHit(5)).toBe(true); // 5 is within 5 of 10
     expect(model.isHit(15)).toBe(true); // 15 is within 5 of 10
   });
+
+  it("setInitialSpeed should round and clamp to [0, 300]", () => {
+    const model = new MinigameSimulModel(10, 45, 9.81, 100);
+    model.setInitialSpeed(123.4);
+    expect(model.getInitialSpeed()).toBe(123);
+    model.setInitialSpeed(123.5);
+    expect(model.getInitialSpeed()).toBe(124);
+    model.setInitialSpeed(-50);
+    expect(model.getInitialSpeed()).toBe(0);
+    model.setInitialSpeed(999);
+    expect(model.getInitialSpeed()).toBe(300);
+  });
+
+  it("setAngle should round to nearest 5 and clamp to [0, 90]", () => {
+    const model = new MinigameSimulModel(10, 0, 9.81, 100);
+    model.setAngle(32.4); // rounds down to 30
+    expect(model.getAngle()).toBe(30);
+    model.setAngle(32.5); // rounds up to 35
+    expect(model.getAngle()).toBe(35);
+    model.setAngle(-10); // clamps to 0
+    expect(model.getAngle()).toBe(0);
+    model.setAngle(100); // clamps to 90
+    expect(model.getAngle()).toBe(90);
+  });
+
+  it("isHit should honor custom margin_of_error", () => {
+    const model = new MinigameSimulModel(50, 30, 9.81, 100, 0, 1);
+    expect(model.isHit(99)).toBe(true);
+    expect(model.isHit(101)).toBe(true);
+    expect(model.isHit(101.1)).toBe(false);
+    expect(model.isHit(97.9)).toBe(false);
+  });
 });

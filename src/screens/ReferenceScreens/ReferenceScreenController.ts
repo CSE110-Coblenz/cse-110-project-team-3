@@ -20,7 +20,7 @@ export class ReferenceScreenController extends ScreenController {
     Handles the exit button click to be implemented after game view is implemented?
     */
   private handleExitClick(): void {
-    //this.screenSwitcher.switchToScreen({type: "game"});
+    this.screenSwitcher.switchToScreen({ type: "map" });
   }
 
   /*

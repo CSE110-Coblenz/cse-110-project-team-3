@@ -33,7 +33,6 @@ export class MapScreenView implements View {
       width: STAGE_WIDTH,
       height: STAGE_HEIGHT,
       fill: COLORS.bg,
-      cornerRadius: 8,
     });
     this.group.add(background);
 

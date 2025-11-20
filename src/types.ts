@@ -23,11 +23,19 @@ export type Screen =
   | { type: "reference" }
   | { type: "topic"; level: "friction" | "projectile motion" }
   | {
+      type: "minigame";
+      screen: "title" | "rules" | "completed" | "gameover" | "simulation";
+      level: number;
+    }
+  | {
       type: "simulation";
       topic: "friction" | "projectile motion";
       level: "lev1" | "lev2";
-    }
-  | { type: "minigame" };
+    };
+
+export type RuleConfig = {
+  rules: string[];
+};
 
 export abstract class ScreenController {
   abstract getView(): View;
