@@ -24,7 +24,8 @@ export class Minigame1SimulController extends MinigameController {
       9.8, // Gravity
       distancePixels, // distances
       1, // Mass
-      SIMULATION_CONSTANTS.error_margin * 2, // error margin in pixels
+      75, // Gap X
+      SIMULATION_CONSTANTS.error_margin * 2 // error margin in pixels
     );
 
     this.view = new Minigame1SimulView(
@@ -34,7 +35,8 @@ export class Minigame1SimulController extends MinigameController {
       this.model.getMass(),
       this.model.getFrictionCoefficient(),
       this.model.getInitialSpeed(),
-      (delta) => this.adjustSpeed(delta),
+      this.model.getGapX(),
+      (delta) => this.adjustSpeed(delta)
     );
   }
 
@@ -85,8 +87,6 @@ export class Minigame1SimulController extends MinigameController {
     // Show current speed text
     this.view.showCurrentSpeedText();
 
-    const targetDistance = this.model.getDistanceX();
-
     const animation = new Konva.Animation((frame) => {
       if (!frame) return;
       const t = (frame.time / 1000) * SIMULATION_CONSTANTS.speed_multiplier;
@@ -97,18 +97,12 @@ export class Minigame1SimulController extends MinigameController {
       this.view.updateCurrentSpeed(currentVelocity);
       box.x(initialX + distance);
 
-      // Stop animation if block passes target
-      if (box.x() - initialX >= targetDistance) {
-        animation.stop();
-        this.handleHit(true);
-        return;
-      }
-
       // Stop animation when the box stops
       if (currentVelocity <= 0) {
         animation.stop();
         this.view.updateCurrentSpeed(0);
         const finalDistance = box.x() - initialX;
+        console.log(`Final Distance: ${finalDistance.toFixed(2)} m`);
         this.handleHit(this.model.isHit(finalDistance));
       }
     }, this.view.getGroup().getLayer());

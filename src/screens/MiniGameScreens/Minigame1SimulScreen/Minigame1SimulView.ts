@@ -13,6 +13,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
   private onSpeedChange?: (delta: number) => void;
   private currentSpeed: number = 0;
   private currSpeedText: Konva.Text;
+  private gapX: number;
 
   // Slider state
   private speedTrackX = 360;
@@ -28,11 +29,13 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     mass: number = 1,
     friction: number = 0.2,
     initialSpeed: number = 0,
-    onSpeedChange?: (delta: number) => void,
+    gapX: number = 0,
+    onSpeedChange?: (delta: number) => void
   ) {
     super(handlePlay, handleReset);
     this.onSpeedChange = onSpeedChange;
     this.currentSpeed = initialSpeed;
+    this.gapX = gapX;
 
     // Display parameters
     this.speedText = new Konva.Text({
@@ -91,7 +94,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       label: string,
       x: number,
       y: number,
-      onClick?: () => void,
+      onClick?: () => void
     ) => {
       const g = new Konva.Group({ x, y });
       const rect = new Konva.Rect({
@@ -136,7 +139,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
         this.speedTrackX,
         this.speedTrackWidth,
         SIMULATION_CONSTANTS.speed_min,
-        SIMULATION_CONSTANTS.speed_max,
+        SIMULATION_CONSTANTS.speed_max
       ),
       y: this.speedTrackY + 3,
       radius: 10,
@@ -147,7 +150,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       dragBoundFunc: (pos) => {
         const clampedX = Math.max(
           this.speedTrackX,
-          Math.min(pos.x, this.speedTrackX + this.speedTrackWidth),
+          Math.min(pos.x, this.speedTrackX + this.speedTrackWidth)
         );
         return { x: clampedX, y: this.speedTrackY + 3 };
       },
@@ -160,8 +163,8 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       this.speedKnob.x(
         Math.max(
           this.speedTrackX,
-          Math.min(p.x, this.speedTrackX + this.speedTrackWidth),
-        ),
+          Math.min(p.x, this.speedTrackX + this.speedTrackWidth)
+        )
       );
       this.handleSpeedDrag();
     });
@@ -171,13 +174,13 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       "-",
       this.speedTrackX + this.speedTrackWidth + 20,
       20,
-      () => this.onSpeedChange?.(-1),
+      () => this.onSpeedChange?.(-1)
     );
     const speedPlus = controlButton(
       "+",
       this.speedTrackX + this.speedTrackWidth + 54,
       20,
-      () => this.onSpeedChange?.(1),
+      () => this.onSpeedChange?.(1)
     );
     this.group.add(speedMinus);
     this.group.add(speedPlus);
@@ -195,12 +198,20 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     });
     this.group.add(groundLine);
 
-    // Add Target
+    // Add Two Target
     Konva.Image.fromURL("/target.png", (image) => {
       image.width(30);
       image.height(30);
-      image.x(SIMULATION_CONSTANTS.starting_x + distanceX - 15); // Box start x + distanceX - half target width
-      image.y(SIMULATION_CONSTANTS.ground_level - 15); // offset to sit on the ground
+      image.x(SIMULATION_CONSTANTS.starting_x + distanceX - 15);
+      image.y(SIMULATION_CONSTANTS.ground_level - 15);
+      this.group.add(image);
+    });
+
+    Konva.Image.fromURL("/target.png", (image) => {
+      image.width(30);
+      image.height(30);
+      image.x(SIMULATION_CONSTANTS.starting_x + distanceX + this.gapX - 15);
+      image.y(SIMULATION_CONSTANTS.ground_level - 15);
       this.group.add(image);
     });
 
@@ -230,8 +241,8 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
           this.speedTrackX,
           this.speedTrackWidth,
           SIMULATION_CONSTANTS.speed_min,
-          SIMULATION_CONSTANTS.speed_max,
-        ),
+          SIMULATION_CONSTANTS.speed_max
+        )
       );
     }
     this.group.getLayer()?.draw();
@@ -244,7 +255,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       this.speedTrackWidth,
       SIMULATION_CONSTANTS.speed_min,
       SIMULATION_CONSTANTS.speed_max,
-      SIMULATION_CONSTANTS.speed_step,
+      SIMULATION_CONSTANTS.speed_step
     );
     if (this.lastSpeedValue !== v) {
       const delta = v - this.currentSpeed;
@@ -263,7 +274,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
 
   updateCurrentSpeed(speed: number): void {
     this.currSpeedText.text(
-      `Current Speed: ${Math.max(0, Math.round(speed))} m/s`,
+      `Current Speed: ${Math.max(0, Math.round(speed))} m/s`
     );
   }
 

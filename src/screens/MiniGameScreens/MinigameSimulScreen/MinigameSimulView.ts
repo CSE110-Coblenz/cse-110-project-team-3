@@ -39,7 +39,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     angle: number = 0,
     gravity: number = 0,
     onSpeedChange?: (delta: number) => void,
-    onAngleChange?: (delta: number) => void
+    onAngleChange?: (delta: number) => void,
   ) {
     super(handlePlay, handleReset);
     this.onSpeedChange = onSpeedChange;
@@ -93,7 +93,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       label: string,
       x: number,
       y: number,
-      onClick?: () => void
+      onClick?: () => void,
     ) => {
       const g = new Konva.Group({ x, y });
       const rect = new Konva.Rect({
@@ -138,7 +138,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
         this.speedTrackX,
         this.speedTrackWidth,
         SIMULATION_CONSTANTS.projectile_speed_min,
-        SIMULATION_CONSTANTS.projectile_speed_max
+        SIMULATION_CONSTANTS.projectile_speed_max,
       ),
       y: this.speedTrackY + 3,
       radius: 10,
@@ -149,7 +149,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       dragBoundFunc: (pos) => {
         const clampedX = Math.max(
           this.speedTrackX,
-          Math.min(pos.x, this.speedTrackX + this.speedTrackWidth)
+          Math.min(pos.x, this.speedTrackX + this.speedTrackWidth),
         );
         return { x: clampedX, y: this.speedTrackY + 3 };
       },
@@ -162,8 +162,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       this.speedKnob.x(
         Math.max(
           this.speedTrackX,
-          Math.min(p.x, this.speedTrackX + this.speedTrackWidth)
-        )
+          Math.min(p.x, this.speedTrackX + this.speedTrackWidth),
+        ),
       );
       this.handleSpeedDrag();
     });
@@ -184,7 +184,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
         this.angleTrackX,
         this.angleTrackWidth,
         SIMULATION_CONSTANTS.angle_min,
-        SIMULATION_CONSTANTS.angle_max
+        SIMULATION_CONSTANTS.angle_max,
       ),
       y: this.angleTrackY + 3,
       radius: 10,
@@ -195,7 +195,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       dragBoundFunc: (pos) => {
         const clampedX = Math.max(
           this.angleTrackX,
-          Math.min(pos.x, this.angleTrackX + this.angleTrackWidth)
+          Math.min(pos.x, this.angleTrackX + this.angleTrackWidth),
         );
         return { x: clampedX, y: this.angleTrackY + 3 };
       },
@@ -208,8 +208,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       this.angleKnob.x(
         Math.max(
           this.angleTrackX,
-          Math.min(p.x, this.angleTrackX + this.angleTrackWidth)
-        )
+          Math.min(p.x, this.angleTrackX + this.angleTrackWidth),
+        ),
       );
       this.handleAngleDrag();
     });
@@ -219,13 +219,13 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       "-",
       this.speedTrackX + this.speedTrackWidth + 20,
       20,
-      () => this.onSpeedChange?.(-1)
+      () => this.onSpeedChange?.(-1),
     );
     const speedPlus = controlButton(
       "+",
       this.speedTrackX + this.speedTrackWidth + 54,
       20,
-      () => this.onSpeedChange?.(1)
+      () => this.onSpeedChange?.(1),
     );
     this.group.add(speedMinus);
     this.group.add(speedPlus);
@@ -235,13 +235,13 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       "-",
       this.angleTrackX + this.angleTrackWidth + 20,
       50,
-      () => this.onAngleChange?.(-5)
+      () => this.onAngleChange?.(-5),
     );
     const anglePlus = controlButton(
       "+",
       this.angleTrackX + this.angleTrackWidth + 54,
       50,
-      () => this.onAngleChange?.(5)
+      () => this.onAngleChange?.(5),
     );
     this.group.add(angleMinus);
     this.group.add(anglePlus);
@@ -293,7 +293,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55
+      55,
     );
     if (handlePlay) {
       this.playButton.on("click", handlePlay);
@@ -305,7 +305,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       STAGE_WIDTH - 150,
       STAGE_HEIGHT - 80,
       130,
-      55
+      55,
     );
 
     // Add Reference Button
@@ -314,7 +314,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       20,
       STAGE_HEIGHT - 80,
       200,
-      55
+      55,
     );
     if (handleReferenceClick) {
       referenceButton.on("click", handleReferenceClick);
@@ -357,8 +357,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
           this.speedTrackX,
           this.speedTrackWidth,
           SIMULATION_CONSTANTS.projectile_speed_min,
-          SIMULATION_CONSTANTS.projectile_speed_max
-        )
+          SIMULATION_CONSTANTS.projectile_speed_max,
+        ),
       );
     }
     this.group.getLayer()?.draw();
@@ -376,8 +376,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
           this.angleTrackX,
           this.angleTrackWidth,
           SIMULATION_CONSTANTS.angle_min,
-          SIMULATION_CONSTANTS.angle_max
-        )
+          SIMULATION_CONSTANTS.angle_max,
+        ),
       );
     }
     this.group.getLayer()?.draw();
@@ -390,7 +390,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       this.speedTrackWidth,
       SIMULATION_CONSTANTS.projectile_speed_min,
       SIMULATION_CONSTANTS.projectile_speed_max,
-      SIMULATION_CONSTANTS.speed_step
+      SIMULATION_CONSTANTS.speed_step,
     );
     if (this.lastSpeedValue !== v) {
       const delta = v - this.currentSpeed;
@@ -406,7 +406,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       this.angleTrackWidth,
       SIMULATION_CONSTANTS.angle_min,
       SIMULATION_CONSTANTS.angle_max,
-      SIMULATION_CONSTANTS.angle_step
+      SIMULATION_CONSTANTS.angle_step,
     );
     if (this.lastAngleValue !== v) {
       const delta = v - this.currentAngle;
