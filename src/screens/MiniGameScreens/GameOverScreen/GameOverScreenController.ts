@@ -1,31 +1,31 @@
 import type { ScreenSwitcher } from "../../../types";
 import { ScreenController } from "../../../types";
 import { GameOverScreenView } from "./GameOverScreenView";
+import { getGameOverScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
 export class GameOverScreenController extends ScreenController {
   private view: GameOverScreenView;
   private screenSwitcher: ScreenSwitcher;
-  private level: number;
 
   constructor(screenSwitcher: ScreenSwitcher, level: number) {
     super();
     this.screenSwitcher = screenSwitcher;
-    this.level = level;
+
+    // Create navigation buttons with level
+    const navigationButtons = getGameOverScreenNavigationButtons(level);
+
+    // Create view with navigation buttons and click handler
     this.view = new GameOverScreenView(
-      this.level,
-      () => this.handleBackClick(),
-      () => this.handleExitClick(),
+      level,
+      navigationButtons,
+      (buttonId) => {
+        const button = navigationButtons.find((b) => b.id === buttonId);
+        if (button) {
+          console.log(`GameOverScreen: ${button.label} clicked`);
+          this.screenSwitcher.switchToScreen(button.target);
+        }
+      },
     );
-  }
-
-  private handleBackClick(): void {
-    this.screenSwitcher.switchToScreen({ type: "map" });
-  }
-
-  private handleExitClick(): void {
-    // For now, log a message to the console.
-    // TOOD: Implement actual exit functionality if needed.
-    console.log("Exiting game...");
   }
 
   getView(): GameOverScreenView {

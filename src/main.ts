@@ -202,9 +202,11 @@ class App implements ScreenSwitcher {
         this.rulesScreenController.getView().show();
         break;
       case "reference":
-        if (screen.returnTo) {
-          this.referenceScreenController.setReturnTo(screen.returnTo);
-        }
+        // Always set returnTo, defaulting to map if not specified
+        // This ensures the controller's state is reset properly
+        this.referenceScreenController.setReturnTo(
+          screen.returnTo || { type: "map" }
+        );
         this.referenceScreenController.getView().show();
         break;
       case "topic":

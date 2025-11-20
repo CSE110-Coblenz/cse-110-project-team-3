@@ -1,4 +1,5 @@
 import Konva from "konva";
+import type { View, NavButton } from "../../../types";
 import {
   COLORS,
   SIMULATION_CONSTANTS,
@@ -7,6 +8,7 @@ import {
   FONT_FAMILY,
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
+import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 
 export class MinigameSimulView extends BaseMinigameSimulView {
   private projectile: Konva.Circle;
@@ -32,7 +34,6 @@ export class MinigameSimulView extends BaseMinigameSimulView {
   constructor(
     handlePlay?: () => void,
     handleReset?: () => void,
-    handleReferenceClick?: () => void,
     distanceX: number = 0,
     height: number = 0,
     initialSpeed: number = 0,
@@ -40,6 +41,8 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     gravity: number = 0,
     onSpeedChange?: (delta: number) => void,
     onAngleChange?: (delta: number) => void,
+    navigationButtons?: NavButton[],
+    onButtonClick?: (buttonId: string) => void,
   ) {
     super(handlePlay, handleReset);
     this.onSpeedChange = onSpeedChange;
@@ -156,7 +159,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     });
     this.group.add(this.speedKnob);
     this.speedKnob.on("dragmove", () => this.handleSpeedDrag());
-    speedTrack.on("mousedown", (evt) => {
+    speedTrack.on("mousedown", () => {
       const p = this.group.getStage()?.getPointerPosition();
       if (!p) return;
       this.speedKnob.x(
@@ -300,26 +303,13 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     }
     this.group.add(this.playButton);
 
-    this.resetButton = this.createPillButton(
-      "RESET",
-      STAGE_WIDTH - 150,
-      STAGE_HEIGHT - 80,
-      130,
-      55,
-    );
-
-    // Add Reference Button
-    const referenceButton = this.createPillButton(
-      "REFERENCE",
-      20,
-      STAGE_HEIGHT - 80,
-      200,
-      55,
-    );
-    if (handleReferenceClick) {
-      referenceButton.on("click", handleReferenceClick);
+    // Navigation buttons using configuration
+    if (navigationButtons && onButtonClick) {
+      navigationButtons.forEach((buttonConfig) => {
+        const buttonGroup = createKonvaButton(buttonConfig, onButtonClick);
+        this.group.add(buttonGroup);
+      });
     }
-    this.group.add(referenceButton);
 
     if (handleReset) {
       this.resetButton.on("click", handleReset);
