@@ -33,4 +33,5 @@ export const SIMULATION_CONSTANTS = {
   projectile_speed_min: 0,
   projectile_speed_max: 200,
   projectile_speed_step: 1,
+  simulation_min_distance_to_target: 200,
 };
