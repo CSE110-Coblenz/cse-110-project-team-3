@@ -12,13 +12,13 @@ const DEFAULT_STYLES = {
     fontSize: 48,
     fontFamily: FONT_FAMILY,
     fill: COLORS.text,
-    y: 100,
+    y: 80,
   },
   description: {
     fontSize: 20,
     fontFamily: FONT_FAMILY,
     fill: COLORS.text,
-    y: 200,
+    y: 150,
   },
   button: {
     width: 200,

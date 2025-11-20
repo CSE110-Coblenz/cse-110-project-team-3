@@ -8,7 +8,7 @@ import { COLORS } from "../../constants";
 export const frictionConfig: TopicScreenConfig = {
   title: "Friction",
   description:
-    "When dealing with forces it is important to understand the environment we are in. \nIn a vacuum the formula for a force applied to an object is F = ma. \nWhen an object is pushed in an environment with friction the force applied against that object is called kinetic friction:  fₖ = μₖN \nThe normal force applied to an object is N = mg. \nIn order to overcome the static friction on an object to start moving the force applied has to be greater than the inequality of static friction: fₛ ≤ μₛN.",
+    "When dealing with forces it is important to understand the environment we are in. \n\nIn a vacuum the formula for a force applied to an object is F = ma. \n\nWhen an object is pushed in an environment with friction the force applied against that object is called kinetic friction:  fₖ = μₖN \n\nThe normal force applied to an object is N = mg. \n\nIn order to overcome the static friction on an object to start moving the force applied has to be greater than the inequality of static friction: fₛ ≤ μₛN.",
   buttons: [
     {
       id: "back",
