@@ -52,6 +52,7 @@ class FakeModel {
   g = 9.8;
   distanceX = 200;
   mass = 1;
+  gapX = 75;
 
   getInitialSpeed() {
     return this.initialSpeed;
@@ -71,8 +72,13 @@ class FakeModel {
   getMass() {
     return this.mass;
   }
+  getGapX() {
+    return this.gapX;
+  }
   isHit(distance: number) {
-    return Math.abs(distance - this.distanceX) <= 10;
+    return (
+      distance >= this.distanceX && distance <= this.distanceX + this.gapX
+    );
   }
 }
 
@@ -118,12 +124,14 @@ vi.mock(
       _g: number,
       distancePixels: number,
       _mass: number,
+      _gapX: number,
       _errorMargin: number,
     ) {
       // sync the singleton fakeModel with constructor args
       fakeModel.distanceX = distancePixels;
       fakeModel.mu = _mu;
       fakeModel.g = _g;
+      fakeModel.gapX = _gapX;
       return fakeModel; // returning an object from a constructor is allowed
     }
 
@@ -144,6 +152,7 @@ vi.mock(
       _mass: number,
       _mu: number,
       initialSpeed: number,
+      _gapX: number,
       adjustSpeed: (delta: number) => void,
     ) {
       fakeView.onPlay = onPlay;
