@@ -1,4 +1,3 @@
-
 import type { Group } from "konva/lib/Group";
 
 export interface View {

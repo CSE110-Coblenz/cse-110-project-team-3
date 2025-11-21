@@ -1,10 +1,10 @@
 /**
  * MenuScreenModel - manages state for the welcome menu screen
- * 
+ *
  * Purpose: Tracks the last screen the user visited so the "Resume" button
  * can take them back to where they were. This provides a convenient way
  * for users to continue their game session from the menu screen.
- * 
+ *
  * How it works:
  * - When navigating away from a screen (e.g., map, rules), that screen
  *   calls MenuScreenModel.setLastScreen() to save its type

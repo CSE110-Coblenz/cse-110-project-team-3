@@ -1,4 +1,3 @@
-
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";

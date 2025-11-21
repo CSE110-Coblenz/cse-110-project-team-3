@@ -33,7 +33,7 @@ export class MenuScreenView implements View {
         height: STAGE_HEIGHT,
         fill: COLORS.bg,
         cornerRadius: 8,
-      })
+      }),
     );
 
     // Title
@@ -63,7 +63,7 @@ export class MenuScreenView implements View {
       startY,
       buttonWidth,
       buttonHeight,
-      handlers.onStart
+      handlers.onStart,
     );
     this.group.add(startBtn);
     startY += 80;
@@ -74,7 +74,7 @@ export class MenuScreenView implements View {
       startY,
       buttonWidth,
       buttonHeight,
-      handlers.onResume
+      handlers.onResume,
     );
     this.group.add(this.resumeBtn);
     startY += 80;
@@ -85,7 +85,7 @@ export class MenuScreenView implements View {
       startY,
       buttonWidth,
       buttonHeight,
-      handlers.onRules
+      handlers.onRules,
     );
     this.group.add(rulesBtn);
     startY += 80;
@@ -96,7 +96,7 @@ export class MenuScreenView implements View {
       startY,
       buttonWidth,
       buttonHeight,
-      handlers.onQuit
+      handlers.onQuit,
     );
     this.group.add(quitBtn);
   }
@@ -108,7 +108,7 @@ export class MenuScreenView implements View {
     y: number,
     width: number,
     height: number,
-    onClick?: () => void
+    onClick?: () => void,
   ): Konva.Group {
     const g = new Konva.Group({ x, y });
 
