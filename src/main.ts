@@ -41,7 +41,8 @@ class App implements ScreenSwitcher {
   private layer: Konva.Layer;
 
   private menuScreenController: MenuScreenController;
-  private mapScreenController: MapScreenController;
+  private map1ScreenController: MapScreenController;
+  private map2ScreenController: MapScreenController;
   private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
   // Topics
@@ -81,7 +82,8 @@ class App implements ScreenSwitcher {
 
     // Initialize screen controllers
     this.menuScreenController = new MenuScreenController(this);
-    this.mapScreenController = new MapScreenController(this);
+    this.map1ScreenController = new MapScreenController(this, 1);
+    this.map2ScreenController = new MapScreenController(this, 2);
     this.rulesScreenController = new RulesScreenController(this);
     this.referenceScreenController = new ReferenceScreenController(this);
     //this.minigameSimulController = new MinigameSimulController(this);
@@ -137,7 +139,8 @@ class App implements ScreenSwitcher {
 
     // add all screen views to the layer
     this.layer.add(this.menuScreenController.getView().getGroup());
-    this.layer.add(this.mapScreenController.getView().getGroup());
+    this.layer.add(this.map1ScreenController.getView().getGroup());
+    this.layer.add(this.map2ScreenController.getView().getGroup());
     this.layer.add(this.referenceScreenController.getView().getGroup());
     this.layer.add(this.rulesScreenController.getView().getGroup());
 
@@ -166,7 +169,8 @@ class App implements ScreenSwitcher {
   switchToScreen(screen: Screen): void {
     // Hide all screens
     this.menuScreenController.getView().hide();
-    this.mapScreenController.getView().hide();
+    this.map1ScreenController.getView().hide();
+    this.map2ScreenController.getView().hide();
     this.referenceScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
 
@@ -197,7 +201,12 @@ class App implements ScreenSwitcher {
         this.menuScreenController.getView().show();
         break;
       case "map":
-        this.mapScreenController.getView().show();
+        // Show the appropriate map based on mapId (default to map 1)
+        if (screen.mapId === 2) {
+          this.map2ScreenController.getView().show();
+        } else {
+          this.map1ScreenController.getView().show();
+        }
         break;
       case "rules":
         this.rulesScreenController.setReturnTo(

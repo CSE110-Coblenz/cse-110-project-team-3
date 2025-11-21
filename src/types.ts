@@ -22,7 +22,7 @@ export type Screen =
   | {type: "menu"}
   | { type: "rules"; returnTo?: Screen }
   | { type: "level" }
-  | { type: "map" }
+  | { type: "map"; mapId?: number }
   | { type: "reference"; returnTo?: Screen }
   | {
       type: "minigame";
@@ -348,6 +348,56 @@ export interface NavButton {
 }
 
 /**
+ * Map node configuration for dungeon map
+ * - id: Unique identifier for the node
+ * - label: Text displayed on the node
+ * - target: Screen to navigate to when the node is clicked
+ * - position: Position of the node on the map
+ * - isBoss: Whether the node is a boss room (default: false)
+ * - style: Optional styling for the node
+ */
+export interface MapNode {
+  id: string;
+  label: string;
+  target: Screen;
+  position: {
+    x: number;  // Absolute x position on the map
+    y: number;  // Absolute y position on the map
+  };
+  isBoss?: boolean;
+  style?: {
+    width?: number;
+    height?: number;
+    fill?: string;
+    stroke?: string;
+    textFill?: string;
+  };
+}
+
+/**
+ * Arrow connection between map nodes
+ */
+export interface MapArrow {
+  from: string;  // ID of the source node
+  to: string;    // ID of the destination node
+}
+
+export interface MenuNode {
+  id: string;
+  label: string;
+  target: Screen;
+  position?: ButtonPosition;
+  style?: {
+    fill?: string;
+    color?: string;
+    textFill?: string;
+    stroke?: string;
+    width?: number;
+    height?: number;
+  };
+}
+
+/**
  * Configuration for a screen
  * - title: Title of the screen
  * - description: Description text for the screen
@@ -362,5 +412,21 @@ export interface TopicScreenConfig {
     titleColor: string;
     descriptionColor: string;
     backgroundColor: string;
+  };
+}
+
+/**
+ * Configuration for a map screen
+ * - nodes: Array of map nodes (dungeon rooms) to display
+ * - arrows: Array of arrows connecting nodes
+ * - buttons: Array of navigation buttons on the screen
+ * - style: Optional styling for the screen
+ */
+export interface MapScreenConfig {
+  nodes: MapNode[];
+  arrows: MapArrow[];
+  buttons: NavButton[];
+  style?: {
+    backgroundColor?: string;
   };
 }

@@ -1,39 +1,14 @@
 import type { TopicScreenConfig } from "../../types";
+import { TrajectoryTopicNavigationButtons } from "../../configs/NavigationButtons/Topic";
 import { COLORS } from "../../constants";
 
+/**
+ * Configuration for the trajectory topic screen. Find implementation details in "../../screens/TopicScreen/types"
+ */
 export const trajectoryConfig: TopicScreenConfig = {
   title: "Projectile Trajectory",
   description: "TODO",
-  buttons: [
-    {
-      id: "back",
-      label: "Back",
-      target: { type: "map" },
-      position: {
-        x: 0.225,
-        y: 0.725,
-      },
-      style: {
-        fill: COLORS.buttonFill,
-        color: COLORS.buttonStroke,
-        textFill: COLORS.buttonText,
-      },
-    },
-    {
-      id: "simulation",
-      label: "Simulation",
-      target: { type: "simulation", topic: "trajectory" },
-      position: {
-        x: 0.775,
-        y: 0.725,
-      },
-      style: {
-        fill: COLORS.buttonFill,
-        color: COLORS.buttonStroke,
-        textFill: COLORS.buttonText,
-      },
-    },
-  ],
+  buttons: TrajectoryTopicNavigationButtons,
   style: {
     titleColor: COLORS.text,
     descriptionColor: COLORS.text,

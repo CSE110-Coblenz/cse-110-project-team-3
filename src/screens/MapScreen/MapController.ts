@@ -1,26 +1,41 @@
-import type { ScreenSwitcher } from "../../types";
+import type { ScreenSwitcher, MapScreenConfig } from "../../types";
 import { ScreenController } from "../../types";
 import { MapScreenView } from "./MapView";
-import { MapScreenNavigationButtons } from "../../configs/NavigationButtons/Map.ts";
+import { map1Config, map2Config } from "../../configs/maps/MapScreenConfig.ts";
 
 export class MapScreenController extends ScreenController {
   private view: MapScreenView;
   private screenSwitcher: ScreenSwitcher;
+  private currentMapId: number;
+  private currentConfig: MapScreenConfig;
 
-  constructor(screenSwitcher: ScreenSwitcher) {
+  constructor(screenSwitcher: ScreenSwitcher, mapId: number = 1) {
     super();
-    this.view = new MapScreenView(
-      (buttonId: string) => this.handleButtonClick(buttonId),
-      (level: string) => this.handleNodeClick(level),
-    );
     this.screenSwitcher = screenSwitcher;
+    this.currentMapId = mapId;
+    this.currentConfig = this.getConfigForMap(mapId);
+    this.view = MapScreenView.fromConfig(
+      this.currentConfig,
+      (buttonId: string) => this.handleButtonClick(buttonId),
+      (nodeId: string) => this.handleNodeClick(nodeId),
+    );
+  }
+
+  private getConfigForMap(mapId: number): MapScreenConfig {
+    switch (mapId) {
+      case 2:
+        return map2Config;
+      case 1:
+      default:
+        return map1Config;
+    }
   }
 
   private handleButtonClick = (buttonId: string) => {
     console.log(`Button ${buttonId} clicked`);
-    
+
     // Find the button configuration
-    const buttonConfig = MapScreenNavigationButtons.find(
+    const buttonConfig = this.currentConfig.buttons.find(
       (btn) => btn.id === buttonId
     );
 
@@ -33,27 +48,21 @@ export class MapScreenController extends ScreenController {
     this.screenSwitcher.switchToScreen(buttonConfig.target);
   };
 
-  private handleNodeClick = (level: string) => {
-    switch (level) {
-      case "1":
-        this.screenSwitcher.switchToScreen({
-          type: "topic",
-          level: "friction",
-        });
-        break;
-      case "2":
-        this.screenSwitcher.switchToScreen({
-          type: "topic",
-          level: "projectile motion",
-        });
-        break;
-      case "Game 1":
-        this.screenSwitcher.switchToScreen({
-          type: "minigame",
-          screen: "title",
-          level: 1,
-        });
+  private handleNodeClick = (nodeId: string) => {
+    console.log(`Node ${nodeId} clicked`);
+
+    // Find the node configuration
+    const nodeConfig = this.currentConfig.nodes.find(
+      (node) => node.id === nodeId
+    );
+
+    if (!nodeConfig) {
+      console.warn(`No configuration found for node: ${nodeId}`);
+      return;
     }
+
+    // Navigate to the target screen
+    this.screenSwitcher.switchToScreen(nodeConfig.target);
   };
 
   getView(): MapScreenView {
