@@ -28,7 +28,7 @@ export class MiniGameRuleScreenController extends ScreenController {
     // TODO: Swith to the actual game screen, passing the level
     this.screenSwitcher.switchToScreen({
       type: "minigame",
-      screen: "completed",
+      screen: "simulation",
       level: this.level,
     });
   }
