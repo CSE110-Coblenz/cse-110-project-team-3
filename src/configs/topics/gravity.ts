@@ -1,4 +1,4 @@
-import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
+import type { TopicScreenConfig } from "../../types";
 import { COLORS } from "../../constants";
 
 export const gravityConfig: TopicScreenConfig = {

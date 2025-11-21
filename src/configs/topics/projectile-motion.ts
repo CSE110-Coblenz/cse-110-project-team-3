@@ -1,4 +1,5 @@
 import type { TopicScreenConfig } from "../../types";
+import { ProjMotionTopicNavigationButtons } from "../../configs/NavigationButtons/Topic";
 import { COLORS } from "../../constants";
 import { ProjMotionTopicNavigationButtons } from "../NavigationButtons/Topic";
 
@@ -7,7 +8,7 @@ import { ProjMotionTopicNavigationButtons } from "../NavigationButtons/Topic";
  */
 export const projectileMotionConfig: TopicScreenConfig = {
   title: "Projectile Motion",
-  description: "Learn about the principles of projectile motion",
+  description: "TODO",
   buttons: ProjMotionTopicNavigationButtons,
   style: {
     titleColor: COLORS.text,

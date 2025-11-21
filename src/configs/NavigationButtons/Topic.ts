@@ -14,7 +14,7 @@ export const FrictionTopicNavigationButtons: NavButton[] = [
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "friction", level: "lev1" },
+      target: { type: "simulation", topic: "friction"},
 
       position: {
         x: 0.7,
@@ -36,7 +36,7 @@ export const ProjMotionTopicNavigationButtons: NavButton[] = [
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "projectile motion", level: "lev2" },
+      target: { type: "simulation", topic: "projectile motion"},
       position: {
         x: 0.7,
         y: 0.85,
