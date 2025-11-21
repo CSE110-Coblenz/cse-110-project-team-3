@@ -64,20 +64,20 @@ class App implements ScreenSwitcher {
     // Initialize topic screens with different configurations
     this.frictionTopicController = new TopicScreenController(
       this,
-      frictionConfig
+      frictionConfig,
     );
     this.projectileMotionTopicController = new TopicScreenController(
       this,
-      projectileMotionConfig
+      projectileMotionConfig,
     );
 
     this.lev1SimulationController = new SimulationScreenController(
       this,
-      frictionLev1SimulationConfig
+      frictionLev1SimulationConfig,
     );
     this.lev2SimulationController = new SimulationScreenController(
       this,
-      projectileLev2SimulationConfig
+      projectileLev2SimulationConfig,
     );
 
     // add all screen views to the layer
@@ -152,7 +152,7 @@ class App implements ScreenSwitcher {
           case "title":
             this.titleScreenController = new TitleScreenController(
               this,
-              screen.level
+              screen.level,
             );
             this.layer.add(this.titleScreenController.getView().getGroup());
             this.titleScreenController.getView().show();
@@ -162,10 +162,10 @@ class App implements ScreenSwitcher {
               new MiniGameRuleScreenController(
                 this,
                 miniGameRuleConfig,
-                screen.level
+                screen.level,
               );
             this.layer.add(
-              this.miniGameRuleScreenController.getView().getGroup()
+              this.miniGameRuleScreenController.getView().getGroup(),
             );
             this.miniGameRuleScreenController.getView().show();
             break;
@@ -174,20 +174,20 @@ class App implements ScreenSwitcher {
               case 1:
                 this.minigame1SimulController = new Minigame1SimulController(
                   this,
-                  screen.level
+                  screen.level,
                 );
                 this.layer.add(
-                  this.minigame1SimulController.getView().getGroup()
+                  this.minigame1SimulController.getView().getGroup(),
                 );
                 this.minigame1SimulController.getView().show();
                 break;
               case 2:
                 this.minigameSimulController = new MinigameSimulController(
                   this,
-                  screen.level
+                  screen.level,
                 );
                 this.layer.add(
-                  this.minigameSimulController.getView().getGroup()
+                  this.minigameSimulController.getView().getGroup(),
                 );
                 this.minigameSimulController.getView().show();
                 break;
@@ -196,7 +196,7 @@ class App implements ScreenSwitcher {
           case "completed":
             this.completedScreenController = new CompletedScreenController(
               this,
-              screen.level
+              screen.level,
             );
             this.layer.add(this.completedScreenController.getView().getGroup());
             this.completedScreenController.getView().show();
@@ -204,7 +204,7 @@ class App implements ScreenSwitcher {
           case "gameover":
             this.gameOverScreenController = new GameOverScreenController(
               this,
-              screen.level
+              screen.level,
             );
             this.layer.add(this.gameOverScreenController.getView().getGroup());
             this.gameOverScreenController.getView().show();
