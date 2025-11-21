@@ -1,14 +1,15 @@
 import type { SimulationScreenConfig } from "../../screens/SimulationScreen/types";
 
-export const projectileLev2SimulationConfig: SimulationScreenConfig = {
-  id: "lev2-projectile",
-  title: "SIMULATION: Projectile Motion",
-  description: `A ball is launched from ground level at the origin O with an initial angle of 45°. Air resistance is negligible.
-An obstacle's top is at point A = (20 m, 10 m).
-What is the minimum launch speed required so that the ball's trajectory passes at or above point A?`,
+export const Lev6SimulationConfig: SimulationScreenConfig = {
+  id: "lev6-trajectory",
+  title: "SIMULATION: Projectile Trajectory",
+  description: `
+A ball is launched from ground level at the origin O with an initial angle of 45°. Air resistance is negligible. An obstacle's top is at point 
+A = (20 m, 10 m). What is the minimum launch speed required so that the ball's trajectory passes at or above point A?
+`,
 
   video: {
-    src: "/Force.mp4",
+    src: "/trajectory.mp4",
     loop: true,
     muted: true,
   },
@@ -33,7 +34,7 @@ What is the minimum launch speed required so that the ball's trajectory passes a
   },
 
   navigation: {
-    backScreen: { type: "topic", level: "projectile motion" },
+    backScreen: { type: "topic", level: "trajectory" },
     nextScreen: { type: "map" },
   },
 };

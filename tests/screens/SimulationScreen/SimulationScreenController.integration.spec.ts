@@ -6,8 +6,8 @@ import {
   FakeNode,
   FakeText,
 } from "../../mocks/konvaMock";
-import { frictionLev1SimulationConfig } from "../../../src/configs/simulations/lev1-friction";
-import { projectileLev2SimulationConfig } from "../../../src/configs/simulations/lev2-projectile";
+import { Lev2SimulationConfig } from "../../../src/configs/simulations/lev2-friction";
+import { Lev5SimulationConfig } from "../../../src/configs/simulations/lev5-projectile";
 
 // 1. Mock Konva BEFORE importing controller/view
 vi.mock("konva", () => createKonvaMock());
@@ -46,7 +46,7 @@ describe("SimulationScreenController + SimulationScreenView integration", () => 
 
     const controller = new SimulationScreenController(
       screenSwitcher,
-      frictionLev1SimulationConfig,
+      Lev2SimulationConfig,
     );
 
     const view = controller.getView();
@@ -70,7 +70,7 @@ describe("SimulationScreenController + SimulationScreenView integration", () => 
 
     const controller = new SimulationScreenController(
       screenSwitcher,
-      projectileLev2SimulationConfig,
+      Lev5SimulationConfig,
     );
 
     const view = controller.getView();
@@ -94,7 +94,7 @@ describe("SimulationScreenController + SimulationScreenView integration", () => 
 
     const controller = new SimulationScreenController(
       screenSwitcher,
-      frictionLev1SimulationConfig,
+      Lev2SimulationConfig,
     );
 
     const view = controller.getView();

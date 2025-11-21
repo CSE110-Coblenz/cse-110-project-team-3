@@ -1,11 +1,8 @@
 import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
 import { COLORS } from "../../constants";
 
-/**
- * Configuration for the projectile motion topic screen. Find implementation details in "../../screens/TopicScreen/types"
- */
-export const projectileMotionConfig: TopicScreenConfig = {
-  title: "Projectile Motion",
+export const gravityConfig: TopicScreenConfig = {
+  title: "Gravity and Vertical Motion",
   description: "TODO",
   buttons: [
     {
@@ -25,7 +22,7 @@ export const projectileMotionConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "projectile motion" },
+      target: { type: "simulation", topic: "gravity" },
       position: {
         x: 0.775,
         y: 0.725,
