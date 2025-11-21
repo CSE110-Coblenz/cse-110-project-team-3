@@ -18,6 +18,7 @@ export interface View {
  */
 
 export type Screen =
+  | { type: "menu" }
   | { type: "rules" }
   | { type: "level" }
   | { type: "map" }

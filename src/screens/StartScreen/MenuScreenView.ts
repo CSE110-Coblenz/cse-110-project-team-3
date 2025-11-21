@@ -1,11 +1,11 @@
 import Konva from "konva";
-import type { View } from "../../types.ts";
+import type { View } from "../../types";
 import {
   COLORS,
   STAGE_WIDTH,
   STAGE_HEIGHT,
   FONT_FAMILY,
-} from "../../constants.ts";
+} from "../../constants";
 
 /**
  * MenuScreenView - Konva rendering for the welcome screen
