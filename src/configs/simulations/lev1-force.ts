@@ -9,7 +9,7 @@ You want the block to accelerate at 1.5 m/s².
 What constant horizontal force should you apply?
 `,
 
-  picture:{
+  picture: {
     src: "/force.png",
   },
 

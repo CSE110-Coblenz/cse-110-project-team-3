@@ -3,7 +3,7 @@ import type { SimulationScreenConfig } from "../../screens/SimulationScreen/type
 export const Lev3SimulationConfig: SimulationScreenConfig = {
   id: "lev3-distance",
   title: "SIMULATION: Stopping Distance",
-description: `
+  description: `
 A 2.0 kg block is sliding to the right on a horizontal surface with coefficient of kinetic friction μk = 0.30.
 The block has initial speed v₀ = 3.0 m/s. Gravity is g = 9.8 m/s².
 How far does the block slide before it comes to rest?

@@ -6,8 +6,7 @@ import { COLORS } from "../../constants";
  */
 export const frictionConfig: TopicScreenConfig = {
   title: "Friction Force",
-  description:
-    "TODO",
+  description: "TODO",
   buttons: [
     {
       id: "back",
@@ -26,7 +25,7 @@ export const frictionConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "friction"},
+      target: { type: "simulation", topic: "friction" },
       position: {
         x: 0.775,
         y: 0.725,

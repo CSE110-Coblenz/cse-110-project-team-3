@@ -3,7 +3,7 @@ import type { SimulationScreenConfig } from "../../screens/SimulationScreen/type
 export const Lev4SimulationConfig: SimulationScreenConfig = {
   id: "lev4-gravity",
   title: "SIMULATION:Vertical Motion",
-description: `
+  description: `
 A ball is dropped from a height of 10.0 m above the ground.
 Air resistance is negligible and g = 9.8 m/s².
 How long does it take for the ball to reach the ground?

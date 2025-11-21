@@ -26,8 +26,26 @@ export type Screen =
       screen: "title" | "rules" | "completed" | "gameover" | "simulation";
       level: number;
     }
-  | { type: "topic"; level: "force" | "friction" | "distance" | "gravity" | "projectile motion" | "trajectory" }
-  | { type: "simulation"; topic: "force" | "friction" | "distance" | "gravity" | "projectile motion" | "trajectory"};
+  | {
+      type: "topic";
+      level:
+        | "force"
+        | "friction"
+        | "distance"
+        | "gravity"
+        | "projectile motion"
+        | "trajectory";
+    }
+  | {
+      type: "simulation";
+      topic:
+        | "force"
+        | "friction"
+        | "distance"
+        | "gravity"
+        | "projectile motion"
+        | "trajectory";
+    };
 
 export type RuleConfig = {
   rules: string[];

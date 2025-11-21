@@ -1,11 +1,9 @@
 import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
 import { COLORS } from "../../constants";
 
-
 export const distanceConfig: TopicScreenConfig = {
   title: "Stopping Distance",
-  description:
-    "TODO",
+  description: "TODO",
   buttons: [
     {
       id: "back",
@@ -24,7 +22,7 @@ export const distanceConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "distance"},
+      target: { type: "simulation", topic: "distance" },
       position: {
         x: 0.775,
         y: 0.725,

@@ -3,7 +3,7 @@ import type { SimulationScreenConfig } from "../../screens/SimulationScreen/type
 export const Lev5SimulationConfig: SimulationScreenConfig = {
   id: "lev5-projectile",
   title: "SIMULATION: Projectile Motion",
-description: `
+  description: `
 A ball is launched from ground level with speed v₀ = 20.0 m/s at an angle of 60° above the horizontal.
 Air resistance is negligible and g = 9.8 m/s².
 What is the maximum height the ball reaches above the launch point?

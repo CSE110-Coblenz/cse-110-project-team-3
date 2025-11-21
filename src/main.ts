@@ -16,8 +16,22 @@ import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimul
 import { miniGameRuleConfig } from "./configs/rules";
 
 // Import coonfigurations for levels (topic + simulation)
-import { forceConfig, frictionConfig, distanceConfig, gravityConfig, projectileMotionConfig, trajectoryConfig } from "./configs/topics";
-import { Lev1SimulationConfig, Lev2SimulationConfig, Lev3SimulationConfig, Lev4SimulationConfig, Lev5SimulationConfig, Lev6SimulationConfig} from "./configs/simulations";
+import {
+  forceConfig,
+  frictionConfig,
+  distanceConfig,
+  gravityConfig,
+  projectileMotionConfig,
+  trajectoryConfig,
+} from "./configs/topics";
+import {
+  Lev1SimulationConfig,
+  Lev2SimulationConfig,
+  Lev3SimulationConfig,
+  Lev4SimulationConfig,
+  Lev5SimulationConfig,
+  Lev6SimulationConfig,
+} from "./configs/simulations";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
@@ -68,19 +82,52 @@ class App implements ScreenSwitcher {
 
     // Initialize topic screens with different configurations
     this.forceTopicController = new TopicScreenController(this, forceConfig);
-    this.frictionTopicController = new TopicScreenController(this, frictionConfig);
-    this.distanceTopicController = new TopicScreenController(this, distanceConfig);
-    this.gravityTopicController = new TopicScreenController(this, gravityConfig);
-    this.projectileMotionTopicController = new TopicScreenController(this, projectileMotionConfig);
-    this.trajectoryTopicController = new TopicScreenController(this, trajectoryConfig);
+    this.frictionTopicController = new TopicScreenController(
+      this,
+      frictionConfig,
+    );
+    this.distanceTopicController = new TopicScreenController(
+      this,
+      distanceConfig,
+    );
+    this.gravityTopicController = new TopicScreenController(
+      this,
+      gravityConfig,
+    );
+    this.projectileMotionTopicController = new TopicScreenController(
+      this,
+      projectileMotionConfig,
+    );
+    this.trajectoryTopicController = new TopicScreenController(
+      this,
+      trajectoryConfig,
+    );
 
     // Initialize Simulation screens with different configurations
-    this.lev1SimulationController = new SimulationScreenController(this, Lev1SimulationConfig);
-    this.lev2SimulationController = new SimulationScreenController(this, Lev2SimulationConfig);
-    this.lev3SimulationController = new SimulationScreenController(this, Lev3SimulationConfig);
-    this.lev4SimulationController = new SimulationScreenController(this, Lev4SimulationConfig);
-    this.lev5SimulationController = new SimulationScreenController(this, Lev5SimulationConfig);
-    this.lev6SimulationController = new SimulationScreenController(this, Lev6SimulationConfig);
+    this.lev1SimulationController = new SimulationScreenController(
+      this,
+      Lev1SimulationConfig,
+    );
+    this.lev2SimulationController = new SimulationScreenController(
+      this,
+      Lev2SimulationConfig,
+    );
+    this.lev3SimulationController = new SimulationScreenController(
+      this,
+      Lev3SimulationConfig,
+    );
+    this.lev4SimulationController = new SimulationScreenController(
+      this,
+      Lev4SimulationConfig,
+    );
+    this.lev5SimulationController = new SimulationScreenController(
+      this,
+      Lev5SimulationConfig,
+    );
+    this.lev6SimulationController = new SimulationScreenController(
+      this,
+      Lev6SimulationConfig,
+    );
 
     // add all screen views to the layer
     this.layer.add(this.mapScreenController.getView().getGroup());
@@ -107,7 +154,7 @@ class App implements ScreenSwitcher {
 
     // Start with the map screen
     //this.switchToScreen({ type: "map" });
-    this.switchToScreen({ type: "simulation", topic: "trajectory"});
+    this.switchToScreen({ type: "simulation", topic: "trajectory" });
     // this.switchToScreen({ type: "topic", level: "force" });
   }
 

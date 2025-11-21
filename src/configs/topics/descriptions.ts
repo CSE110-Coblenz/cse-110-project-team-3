@@ -77,7 +77,7 @@ Setting y(t) = 0 to find when it hits the ground gives:
 0 = h - ½ g t²  ⇒  t = √(2h / g)
 `;
 
-projectile:`
+projectile: `
 A projectile launched from the ground with speed v₀ at an angle θ above the horizontal has an initial velocity vector that can be split into horizontal and vertical components:
 • Horizontal component: v₀ₓ = v₀ cos θ
 • Vertical component:   v₀ᵧ = v₀ sin θ
@@ -124,4 +124,3 @@ Interpretation:
 • For a fixed angle, increasing v₀ increases both maximum height and range.  
 • To hit a point at a known distance and height, you must choose a pair (v₀, θ) that satisfies the trajectory equation.
 `;
-

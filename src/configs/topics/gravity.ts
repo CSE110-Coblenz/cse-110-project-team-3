@@ -1,16 +1,14 @@
 import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
 import { COLORS } from "../../constants";
 
-
 export const gravityConfig: TopicScreenConfig = {
   title: "Gravity and Vertical Motion",
-  description:
-    "TODO",
+  description: "TODO",
   buttons: [
     {
       id: "back",
       label: "Back",
-      target: { type: "map"},
+      target: { type: "map" },
       position: {
         x: 0.225,
         y: 0.725,
@@ -24,7 +22,7 @@ export const gravityConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "gravity"},
+      target: { type: "simulation", topic: "gravity" },
       position: {
         x: 0.775,
         y: 0.725,
