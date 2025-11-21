@@ -1,4 +1,3 @@
-
 import type { Group } from "konva/lib/Group";
 import { COLORS, FONT_FAMILY, STAGE_HEIGHT, STAGE_WIDTH } from "./constants";
 import Konva from "konva";
