@@ -1,5 +1,6 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
+import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
 import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
@@ -193,12 +194,15 @@ class App implements ScreenSwitcher {
     // Show the selected screen
     switch (screen.type) {
       case "menu":
-        this.menuScreenController.show();
+        this.menuScreenController.getView().show();
         break;
       case "map":
         this.mapScreenController.getView().show();
         break;
       case "rules":
+        this.rulesScreenController.setReturnTo(
+          screen.returnTo || { type: "map" }
+        );
         this.rulesScreenController.getView().show();
         break;
       case "reference":
@@ -310,4 +314,4 @@ class App implements ScreenSwitcher {
 
 const app = new App();
 // use this format to test your screen. I had a specifier for topic, level, so you dont need to add that.
-app.switchToScreen({ type: "map" });
+app.switchToScreen({ type: "menu" });

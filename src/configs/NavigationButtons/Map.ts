@@ -17,7 +17,7 @@ export const MapScreenNavigationButtons: NavButton[] = [
   {
     id: "rules",
     label: "RULES",
-    target: { type: "rules" },
+    target: { type: "rules", returnTo: { type: "map" } },
     position: {
       x: 0.05,  // (32 + 160/2) / STAGE_WIDTH ≈ 0.14
       y: 0.85, // (STAGE_HEIGHT - 92) / STAGE_HEIGHT ≈ 0.847, adjusted for centering
@@ -30,7 +30,7 @@ export const MapScreenNavigationButtons: NavButton[] = [
   {
     id: "exit",
     label: "EXIT",
-    target: { type: "level" },
+    target: { type: "menu" },
     position: {
       x: 0.75,  // (STAGE_WIDTH - 192 + 160/2) / STAGE_WIDTH ≈ 0.86
       y: 0.85, // (STAGE_HEIGHT - 96) / STAGE_HEIGHT ≈ 0.84, adjusted for centering

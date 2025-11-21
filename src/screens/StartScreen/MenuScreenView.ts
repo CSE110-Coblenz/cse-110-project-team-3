@@ -4,8 +4,8 @@ import {
   COLORS,
   STAGE_WIDTH,
   STAGE_HEIGHT,
-  FONT_FAMILY,
-} from "../../constants";
+  FONTS,
+} from "../../constants.ts";
 
 /**
  * MenuScreenView - Konva rendering for the welcome screen
@@ -24,32 +24,102 @@ export class MenuScreenView implements View {
   }) {
     this.group = new Konva.Group({ visible: false });
 
-    // Background
-    this.group.add(
-      new Konva.Rect({
+    // Background - Animated dungeon entrance GIF
+    const backgroundRect = new Konva.Rect({
+      x: 0,
+      y: 0,
+      width: STAGE_WIDTH,
+      height: STAGE_HEIGHT,
+      fill: COLORS.bg,
+      cornerRadius: 8,
+    });
+    this.group.add(backgroundRect);
+
+    // Load and display dungeon entrance GIF
+    const gifImage = new Image();
+    gifImage.src = "/dungeon_entrance.gif";
+    gifImage.onload = () => {
+      const bgImage = new Konva.Image({
         x: 0,
         y: 0,
         width: STAGE_WIDTH,
         height: STAGE_HEIGHT,
-        fill: COLORS.bg,
-        cornerRadius: 8,
-      }),
-    );
+        image: gifImage,
+        listening: false,
+      });
+      this.group.add(bgImage);
+      bgImage.moveToBottom(); // Ensure it's behind everything
+      backgroundRect.moveToBottom();
+      this.group.getLayer()?.batchDraw();
+    };
 
-    // Title
-    const title = new Konva.Text({
+    // Add vignette overlay for depth and readability
+    const vignette = new Konva.Rect({
       x: 0,
-      y: 90,
+      y: 0,
       width: STAGE_WIDTH,
-      align: "center",
-      text: "WELCOME\nTO THE GAME!!!",
-      fontSize: 48,
-      fontStyle: "bold",
-      fontFamily: FONT_FAMILY,
-      fill: COLORS.text,
+      height: STAGE_HEIGHT,
+      fillRadialGradientStartPoint: { x: STAGE_WIDTH / 2, y: STAGE_HEIGHT / 2 },
+      fillRadialGradientStartRadius: 0,
+      fillRadialGradientEndPoint: { x: STAGE_WIDTH / 2, y: STAGE_HEIGHT / 2 },
+      fillRadialGradientEndRadius: STAGE_WIDTH / 1.5,
+      fillRadialGradientColorStops: [
+        0, "rgba(0,0,0,0.3)",      // Slightly dark center
+        1, "rgba(0,0,0,0.8)"       // Very dark edges
+      ],
       listening: false,
     });
-    this.group.add(title);
+    this.group.add(vignette);
+
+    // Title with dramatic styling
+    // Shadow layer (depth effect)
+    const shadowTitle = new Konva.Text({
+      x: 0,
+      y: 82,  // Offset from main title for 3D effect
+      width: STAGE_WIDTH,
+      align: "center",
+      text: "PHUNGEON",
+      fontSize: 72,
+      fontStyle: "bold",
+      fontFamily: FONTS.dungeon,
+      fill: COLORS.bgDark,
+      listening: false,
+    });
+    this.group.add(shadowTitle);
+
+    // Main title with torch-fire gradient
+    const mainTitle = new Konva.Text({
+      x: 0,
+      y: 80,
+      width: STAGE_WIDTH,
+      align: "center",
+      text: "PHUNGEON",
+      fontSize: 72,
+      fontStyle: "bold",
+      fontFamily: FONTS.dungeon,
+      fillLinearGradientStartPoint: { x: 0, y: 0 },
+      fillLinearGradientEndPoint: { x: 0, y: 72 },
+      fillLinearGradientColorStops: [
+        0, COLORS.torchYellow,      // Top: torch glow
+        0.5, COLORS.torchOrange,    // Middle: flame
+        1, COLORS.emberRed          // Bottom: ember
+      ],
+      stroke: COLORS.rustBrown,
+      strokeWidth: 3,
+      shadowColor: COLORS.torchOrange,
+      shadowBlur: 30,
+      shadowOpacity: 0.8,
+      listening: false,
+    });
+    this.group.add(mainTitle);
+
+    // Add pulsing glow animation to main title
+    const titleAnim = new Konva.Animation((frame) => {
+      if (!frame) return;
+      const pulse = Math.sin(frame.time / 800) * 0.3 + 0.7;
+      mainTitle.shadowBlur(30 * pulse);
+    }, mainTitle.getLayer());
+    titleAnim.start();
 
     // Buttons stack
     const centerX = STAGE_WIDTH / 2;
@@ -137,7 +207,7 @@ export class MenuScreenView implements View {
       align: "center",
       verticalAlign: "middle",
       horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.ui,
     });
 
     // hover + click interactions

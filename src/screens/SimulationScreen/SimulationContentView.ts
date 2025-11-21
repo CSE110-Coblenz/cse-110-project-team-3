@@ -3,10 +3,11 @@ import type { View } from "../../types";
 import {
   STAGE_WIDTH,
   STAGE_HEIGHT,
-  FONT_FAMILY,
+  FONTS,
   COLORS,
 } from "../../constants";
 import type { SimulationScreenConfig, SimulationOptionConfig } from "./types";
+import { BackgroundHelper } from "../../utils/ui/BackgroundHelper";
 
 export class SimulationContentView implements View {
   private group = new Konva.Group();
@@ -31,21 +32,21 @@ export class SimulationContentView implements View {
     const rightPanelX = STAGE_WIDTH - layout.rightPanelWidth;
 
     // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: config.style?.backgroundColor ?? "black",
-    });
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
+  
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
 
     // Title
     const title = new Konva.Text({
       text: config.title,
       fontStyle: "bold",
       fontSize: 40,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.dungeon,
       fill: config.style?.titleColor ?? "white",
       x: STAGE_WIDTH / 2,
       y: 35,
@@ -59,7 +60,7 @@ export class SimulationContentView implements View {
       y: 75,
       width: STAGE_WIDTH - 48,
       text: config.description,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fontSize: 18,
       lineHeight: 1.2,
       fill: config.style?.descriptionColor ?? "white",
@@ -77,7 +78,6 @@ export class SimulationContentView implements View {
 
     if (config.video) {
       // If a video config is present, render the video in loop as before.
-
       const src = new URL(config.video.src, import.meta.url).toString();
 
       this.videoEl = document.createElement("video");
@@ -200,7 +200,7 @@ export class SimulationContentView implements View {
       fontStyle: "bold",
       align: "center",
       verticalAlign: "middle",
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.ui,
     });
 
     g.on("mouseenter", () => {

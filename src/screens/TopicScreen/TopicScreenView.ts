@@ -1,8 +1,9 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT, COLORS, TOPIC_DEFAULT_STYLES } from "../../constants";
+import { STAGE_WIDTH, TOPIC_DEFAULT_STYLES } from "../../constants";
 import type { TopicScreenConfig } from "../../types";
 import { createKonvaButton } from "../../utils/ui/NavigationButton";
+import { BackgroundHelper } from "../../utils/ui/BackgroundHelper";
 
 /**
  * A configurable view for topic-based screens
@@ -25,14 +26,14 @@ export class TopicScreenView implements View {
 
   private initializeUI(): void {
     // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: this.config.style?.backgroundColor || COLORS.bg,
-    });
+      const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
+  
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
 
     // Title
     const title = new Konva.Text({

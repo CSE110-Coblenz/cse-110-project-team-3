@@ -4,9 +4,10 @@ import {
   COLORS,
   STAGE_HEIGHT,
   STAGE_WIDTH,
-  FONT_FAMILY,
+  FONTS,
 } from "../../constants";
 import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
+import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { MapScreenNavigationButtons } from "../../configs/NavigationButtons/Map.ts";
 
 type NodeDescription = {
@@ -26,15 +27,17 @@ export class MapScreenView implements View {
   ) {
     this.group = new Konva.Group();
 
-    // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: COLORS.bg,
-    });
+    this.group = new Konva.Group({ visible: false });
+  
+    // Add dungeon background
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
+    
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
 
     // Map Nodes
     const nodeA = this.createNode(
@@ -95,7 +98,7 @@ export class MapScreenView implements View {
     x: number,
     y: number,
     label: string,
-    opts: { height?: number; width?: number } = {},
+    opts: { height?: number; width?: number; locked?: boolean; isBoss?: boolean } = {},
     handleClick?: (level: string) => void,
   ): NodeDescription {
     const height = opts.height ?? 120;
@@ -103,21 +106,61 @@ export class MapScreenView implements View {
     const radius = 24;
     const isWide = width > height + 20;
     const pad = isWide ? 18 : 0;
+    const locked = opts.locked ?? false;
+    const isBoss = opts.isBoss ?? false;
 
     const group = new Konva.Group({ x, y });
 
-    // Border rectangle
+    // Border rectangle (dungeon room door/archway)
     const outer = new Konva.Rect({
       width,
       height,
       cornerRadius: radius,
-      fill: COLORS.nodeFill,
-      stroke: COLORS.nodeStroke,
-      strokeWidth: 6,
-      shadowColor: "#000",
-      shadowBlur: 10,
-      shadowOpacity: 0.3,
+      fill: locked ? COLORS.nodeFill : COLORS.stoneMid,
+      stroke: locked ? COLORS.nodeStroke : COLORS.nodeActive,
+      strokeWidth: isBoss ? 8 : 6,
+      shadowColor: COLORS.black,
+      shadowBlur: 20,
+      shadowOpacity: 0.8,
     });
+
+    // Torch brackets for unlocked rooms (decorative fire glow)
+    if (!locked) {
+      const leftTorch = new Konva.Circle({
+        x: 15,
+        y: height / 2,
+        radius: 8,
+        fill: COLORS.torchOrange,
+        shadowColor: COLORS.torchYellow,
+        shadowBlur: 15,
+        opacity: 0.8,
+        listening: false,
+      });
+      const rightTorch = new Konva.Circle({
+        x: width - 15,
+        y: height / 2,
+        radius: 8,
+        fill: COLORS.torchOrange,
+        shadowColor: COLORS.torchYellow,
+        shadowBlur: 15,
+        opacity: 0.8,
+        listening: false,
+      });
+      group.add(leftTorch);
+      group.add(rightTorch);
+    }
+
+    // Lock icon for locked rooms
+    if (locked) {
+      const lock = new Konva.Text({
+        x: width / 2 - 15,
+        y: 20,
+        text: "🔒",
+        fontSize: 30,
+        listening: false,
+      });
+      group.add(lock);
+    }
 
     // For wide nodes, pick a size that respects BOTH height and width
     const wideFontSize = Math.min(
@@ -127,24 +170,48 @@ export class MapScreenView implements View {
 
     const text = new Konva.Text({
       x: pad,
-      y: pad,
+      y: locked ? pad + 30 : pad,  // Offset if lock is present
       width: width - pad * 2,
-      height: height - pad * 2,
+      height: locked ? height - pad * 2 - 30 : height - pad * 2,
       text: label,
-      fill: COLORS.text,
-      fontFamily: FONT_FAMILY,
+      fill: locked ? COLORS.textDim : COLORS.text,
+      fontFamily: FONTS.dungeon,
       fontStyle: "bold",
       fontSize: isWide ? wideFontSize : 64,
       align: "center",
       verticalAlign: "middle",
       wrap: isWide ? "word" : "none",
       lineHeight: 1.0,
+      shadowColor: COLORS.black,
+      shadowBlur: 3,
+      shadowOpacity: 1,
     });
 
     group.add(outer, text);
 
+    // Hover glow effect for unlocked rooms
+    if (!locked) {
+      group.on("mouseenter", () => {
+        outer.stroke(COLORS.torchOrange);  // Torch-lit glow
+        outer.shadowBlur(30);  // Increased glow
+        if (group.getStage()) {
+          group.getStage()!.container().style.cursor = "pointer";
+        }
+        group.getLayer()?.batchDraw();
+      });
+
+      group.on("mouseleave", () => {
+        outer.stroke(COLORS.nodeActive);  // Return to normal
+        outer.shadowBlur(20);
+        if (group.getStage()) {
+          group.getStage()!.container().style.cursor = "default";
+        }
+        group.getLayer()?.batchDraw();
+      });
+    }
+
     // Click handler
-    if (handleClick) {
+    if (handleClick && !locked) {
       group.on("click", () => handleClick(label));
     }
 

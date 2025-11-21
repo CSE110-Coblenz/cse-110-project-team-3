@@ -1,4 +1,4 @@
-import type { ScreenSwitcher } from "../../types";
+import type { ScreenSwitcher, Screen } from "../../types";
 import { ScreenController } from "../../types";
 import { RulesScreenView } from "./RulesScreenView";
 import { RulesScreenNavigationButtons } from "../../configs/NavigationButtons/Rules.ts";
@@ -6,6 +6,7 @@ import { RulesScreenNavigationButtons } from "../../configs/NavigationButtons/Ru
 export class RulesScreenController extends ScreenController {
   private view: RulesScreenView;
   private screenSwitcher: ScreenSwitcher;
+  private returnToScreen: Screen = { type: "map" };
 
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
@@ -15,10 +16,18 @@ export class RulesScreenController extends ScreenController {
     this.screenSwitcher = screenSwitcher;
   }
 
+  setReturnTo(screen: Screen): void {
+    this.returnToScreen = screen;
+  }
   private handleButtonClick = (buttonId: string) => {
     console.log(`Button ${buttonId} clicked`);
 
     // Find the button configuration
+    if (buttonId === "exit") {
+      this.screenSwitcher.switchToScreen(this.returnToScreen);
+      return;
+    }
+
     const buttonConfig = RulesScreenNavigationButtons.find(
       (btn) => btn.id === buttonId
     );
@@ -29,7 +38,7 @@ export class RulesScreenController extends ScreenController {
     }
 
     // Navigate to the target screen
-    this.screenSwitcher.switchToScreen(buttonConfig.target);
+    this.screenSwitcher.switchToScreen(this.returnToScreen);
   };
 
   getView(): RulesScreenView {

@@ -3,7 +3,7 @@ import {
   COLORS,
   STAGE_HEIGHT,
   STAGE_WIDTH,
-  FONT_FAMILY,
+  FONTS,
 } from "../../../constants";
 import type { View, NavButton } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
@@ -34,7 +34,7 @@ export class MinigameCompletedScreenView implements View {
       y: STAGE_HEIGHT / 2 - 100,
       text: `Mini Game ${level}\nCompleted!`,
       fontSize: 60,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.dungeon,
       fill: COLORS.text,
       fontStyle: "bold",
       align: "center",

@@ -4,14 +4,16 @@ import {
   COLORS,
   SIMULATION_CONSTANTS,
   STAGE_WIDTH,
-  STAGE_HEIGHT,
-  FONT_FAMILY,
+  FONTS,
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 
 export class MinigameSimulView extends BaseMinigameSimulView {
-  private projectile: Konva.Circle;
+  private group: Konva.Group;
+  private projectile: Konva.Circle | Konva.Group;  // Can be Circle or Group (fireball)
+  private playButton: Konva.Group;
+  private resetButton: Konva.Group;
   private speedText: Konva.Text;
   private angleText: Konva.Text;
   private onSpeedChange?: (delta: number) => void;
@@ -56,7 +58,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       y: 20,
       text: `Initial Speed: ${Math.round(initialSpeed)} m/s`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(this.speedText);
@@ -66,7 +68,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       y: 50,
       text: `Angle: ${Math.round(angle / 5) * 5} degrees`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(this.angleText);
@@ -76,7 +78,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       y: 80,
       text: `Gravity: ${gravity.toFixed(2)} m/s²`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(gravityText);
@@ -86,7 +88,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       y: 110,
       text: `Target Distance: ${distanceX.toFixed(2)} m`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(distanceText);
@@ -112,7 +114,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       const t = new Konva.Text({
         text: label,
         fontSize: 18,
-        fontFamily: FONT_FAMILY,
+        fontFamily: FONTS.ui,
         fill: COLORS.buttonText,
         width: 28,
         height: 24,
@@ -262,7 +264,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     });
     this.group.add(groundLine);
 
-    // Add cannon image
+    // Add cannon image on top of platform
     Konva.Image.fromURL("/cannon.png", (image) => {
       image.width(150);
       image.height(150);
@@ -280,15 +282,45 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       this.group.add(image);
     });
 
-    // Projectile ball
-    this.projectile = new Konva.Circle({
+    // Projectile - Glowing fireball effect
+    const projectileGroup = new Konva.Group({
       x: SIMULATION_CONSTANTS.starting_x,
       y: SIMULATION_CONSTANTS.ground_level - height,
-      radius: 10,
-      fill: COLORS.nodeStroke,
     });
-    this.group.add(this.projectile);
-    this.projectile.hide();
+
+    // Outer glow (gradient halo)
+    const glow = new Konva.Circle({
+      radius: 15,
+      fillRadialGradientStartPoint: { x: 0, y: 0 },
+      fillRadialGradientStartRadius: 0,
+      fillRadialGradientEndPoint: { x: 0, y: 0 },
+      fillRadialGradientEndRadius: 15,
+      fillRadialGradientColorStops: [
+        0, COLORS.torchYellow,
+        0.5, COLORS.torchOrange,
+        1, "rgba(255,107,53,0)"  // Fade to transparent
+      ],
+      opacity: 0.6,
+    });
+
+    // Inner core (fireball center)
+    const core = new Konva.Circle({
+      radius: 10,
+      fill: COLORS.emberRed,
+      stroke: COLORS.torchYellow,
+      strokeWidth: 2,
+      shadowColor: COLORS.torchOrange,
+      shadowBlur: 15,
+      shadowOpacity: 0.8,
+    });
+
+    projectileGroup.add(glow);
+    projectileGroup.add(core);
+    this.group.add(projectileGroup);
+    projectileGroup.hide();
+
+    // Store reference for controller (cast to Circle for compatibility)
+    this.projectile = projectileGroup as any;
 
     // Add Play Button
     this.playButton = this.createPillButton(
@@ -405,7 +437,61 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     }
   }
 
-  getProjectile(): Konva.Circle {
+  setLives(lives: number): void {
+    this.heartsGroup.destroyChildren();
+    const heartChar = "❤"; // red heart
+    for (let i = 0; i < 3; i++) {
+      const t = new Konva.Text({
+        x: i * 40,
+        y: 0,
+        text: heartChar,
+        fontSize: 28,
+        fontFamily: FONTS.ui,
+        fill: i < lives ? "#ff4d4f" : "#555555",
+      });
+      this.heartsGroup.add(t);
+    }
+    this.group.getLayer()?.draw();
+  }
+
+  private createPillButton(
+    label: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ): Konva.Group {
+    const g = new Konva.Group({ x, y });
+
+    const r = Math.min(height / 2 + 6, 24);
+    const rect = new Konva.Rect({
+      width,
+      height,
+      cornerRadius: r,
+      fill: COLORS.buttonFill,
+      stroke: COLORS.buttonStroke,
+      strokeWidth: 4,
+      shadowOpacity: 0.15,
+      shadowBlur: 8,
+    });
+    g.add(rect);
+
+    const text = new Konva.Text({
+      text: label,
+      fontSize: 32,
+      fontFamily: FONTS.ui,
+      fill: COLORS.buttonText,
+      width,
+      height,
+      align: "center",
+      verticalAlign: "middle",
+    });
+    g.add(text);
+
+    return g;
+  }
+
+  getProjectile(): Konva.Circle | Konva.Group {
     return this.projectile;
   }
 }

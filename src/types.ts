@@ -19,8 +19,8 @@ export interface View {
  */
 
 export type Screen =
-  | { type: "menu" }
-  | { type: "rules" }
+  | {type: "menu"}
+  | { type: "rules"; returnTo?: Screen }
   | { type: "level" }
   | { type: "map" }
   | { type: "reference"; returnTo?: Screen }

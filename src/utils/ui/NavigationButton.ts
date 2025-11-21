@@ -1,5 +1,5 @@
 import Konva from "konva";
-import { NAVIGATION_BUTTON_DEFAULT_STYLES, STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
+import { NAVIGATION_BUTTON_DEFAULT_STYLES, STAGE_WIDTH, STAGE_HEIGHT, COLORS } from "../../constants";
 import type { NavButton } from "../../types";
 
 /**
@@ -30,7 +30,7 @@ export function createKonvaButton(config: NavButton, onClick: (buttonId: string)
     const strokeColor = config.style?.stroke || NAVIGATION_BUTTON_DEFAULT_STYLES.stroke;
     const textFill = config.style?.textFill || NAVIGATION_BUTTON_DEFAULT_STYLES.textFill;
 
-    // Create pill-shaped button rectangle with shadow
+    // Create pill-shaped button rectangle with shadow (stone tablet base)
     const buttonRect = new Konva.Rect({
         width: buttonWidth,
         height: buttonHeight,
@@ -43,7 +43,20 @@ export function createKonvaButton(config: NavButton, onClick: (buttonId: string)
         shadowBlur: 8,
     });
 
-    // Create button text with centered alignment
+    // Chiseled edge highlight (inner highlight for 3D carved stone effect)
+    const chiselHighlight = new Konva.Rect({
+        x: 2,
+        y: 2,
+        width: buttonWidth - 4,
+        height: buttonHeight - 4,
+        stroke: COLORS.stoneLight,
+        strokeWidth: 2,
+        cornerRadius: Math.min(buttonHeight / 2 + 4, 22),
+        opacity: 0.3,
+        listening: false,
+    });
+
+    // Create button text with centered alignment (carved text effect)
     const buttonText = new Konva.Text({
         width: buttonWidth,
         height: buttonHeight,
@@ -54,24 +67,33 @@ export function createKonvaButton(config: NavButton, onClick: (buttonId: string)
         align: "center",
         verticalAlign: "middle",
         fontFamily: NAVIGATION_BUTTON_DEFAULT_STYLES.fontFamily,
+        shadowColor: COLORS.black,
+        shadowBlur: 2,
+        shadowOpacity: 0.8,
+        shadowOffsetY: 2,  // Engraved text effect
     });
 
     // Add elements to group
     buttonGroup.add(buttonRect);
+    buttonGroup.add(chiselHighlight);
     buttonGroup.add(buttonText);
 
-    // Add hover effects matching SimulationScreenView style
+    // Add hover effects - stone tablet glows like torchlight
     buttonGroup.on("mouseenter", () => {
         if (buttonGroup.getAttr("disabled") || buttonGroup.getAttr("locked")) return;
         document.body.style.cursor = "pointer";
-        buttonRect.fill("white");
+        buttonRect.fill(COLORS.buttonHover);  // Lit stone
+        buttonRect.shadowBlur(16);  // Stronger glow
+        buttonText.fill(COLORS.textHighlight);  // Torch yellow glow
         buttonGroup.getLayer()?.batchDraw();
     });
 
     buttonGroup.on("mouseleave", () => {
         if (buttonGroup.getAttr("disabled") || buttonGroup.getAttr("locked")) return;
         document.body.style.cursor = "default";
-        buttonRect.fill(baseFill);
+        buttonRect.fill(baseFill);  // Return to stone tablet
+        buttonRect.shadowBlur(8);  // Normal shadow
+        buttonText.fill(textFill);  // Return to normal text
         buttonGroup.getLayer()?.batchDraw();
     });
 

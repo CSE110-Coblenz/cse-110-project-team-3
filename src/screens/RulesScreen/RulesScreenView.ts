@@ -4,9 +4,10 @@ import {
   COLORS,
   STAGE_HEIGHT,
   STAGE_WIDTH,
-  FONT_FAMILY,
+  FONTS,
 } from "../../constants";
 import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
+import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { RulesScreenNavigationButtons } from "../../configs/NavigationButtons/Rules.ts";
 
 
@@ -31,23 +32,21 @@ export class RulesScreenView implements View {
     const GUTTER = BULLET_SIZE + BULLET_GAP;
     const BODY_WIDTH = STAGE_WIDTH - PAD_X * 2 - GUTTER;
 
-    // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: COLORS.bg,
-      cornerRadius: 8,
-    });
+      const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
+  
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
 
     // Title: "RULES:"
     const title = new Konva.Text({
       x: PAD_X,
       y: PAD_TOP,
       text: "RULES:",
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.dungeon,
       fontSize: TITLE_SIZE,
       fill: COLORS.text,
       fontStyle: "bold",
@@ -67,7 +66,7 @@ export class RulesScreenView implements View {
         y: 0,
         width: BULLET_SIZE,
         text: BULLET_CHAR,
-        fontFamily: FONT_FAMILY,
+        fontFamily: FONTS.physics,
         fontSize: BULLET_SIZE,
         fill: COLORS.text,
         align: "left",
@@ -81,7 +80,7 @@ export class RulesScreenView implements View {
         text,
         wrap: "word",
         lineHeight: LINE_HEIGHT,
-        fontFamily: FONT_FAMILY,
+        fontFamily: FONTS.physics,
         fontSize: BULLET_SIZE,
         fill: COLORS.text,
         align: "left",

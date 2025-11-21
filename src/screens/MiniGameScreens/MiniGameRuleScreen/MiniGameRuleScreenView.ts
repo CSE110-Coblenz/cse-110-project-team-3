@@ -4,7 +4,7 @@ import {
   COLORS,
   STAGE_HEIGHT,
   STAGE_WIDTH,
-  FONT_FAMILY,
+  FONTS,
 } from "../../../constants";
 import type { View } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
@@ -35,7 +35,7 @@ export class MiniGameRuleScreenView implements View {
       y: 50,
       text: "Mini Game Rules",
       fontSize: 60,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.dungeon,
       fill: COLORS.text,
       fontStyle: "bold",
     });
@@ -51,7 +51,7 @@ export class MiniGameRuleScreenView implements View {
         .map((rule, index) => `${index + 1}. ${rule}`)
         .join("\n\n"),
       fontSize: 32,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(rulesText);
