@@ -10,6 +10,7 @@ import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/Tit
 import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
 import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
 import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
+import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
 import { Minigame1SimulController } from "./screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController.ts";
 
 // Import configurations for minigames
@@ -38,6 +39,7 @@ class App implements ScreenSwitcher {
   private stage: Konva.Stage;
   private layer: Konva.Layer;
 
+  private menuScreenController: MenuScreenController;
   private mapScreenController: MapScreenController;
   private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
@@ -77,6 +79,7 @@ class App implements ScreenSwitcher {
     this.stage.add(this.layer);
 
     // Initialize screen controllers
+    this.menuScreenController = new MenuScreenController(this);
     this.mapScreenController = new MapScreenController(this);
     this.rulesScreenController = new RulesScreenController(this);
     this.referenceScreenController = new ReferenceScreenController(this);
@@ -132,6 +135,7 @@ class App implements ScreenSwitcher {
     );
 
     // add all screen views to the layer
+    this.layer.add(this.menuScreenController.getView().getGroup());
     this.layer.add(this.mapScreenController.getView().getGroup());
     this.layer.add(this.referenceScreenController.getView().getGroup());
     this.layer.add(this.rulesScreenController.getView().getGroup());
@@ -154,14 +158,13 @@ class App implements ScreenSwitcher {
     // Draw the layer
     this.layer.draw();
 
-    // Start with the map screen
-    //this.switchToScreen({ type: "map" });
-    this.switchToScreen({ type: "simulation", topic: "trajectory" });
-    // this.switchToScreen({ type: "topic", level: "force" });
+    // Start with the menu screen
+    this.switchToScreen({ type: "menu" });
   }
 
   switchToScreen(screen: Screen): void {
     // Hide all screens
+    this.menuScreenController.getView().hide();
     this.mapScreenController.getView().hide();
     this.referenceScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
@@ -189,6 +192,9 @@ class App implements ScreenSwitcher {
 
     // Show the selected screen
     switch (screen.type) {
+      case "menu":
+        this.menuScreenController.show();
+        break;
       case "map":
         this.mapScreenController.getView().show();
         break;
