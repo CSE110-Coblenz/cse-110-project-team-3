@@ -74,8 +74,7 @@ describe("ReferenceScreenController Integration Test", () => {
 
     (exitButtonGroup as FakeGroup).fire("click");
 
-    // TODO: Uncomment once the switchToScreen call is implemented in the controller
-    // expect(switchToScreen).toHaveBeenCalledTimes(1);
-    // expect(switchToScreen).toHaveBeenCalledWith({ type: "map" });
+    expect(switchToScreen).toHaveBeenCalledTimes(1);
+    expect(switchToScreen).toHaveBeenCalledWith({ type: "map" });
   });
 });

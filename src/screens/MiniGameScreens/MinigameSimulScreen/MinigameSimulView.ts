@@ -1,21 +1,17 @@
 import Konva from "konva";
-import type { View } from "../../../types";
 import {
   COLORS,
   SIMULATION_CONSTANTS,
-  STAGE_HEIGHT,
   STAGE_WIDTH,
+  STAGE_HEIGHT,
   FONT_FAMILY,
 } from "../../../constants";
+import { BaseMinigameSimulView } from "../../../types";
 
-export class MinigameSimulView implements View {
-  private group: Konva.Group;
+export class MinigameSimulView extends BaseMinigameSimulView {
   private projectile: Konva.Circle;
-  private playButton: Konva.Group;
-  private resetButton: Konva.Group;
   private speedText: Konva.Text;
   private angleText: Konva.Text;
-  private heartsGroup: Konva.Group;
   private onSpeedChange?: (delta: number) => void;
   private onAngleChange?: (delta: number) => void;
   private currentSpeed: number = 0;
@@ -24,18 +20,12 @@ export class MinigameSimulView implements View {
   private speedTrackX = 360;
   private speedTrackY = 32;
   private speedTrackWidth = 200;
-  private speedMin = 0;
-  private speedMax = 300;
-  private speedStep = 1;
   private speedKnob!: Konva.Circle;
   private lastSpeedValue?: number;
 
   private angleTrackX = 360;
   private angleTrackY = 62;
   private angleTrackWidth = 200;
-  private angleMin = 0;
-  private angleMax = 90;
-  private angleStep = 5;
   private angleKnob!: Konva.Circle;
   private lastAngleValue?: number;
 
@@ -51,22 +41,11 @@ export class MinigameSimulView implements View {
     onSpeedChange?: (delta: number) => void,
     onAngleChange?: (delta: number) => void,
   ) {
-    this.group = new Konva.Group();
+    super(handlePlay, handleReset);
     this.onSpeedChange = onSpeedChange;
     this.onAngleChange = onAngleChange;
     this.currentSpeed = initialSpeed;
     this.currentAngle = angle;
-
-    // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: COLORS.bg,
-      cornerRadius: 8,
-    });
-    this.group.add(background);
 
     // Display parameters
     this.speedText = new Konva.Text({
@@ -78,7 +57,6 @@ export class MinigameSimulView implements View {
       fill: COLORS.text,
     });
     this.group.add(this.speedText);
-    // remove prompt; slider handles input
 
     this.angleText = new Konva.Text({
       x: 20,
@@ -89,7 +67,6 @@ export class MinigameSimulView implements View {
       fill: COLORS.text,
     });
     this.group.add(this.angleText);
-    // remove prompt; slider handles input
 
     const gravityText = new Konva.Text({
       x: 20,
@@ -110,11 +87,6 @@ export class MinigameSimulView implements View {
       fill: COLORS.text,
     });
     this.group.add(distanceText);
-
-    // Hearts (lives) display at top-right
-    this.heartsGroup = new Konva.Group({ x: STAGE_WIDTH - 140, y: 20 });
-    this.group.add(this.heartsGroup);
-    this.setLives(3);
 
     // Simple +/- controls for speed and angle
     const controlButton = (
@@ -165,8 +137,8 @@ export class MinigameSimulView implements View {
         this.currentSpeed,
         this.speedTrackX,
         this.speedTrackWidth,
-        this.speedMin,
-        this.speedMax,
+        SIMULATION_CONSTANTS.projectile_speed_min,
+        SIMULATION_CONSTANTS.projectile_speed_max,
       ),
       y: this.speedTrackY + 3,
       radius: 10,
@@ -211,8 +183,8 @@ export class MinigameSimulView implements View {
         this.currentAngle,
         this.angleTrackX,
         this.angleTrackWidth,
-        this.angleMin,
-        this.angleMax,
+        SIMULATION_CONSTANTS.angle_min,
+        SIMULATION_CONSTANTS.angle_max,
       ),
       y: this.angleTrackY + 3,
       radius: 10,
@@ -328,6 +300,14 @@ export class MinigameSimulView implements View {
     }
     this.group.add(this.playButton);
 
+    this.resetButton = this.createPillButton(
+      "RESET",
+      STAGE_WIDTH - 150,
+      STAGE_HEIGHT - 80,
+      130,
+      55,
+    );
+
     // Add Reference Button
     const referenceButton = this.createPillButton(
       "REFERENCE",
@@ -340,15 +320,6 @@ export class MinigameSimulView implements View {
       referenceButton.on("click", handleReferenceClick);
     }
     this.group.add(referenceButton);
-
-    // Add Reset Button (initially hidden)
-    this.resetButton = this.createPillButton(
-      "RESET",
-      STAGE_WIDTH - 150,
-      STAGE_HEIGHT - 80,
-      130,
-      55,
-    );
 
     if (handleReset) {
       this.resetButton.on("click", handleReset);
@@ -385,8 +356,8 @@ export class MinigameSimulView implements View {
           intVal,
           this.speedTrackX,
           this.speedTrackWidth,
-          this.speedMin,
-          this.speedMax,
+          SIMULATION_CONSTANTS.projectile_speed_min,
+          SIMULATION_CONSTANTS.projectile_speed_max,
         ),
       );
     }
@@ -404,38 +375,12 @@ export class MinigameSimulView implements View {
           stepped,
           this.angleTrackX,
           this.angleTrackWidth,
-          this.angleMin,
-          this.angleMax,
+          SIMULATION_CONSTANTS.angle_min,
+          SIMULATION_CONSTANTS.angle_max,
         ),
       );
     }
     this.group.getLayer()?.draw();
-  }
-
-  // Helpers for sliders
-  private valueToX(
-    value: number,
-    trackX: number,
-    trackW: number,
-    min: number,
-    max: number,
-  ): number {
-    const t = (value - min) / (max - min);
-    return trackX + t * trackW;
-  }
-
-  private xToValue(
-    x: number,
-    trackX: number,
-    trackW: number,
-    min: number,
-    max: number,
-    step: number,
-  ): number {
-    const t = (x - trackX) / trackW;
-    const raw = min + t * (max - min);
-    const stepped = Math.round(raw / step) * step;
-    return Math.max(min, Math.min(stepped, max));
   }
 
   private handleSpeedDrag(): void {
@@ -443,9 +388,9 @@ export class MinigameSimulView implements View {
       this.speedKnob.x(),
       this.speedTrackX,
       this.speedTrackWidth,
-      this.speedMin,
-      this.speedMax,
-      this.speedStep,
+      SIMULATION_CONSTANTS.projectile_speed_min,
+      SIMULATION_CONSTANTS.projectile_speed_max,
+      SIMULATION_CONSTANTS.speed_step,
     );
     if (this.lastSpeedValue !== v) {
       const delta = v - this.currentSpeed;
@@ -459,9 +404,9 @@ export class MinigameSimulView implements View {
       this.angleKnob.x(),
       this.angleTrackX,
       this.angleTrackWidth,
-      this.angleMin,
-      this.angleMax,
-      this.angleStep,
+      SIMULATION_CONSTANTS.angle_min,
+      SIMULATION_CONSTANTS.angle_max,
+      SIMULATION_CONSTANTS.angle_step,
     );
     if (this.lastAngleValue !== v) {
       const delta = v - this.currentAngle;
@@ -470,73 +415,7 @@ export class MinigameSimulView implements View {
     }
   }
 
-  setLives(lives: number): void {
-    this.heartsGroup.destroyChildren();
-    const heartChar = "❤"; // red heart
-    for (let i = 0; i < 3; i++) {
-      const t = new Konva.Text({
-        x: i * 40,
-        y: 0,
-        text: heartChar,
-        fontSize: 28,
-        fontFamily: FONT_FAMILY,
-        fill: i < lives ? "#ff4d4f" : "#555555",
-      });
-      this.heartsGroup.add(t);
-    }
-    this.group.getLayer()?.draw();
-  }
-
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const r = Math.min(height / 2 + 6, 24);
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: r,
-      fill: COLORS.buttonFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
-      shadowOpacity: 0.15,
-      shadowBlur: 8,
-    });
-    g.add(rect);
-
-    const text = new Konva.Text({
-      text: label,
-      fontSize: 32,
-      fontFamily: FONT_FAMILY,
-      fill: COLORS.buttonText,
-      width,
-      height,
-      align: "center",
-      verticalAlign: "middle",
-    });
-    g.add(text);
-
-    return g;
-  }
-
   getProjectile(): Konva.Circle {
     return this.projectile;
-  }
-
-  getGroup(): Konva.Group {
-    return this.group;
-  }
-
-  show(): void {
-    this.group.show();
-  }
-
-  hide(): void {
-    this.group.hide();
   }
 }
