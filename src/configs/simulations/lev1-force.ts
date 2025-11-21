@@ -4,15 +4,13 @@ export const Lev1SimulationConfig: SimulationScreenConfig = {
   id: "lev1-force",
   title: `SIMULATION: Force`,
   description: `
-A 4.0 block is on a frictionless horizontal surface.
-YOu want the block to accelerate at 1.5 m/s².
+A 4.0 kg block is on a frictionless horizontal surface.
+You want the block to accelerate at 1.5 m/s².
 What constant horizontal force should you apply?
 `,
 
-  video: {
-    src: "/Force.mp4",
-    loop: true,
-    muted: true,
+  picture:{
+    src: "/force.png",
   },
 
   options: [
@@ -23,8 +21,8 @@ What constant horizontal force should you apply?
 
   layout: {
     rightPanelWidth: 300,
-    topOffset: 200,
-    bottomOffset: 120,
+    topOffset: 180,
+    bottomOffset: 100,
     leftOffset: 24,
   },
 

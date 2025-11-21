@@ -30,7 +30,7 @@ export class SimulationContentView implements View {
     };
     const rightPanelX = STAGE_WIDTH - layout.rightPanelWidth;
 
-    // background
+    // Background
     const background = new Konva.Rect({
       x: 0,
       y: 0,
@@ -40,7 +40,7 @@ export class SimulationContentView implements View {
     });
     this.group.add(background);
 
-    // title
+    // Title
     const title = new Konva.Text({
       text: config.title,
       fontStyle: "bold",
@@ -48,12 +48,12 @@ export class SimulationContentView implements View {
       fontFamily: FONT_FAMILY,
       fill: config.style?.titleColor ?? "white",
       x: STAGE_WIDTH / 2,
-      y: 20,
+      y: 35,
     });
     title.offsetX(title.width() / 2);
     this.group.add(title);
 
-    // problem text
+    // Problem text
     const questionText = new Konva.Text({
       x: 24,
       y: 75,
@@ -67,56 +67,93 @@ export class SimulationContentView implements View {
     });
     this.group.add(questionText);
 
-    // video
-    const src = new URL(config.video.src, import.meta.url).toString();
+    // Common geometry for the visual area (video or picture)
+    const visualX = layout.left;
+    const visualY = layout.top;
+    const visualWidth = rightPanelX - layout.left - 18; // leave space for right options panel
+    const visualHeight = STAGE_HEIGHT - layout.top - layout.bottom;
 
-    this.videoEl = document.createElement("video");
-    this.videoEl.src = src;
-    this.videoEl.loop = config.video.loop ?? true;
-    this.videoEl.muted = config.video.muted ?? true;
-    this.videoEl.playsInline = true;
-    this.videoEl.preload = "auto";
-    this.videoEl.autoplay = true;
+    // --- VISUAL CONTENT SELECTION (video OR picture) ---
 
-    // display video within the canvas context
-    this.imageNode = new Konva.Image({
-      x: layout.left,
-      y: layout.top,
-      width: rightPanelX - layout.left - 18, // leave space for right options panel
-      height: STAGE_HEIGHT - layout.top - layout.bottom,
-      image: this.videoEl,
-      listening: false,
-    });
-    this.group.add(this.imageNode);
+    if (config.video) {
+      // If a video config is present, render the video in loop as before.
 
-    // video animation control
-    const ensureAnim = () => {
-      if (!this.anim) {
-        const layer = this.group.getLayer();
-        if (!layer) return;
-        this.anim = new Konva.Animation(() => {}, layer);
-      }
-      this.anim.start();
-    };
-    this.videoEl.addEventListener("play", ensureAnim);
-    this.videoEl.addEventListener("pause", () => this.anim?.stop());
-    this.videoEl.addEventListener("ended", () => this.anim?.stop());
-    this.group.on("added", () => requestAnimationFrame(ensureAnim));
+      const src = new URL(config.video.src, import.meta.url).toString();
 
-    // right side options panel
+      this.videoEl = document.createElement("video");
+      this.videoEl.src = src;
+      this.videoEl.loop = config.video.loop ?? true;
+      this.videoEl.muted = config.video.muted ?? true;
+      this.videoEl.playsInline = true;
+      this.videoEl.preload = "auto";
+      this.videoEl.autoplay = true;
+
+      // Display the video element inside Konva as an image source
+      this.imageNode = new Konva.Image({
+        x: visualX,
+        y: visualY,
+        width: visualWidth,
+        height: visualHeight,
+        image: this.videoEl,
+        listening: false,
+      });
+      this.group.add(this.imageNode);
+
+      // Start/stop a Konva.Animation to continuously redraw the video frames
+      const ensureAnim = () => {
+        if (!this.anim) {
+          const layer = this.group.getLayer();
+          if (!layer) return;
+          this.anim = new Konva.Animation(() => {}, layer);
+        }
+        this.anim.start();
+      };
+
+      this.videoEl.addEventListener("play", ensureAnim);
+      this.videoEl.addEventListener("pause", () => this.anim?.stop());
+      this.videoEl.addEventListener("ended", () => this.anim?.stop());
+
+      // When the group is added to a layer, start animation on the next frame
+      this.group.on("added", () => requestAnimationFrame(ensureAnim));
+    } else if (config.picture) {
+      // If a picture config is present, render a static image.
+
+      const src = new URL(config.picture.src, import.meta.url).toString();
+      const img = new Image();
+      img.src = src;
+
+      this.imageNode = new Konva.Image({
+        x: visualX,
+        y: visualY,
+        width: visualWidth,
+        height: visualHeight,
+        image: img,
+        listening: false,
+      });
+      this.group.add(this.imageNode);
+
+      // Once the image is loaded, redraw the layer so the picture appears
+      img.onload = () => {
+        this.imageNode?.getLayer()?.batchDraw();
+      };
+    }
+    // If neither video nor picture is provided, the visual area is simply empty.
+
+    // --- RIGHT SIDE OPTIONS PANEL ---
+
     const RIGHT_PANEL_PAD = 16;
     const OPT_W = layout.rightPanelWidth - 2 * RIGHT_PANEL_PAD;
     const OPT_H = 50;
     const OPT_X = rightPanelX + RIGHT_PANEL_PAD;
     const OPT_Y0 = layout.top + 40;
 
-    // option buttons
+    // Option buttons
     config.options.forEach((opt, index) => {
       const optionGroup = this.createPillButton(
         opt.label,
         OPT_X,
         OPT_Y0 + index * (OPT_H + 14),
-        OPT_W - 18, // space next buttons
+        OPT_W - 18, // leave a small gap between buttons
         OPT_H,
         22,
       );
@@ -184,7 +221,7 @@ export class SimulationContentView implements View {
     return g;
   }
 
-  // option selection
+  // Option selection handler
   private handleOptionClick(
     option: SimulationOptionConfig,
     node: Konva.Group,
@@ -196,7 +233,7 @@ export class SimulationContentView implements View {
     if (!rect) return;
 
     if (option.isCorrect) {
-      // Correct answer: fill greeen, lock buttons and enable NEXT
+      // Correct answer: fill green, lock buttons and enable NEXT
       rect.fill("#22c55e");
       this.lockAll();
       this.answeredCorrectly = true;
@@ -226,15 +263,23 @@ export class SimulationContentView implements View {
 
   show(): void {
     this.group.visible(true);
+
+    // Resume video playback if this screen uses a video
     if (this.videoEl && this.videoEl.paused && this.videoEl.autoplay) {
       this.videoEl.play();
     }
+
     this.group.getLayer()?.draw();
   }
 
   hide(): void {
     this.group.visible(false);
-    if (this.videoEl) this.videoEl.pause();
+
+    // Pause video when the screen is hidden
+    if (this.videoEl) {
+      this.videoEl.pause();
+    }
+
     this.group.getLayer()?.draw();
   }
 }

@@ -27,11 +27,7 @@ export type Screen =
       level: number;
     }
   | { type: "topic"; level: "force" | "friction" | "distance" | "gravity" | "projectile motion" | "trajectory" }
-  | {
-      type: "simulation";
-      topic: "force" | "friction" | "distance" | "gravity" | "projectile motion" | "trajectory";
-      level: "lev1" | "lev2" | "lev3" | "lev4" | "lev5" | "lev6";
-    };
+  | { type: "simulation"; topic: "force" | "friction" | "distance" | "gravity" | "projectile motion" | "trajectory"};
 
 export type RuleConfig = {
   rules: string[];

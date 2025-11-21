@@ -24,7 +24,7 @@ export const forceConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "force", level: "lev1" },
+      target: { type: "simulation", topic: "force"},
       position: {
         x: 0.775,
         y: 0.725,

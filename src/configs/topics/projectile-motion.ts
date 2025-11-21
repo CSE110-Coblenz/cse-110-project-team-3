@@ -25,7 +25,7 @@ export const projectileMotionConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "projectile motion", level: "lev5" },
+      target: { type: "simulation", topic: "projectile motion"},
       position: {
         x: 0.775,
         y: 0.725,

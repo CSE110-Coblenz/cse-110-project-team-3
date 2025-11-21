@@ -24,7 +24,7 @@ export const trajectoryConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "trajectory", level: "lev6" },
+      target: { type: "simulation", topic: "trajectory"},
       position: {
         x: 0.775,
         y: 0.725,

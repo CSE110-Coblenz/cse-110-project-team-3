@@ -2,15 +2,15 @@ import type { SimulationScreenConfig } from "../../screens/SimulationScreen/type
 
 export const Lev4SimulationConfig: SimulationScreenConfig = {
   id: "lev4-gravity",
-  title: "SIMULATION: Gravity and Vertical Motion",
+  title: "SIMULATION:Vertical Motion",
 description: `
-A ball is dropped from a height of 10.0 m above the ground. Air resistance is negligible and
-g = 9.8 m/s².
+A ball is dropped from a height of 10.0 m above the ground.
+Air resistance is negligible and g = 9.8 m/s².
 How long does it take for the ball to reach the ground?
 `,
 
   video: {
-    src: "/Force.mp4",
+    src: "/gravity.mp4",
     loop: true,
     muted: true,
   },
@@ -23,8 +23,8 @@ How long does it take for the ball to reach the ground?
 
   layout: {
     rightPanelWidth: 300,
-    topOffset: 200,
-    bottomOffset: 120,
+    topOffset: 180,
+    bottomOffset: 100,
     leftOffset: 24,
   },
 

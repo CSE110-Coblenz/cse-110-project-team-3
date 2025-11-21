@@ -22,7 +22,6 @@ export class SimulationScreenView implements View {
   ) {
     this.group = new Konva.Group();
 
-    // Current content
     this.content = new SimulationContentView(config, () =>
       this.setNextEnabled(true),
     );

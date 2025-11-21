@@ -24,7 +24,7 @@ export const distanceConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "distance", level: "lev3" },
+      target: { type: "simulation", topic: "distance"},
       position: {
         x: 0.775,
         y: 0.725,

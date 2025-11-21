@@ -24,7 +24,7 @@ export const gravityConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "simulation", topic: "gravity", level: "lev4" },
+      target: { type: "simulation", topic: "gravity"},
       position: {
         x: 0.775,
         y: 0.725,

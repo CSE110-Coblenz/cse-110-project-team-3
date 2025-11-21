@@ -6,24 +6,23 @@ export const Lev5SimulationConfig: SimulationScreenConfig = {
 description: `
 A ball is launched from ground level with speed v₀ = 20.0 m/s at an angle of 60° above the horizontal.
 Air resistance is negligible and g = 9.8 m/s².
-What is the maximum height the ball reaches above the launch point?`,
+What is the maximum height the ball reaches above the launch point?
+`,
 
-  video: {
-    src: "/Force.mp4",
-    loop: true,
-    muted: true,
+  picture: {
+    src: "/projectile.png",
   },
 
   options: [
-    { id: "A", label: "A) 18.8 m/s", isCorrect: false },
-    { id: "B", label: "B) 19.8 m/s", isCorrect: true },
-    { id: "C", label: "C) 19.5 m/s", isCorrect: false },
+    { id: "A", label: "A) 11 m", isCorrect: false },
+    { id: "B", label: "B) 15 m", isCorrect: true },
+    { id: "C", label: "C) 19 m", isCorrect: false },
   ],
 
   layout: {
     rightPanelWidth: 300,
     topOffset: 200,
-    bottomOffset: 120,
+    bottomOffset: 90,
     leftOffset: 24,
   },
 

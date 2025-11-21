@@ -4,13 +4,13 @@ export const Lev3SimulationConfig: SimulationScreenConfig = {
   id: "lev3-distance",
   title: "SIMULATION: Stopping Distance",
 description: `
-A 2.0 kg block is sliding to the right on a horizontal surface with coefficient of kinetic friction μₖ = 0.30.
-The block has initial speed v₀ = 3.0 m/s.
-Gravity is g = 9.8 m/s².
+A 2.0 kg block is sliding to the right on a horizontal surface with coefficient of kinetic friction μk = 0.30.
+The block has initial speed v₀ = 3.0 m/s. Gravity is g = 9.8 m/s².
+How far does the block slide before it comes to rest?
 `,
 
   video: {
-    src: "/Force.mp4",
+    src: "/distance.mp4",
     loop: true,
     muted: true,
   },

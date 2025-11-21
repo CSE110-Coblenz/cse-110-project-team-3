@@ -107,7 +107,8 @@ class App implements ScreenSwitcher {
 
     // Start with the map screen
     //this.switchToScreen({ type: "map" });
-    this.switchToScreen({ type: "simulation", topic: "force", level: "lev1" });
+    this.switchToScreen({ type: "simulation", topic: "trajectory"});
+    // this.switchToScreen({ type: "topic", level: "force" });
   }
 
   switchToScreen(screen: Screen): void {
@@ -166,17 +167,17 @@ class App implements ScreenSwitcher {
         }
         break;
       case "simulation":
-        if (screen.topic === "force" && screen.level === "lev1") {
+        if (screen.topic === "force") {
           this.lev1SimulationController.getView().show();
-        } else if (screen.topic === "friction" && screen.level === "lev2") {
+        } else if (screen.topic === "friction") {
           this.lev2SimulationController.getView().show();
-        } else if (screen.topic === "distance" && screen.level === "lev3") {
+        } else if (screen.topic === "distance") {
           this.lev3SimulationController.getView().show();
-        } else if (screen.topic === "gravity" && screen.level === "lev4") {
+        } else if (screen.topic === "gravity") {
           this.lev4SimulationController.getView().show();
-        } else if (screen.topic === "projectile motion" && screen.level === "lev5") {
+        } else if (screen.topic === "projectile motion") {
           this.lev5SimulationController.getView().show();
-        } else if (screen.topic === "trajectory" && screen.level === "lev6") {
+        } else if (screen.topic === "trajectory") {
           this.lev6SimulationController.getView().show();
         }
         break;
