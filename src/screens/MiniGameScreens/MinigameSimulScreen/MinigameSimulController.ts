@@ -1,20 +1,17 @@
 import Konva from "konva";
 import { SIMULATION_CONSTANTS, STAGE_WIDTH } from "../../../constants";
 import type { ScreenSwitcher } from "../../../types";
-import { ScreenController } from "../../../types";
+import { MinigameController } from "../../../types";
 import { MinigameSimulModel } from "./MinigameSimulModel";
 import { MinigameSimulView } from "./MinigameSimulView";
 
-export class MinigameSimulController extends ScreenController {
+export class MinigameSimulController extends MinigameController {
   private view: MinigameSimulView;
-  private screenSwitcher: ScreenSwitcher;
   private model: MinigameSimulModel;
-  private lives: number = 3;
-  private level: number;
 
   constructor(screenSwitcher: ScreenSwitcher, level: number) {
-    super();
-    this.screenSwitcher = screenSwitcher;
+    super(screenSwitcher, level);
+
     // Randomize target distance each game so the problem varies
     const targetHalfWidth = 15;
     const maxDistance = Math.max(
@@ -23,7 +20,7 @@ export class MinigameSimulController extends ScreenController {
         STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x + targetHalfWidth - 20,
       ),
     );
-    const minDistance = 200;
+    const minDistance = SIMULATION_CONSTANTS.simulation_min_distance_to_target;
     const distanceX = Math.max(
       minDistance,
       Math.min(
@@ -32,11 +29,10 @@ export class MinigameSimulController extends ScreenController {
           minDistance,
       ),
     );
-    this.level = level;
 
     this.model = new MinigameSimulModel(
-      0,
-      0,
+      SIMULATION_CONSTANTS.projectile_speed_min,
+      SIMULATION_CONSTANTS.angle_min,
       9.8,
       distanceX,
       0,
@@ -79,7 +75,6 @@ export class MinigameSimulController extends ScreenController {
     // After reset, allow playing again
     this.view.hideResetButton();
     if (this.lives > 0) this.view.showPlayButton();
-    console.log("Simulation reset.");
   }
 
   handleReferenceClick(): void {
@@ -99,7 +94,6 @@ export class MinigameSimulController extends ScreenController {
     const initialSpeed = this.model.getInitialSpeed();
     const angle = this.model.getAngle();
     const gravity = this.model.getGravity();
-    const distanceX = this.model.getDistanceX();
     const initialHeight = this.model.getInitialHeight();
 
     const angleInRadians = (angle * Math.PI) / 180;
@@ -124,34 +118,7 @@ export class MinigameSimulController extends ScreenController {
       // Stop animation when it hits the ground
       if (y > SIMULATION_CONSTANTS.ground_level) {
         animation.stop();
-        console.log("x", x);
-        console.log("distance_X", initialX + distanceX);
-        if (this.model.isHit(x - initialX)) {
-          console.log("Hit the target!");
-          // Success: keep lives unchanged, prompt reset for next round
-          this.screenSwitcher.switchToScreen({
-            type: "minigame",
-            screen: "completed",
-            level: this.level,
-          });
-        } else {
-          console.log("Missed the target.");
-          // Lose a life on miss
-          this.lives = Math.max(0, this.lives - 1);
-          this.view.setLives(this.lives);
-          if (this.lives <= 0) {
-            console.log("Game Over");
-            this.screenSwitcher.switchToScreen({
-              type: "minigame",
-              screen: "gameover",
-              level: this.level,
-            });
-            return;
-          }
-        }
-
-        // Show reset to reposition the projectile; play becomes available after reset (if lives remain)
-        this.view.addResetButton();
+        this.handleHit(this.model.isHit(x - initialX));
       }
     }, this.view.getGroup().getLayer());
 
