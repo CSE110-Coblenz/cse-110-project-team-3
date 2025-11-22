@@ -60,6 +60,8 @@ export class Minigame1SimulController extends MinigameController {
       y: SIMULATION_CONSTANTS.ground_level - 50,
     });
     this.view.hideCurrentSpeedText();
+    // Update distance arrows back to start state
+    this.view.updateArrows(box.x());
     this.view.getGroup().getLayer()?.draw();
 
     // After reset, allow playing again
@@ -103,6 +105,8 @@ export class Minigame1SimulController extends MinigameController {
 
       this.view.updateCurrentSpeed(currentVelocity);
       box.x(initialX + distance);
+      // Update distance arrows as the box moves
+      this.view.updateArrows(box.x());
 
       // Stop animation when the box stops
       if (currentVelocity <= 0) {
