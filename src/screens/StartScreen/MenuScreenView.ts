@@ -183,6 +183,8 @@ export class MenuScreenView implements View {
     const g = new Konva.Group({ x, y });
 
     const r = Math.min(height / 2 + 6, 24);
+
+    // Create pill-shaped button rectangle with shadow (stone tablet base)
     const rect = new Konva.Rect({
       width,
       height,
@@ -194,7 +196,23 @@ export class MenuScreenView implements View {
       shadowOpacity: 0.15,
       shadowBlur: 8,
     });
+    g.add(rect);
 
+    // Chiseled edge highlight (inner highlight for 3D carved stone effect)
+    const chiselHighlight = new Konva.Rect({
+      x: 2,
+      y: 2,
+      width: width - 4,
+      height: height - 4,
+      stroke: COLORS.stoneLight,
+      strokeWidth: 2,
+      cornerRadius: r - 2,
+      opacity: 0.3,
+      listening: false,
+    });
+    g.add(chiselHighlight);
+
+    // Create button text with centered alignment (carved text effect)
     const text = new Konva.Text({
       x: 0,
       y: 0,
@@ -206,21 +224,41 @@ export class MenuScreenView implements View {
       fontStyle: "bold",
       align: "center",
       verticalAlign: "middle",
-      horizontalAlign: "center",
-      fontFamily: FONTS.ui,
+      fontFamily: FONTS.dungeon,
+      shadowColor: COLORS.black,
+      shadowBlur: 2,
+      shadowOpacity: 0.8,
+      shadowOffsetY: 2,  // Engraved text effect
+    });
+    g.add(text);
+
+    // Add hover effects - stone tablet glows like torchlight
+    g.on("mouseenter", () => {
+      if ((g as any)._disabled) return;
+      document.body.style.cursor = "pointer";
+      rect.fill(COLORS.buttonHover);  // Lit stone
+      rect.shadowBlur(16);  // Stronger glow
+      text.fill(COLORS.textHighlight);  // Torch yellow glow
+      g.getLayer()?.batchDraw();
     });
 
-    // hover + click interactions
+    g.on("mouseleave", () => {
+      if ((g as any)._disabled) return;
+      document.body.style.cursor = "default";
+      rect.fill(COLORS.buttonFill);  // Return to stone tablet
+      rect.shadowBlur(8);  // Normal shadow
+      text.fill(COLORS.buttonText);  // Return to normal text
+      g.getLayer()?.batchDraw();
+    });
+
+    // Click handler
     if (onClick) {
-      g.on("mouseenter", () => (document.body.style.cursor = "pointer"));
-      g.on("mouseleave", () => (document.body.style.cursor = "default"));
       g.on("click", () => {
         if ((g as any)._disabled) return;
         onClick();
       });
     }
 
-    g.add(rect, text);
     return g;
   }
 

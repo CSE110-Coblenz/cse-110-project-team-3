@@ -1,4 +1,5 @@
 import Konva from "konva";
+import type { NavButton } from "../../../types";
 import {
   COLORS,
   SIMULATION_CONSTANTS,
@@ -6,6 +7,7 @@ import {
   FONTS,
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
+import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 
 export class Minigame1SimulView extends BaseMinigameSimulView {
   private box: Konva.Rect;
@@ -31,6 +33,8 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     initialSpeed: number = 0,
     gapX: number = 0,
     onSpeedChange?: (delta: number) => void,
+    navigationButtons?: NavButton[],
+    onButtonClick?: (buttonId: string) => void,
   ) {
     super(handlePlay, handleReset);
     this.onSpeedChange = onSpeedChange;
@@ -227,6 +231,14 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       cornerRadius: 6,
     });
     this.group.add(this.box);
+
+    // Navigation buttons using configuration
+    if (navigationButtons && onButtonClick) {
+      navigationButtons.forEach((buttonConfig) => {
+        const buttonGroup = createKonvaButton(buttonConfig, onButtonClick);
+        this.group.add(buttonGroup);
+      });
+    }
   }
 
   setSpeedDisplay(value: number): void {

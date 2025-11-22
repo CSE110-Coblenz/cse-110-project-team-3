@@ -2,7 +2,6 @@ import Konva from "konva";
 import type { View, NavButton, MapScreenConfig, MapNode } from "../../types";
 import {
   COLORS,
-  STAGE_HEIGHT,
   STAGE_WIDTH,
   FONTS,
 } from "../../constants";

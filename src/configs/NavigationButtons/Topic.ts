@@ -27,7 +27,7 @@ export const ProjMotionTopicNavigationButtons: NavButton[] = [
     {
       id: "back",
       label: "Back",
-      target: { type: "map", mapId: 1 },
+      target: { type: "map", mapId: 2 },
       position: {
         x: 0.05,
         y: 0.85,
@@ -69,7 +69,7 @@ export const DistanceTopicNavigationButtons: NavButton[] = [
     {
       id: "back",
       label: "Back",
-      target: { type: "map", mapId: 2 },
+      target: { type: "map", mapId: 1 },
       position: {
         x: 0.05,
         y: 0.85,

@@ -283,7 +283,7 @@ export abstract class BaseMinigameSimulView implements View {
     const text = new Konva.Text({
       text: label,
       fontSize: 32,
-      fontFamily: FONTS.dungeon,
+      fontFamily: FONTS.physics,
       fontStyle: "bold",
       fill: COLORS.buttonText,
       width,

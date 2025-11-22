@@ -90,6 +90,27 @@ export function getMinigameSimulScreenNavigationButtons(level: number): NavButto
 }
 
 /**
+ * Navigation button for Minigame1 Simulation Screen (Reference button)
+ */
+export function getMinigame1SimulScreenNavigationButtons(level: number): NavButton[] {
+  return [
+    {
+      id: "reference",
+      label: "REFERENCE",
+      target: { type: "reference", returnTo: { type: "minigame", screen: "simulation", level } },
+      position: {
+        x: 0.025,   // 20px from left (20/800)
+        y: 0.867,   // 520px from top ((600-80)/600)
+      },
+      style: {
+        width: 200,
+        height: 55,
+      },
+    },
+  ];
+}
+
+/**
  * Navigation button for Completed Screen
  */
 export function getCompletedScreenNavigationButtons(level: number): NavButton[] {
