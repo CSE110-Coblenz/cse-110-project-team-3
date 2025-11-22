@@ -104,7 +104,20 @@ export class Minigame1SimulController extends MinigameController {
       const currentVelocity = initialSpeed + acceleration * t;
 
       this.view.updateCurrentSpeed(currentVelocity);
-      box.x(initialX + distance);
+      const proposedX = initialX + distance;
+      const maxX = STAGE_WIDTH - box.width();
+      if (proposedX >= maxX) {
+        // Clamp to right edge and end the turn
+        box.x(maxX);
+        this.view.updateArrows(box.x());
+        animation.stop();
+        this.view.updateCurrentSpeed(0);
+        const finalDistance = box.x() - initialX;
+        console.log(`Final Distance (edge): ${finalDistance.toFixed(2)} m`);
+        this.handleHit(this.model.isHit(finalDistance));
+        return;
+      }
+      box.x(proposedX);
       // Update distance arrows as the box moves
       this.view.updateArrows(box.x());
 
