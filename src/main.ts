@@ -11,7 +11,6 @@ import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/Tit
 import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
 import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
 import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
-import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
 import { Minigame1SimulController } from "./screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController.ts";
 
 // Import configurations for minigames
@@ -323,4 +322,3 @@ class App implements ScreenSwitcher {
 
 const app = new App();
 // use this format to test your screen. I had a specifier for topic, level, so you dont need to add that.
-app.switchToScreen({ type: "menu" });

@@ -21,7 +21,7 @@ describe("MinigameSimulController Integration Test", () => {
     const switchToScreen = vi.fn();
     const screenSwitcher: ScreenSwitcher = { switchToScreen };
 
-    const controller = new MinigameSimulController(screenSwitcher, 1);
+    const controller = new MinigameSimulController(screenSwitcher, 2);
     const view = controller.getView();
 
     // Check that the projectile is initialized with the correct starting position
@@ -50,7 +50,7 @@ describe("MinigameSimulController Integration Test", () => {
     const switchToScreen = vi.fn();
     const screenSwitcher: ScreenSwitcher = { switchToScreen };
 
-    const controller = new MinigameSimulController(screenSwitcher, 1);
+    const controller = new MinigameSimulController(screenSwitcher, 2);
     const view = controller.getView();
     const projectile = view.getProjectile();
 
@@ -69,7 +69,7 @@ describe("MinigameSimulController Integration Test", () => {
     const switchToScreen = vi.fn();
     const screenSwitcher: ScreenSwitcher = { switchToScreen };
 
-    const controller = new MinigameSimulController(screenSwitcher, 1);
+    const controller = new MinigameSimulController(screenSwitcher, 2);
     const view = controller.getView();
     const rootGroup = view.getGroup();
 

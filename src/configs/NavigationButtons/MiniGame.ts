@@ -8,7 +8,7 @@ export function getTitleScreenNavigationButtons(level: number): NavButton[] {
     {
       id: "back",
       label: "BACK",
-      target: { type: "map" },
+      target: { type: "map", mapId: level },
       position: {
         x: 0.04,    // 32px from left (32/800)
         y: 0.84,    // 504px from top ((600-96)/600)
@@ -92,12 +92,12 @@ export function getMinigameSimulScreenNavigationButtons(level: number): NavButto
 /**
  * Navigation button for Completed Screen
  */
-export function getCompletedScreenNavigationButtons(): NavButton[] {
+export function getCompletedScreenNavigationButtons(level: number): NavButton[] {
   return [
     {
       id: "exit",
       label: "EXIT",
-      target: { type: "map" },
+      target: { type: "map", mapId: level },
       position: {
         x: 0.38,    // Center: (800/2 - 96)/800
         y: 0.833,   // 500px from top ((600-100)/600)
@@ -131,7 +131,7 @@ export function getGameOverScreenNavigationButtons(level: number): NavButton[] {
     {
       id: "exit",
       label: "EXIT",
-      target: { type: "map" },
+      target: { type: "map", mapId: level },
       position: {
         x: 0.38,    // Center: (800/2 - 96)/800
         y: 0.833,   // 500px from top ((600-100)/600)

@@ -12,7 +12,7 @@ export const map1Config: MapScreenConfig = {
       label: "1",
       target: {
         type: "topic",
-        level: "friction",
+        level: "force",
       },
       position: {
         x: STAGE_WIDTH / 2 - 375,
@@ -25,7 +25,7 @@ export const map1Config: MapScreenConfig = {
       label: "2",
       target: {
         type: "topic",
-        level: "projectile motion",
+        level: "friction",
       },
       position: {
         x: STAGE_WIDTH / 2 - 195,
@@ -38,7 +38,7 @@ export const map1Config: MapScreenConfig = {
       label: "3",
       target: {
         type: "topic",
-        level: "force",
+        level: "distance",
       },
       position: {
         x: STAGE_WIDTH / 2 - 15,
@@ -96,7 +96,7 @@ export const map2Config: MapScreenConfig = {
       label: "4",
       target: {
         type: "topic",
-        level: "distance",
+        level: "gravity",
       },
       position: {
         x: STAGE_WIDTH / 2 - 375,
@@ -109,7 +109,7 @@ export const map2Config: MapScreenConfig = {
       label: "5",
       target: {
         type: "topic",
-        level: "gravity",
+        level: "projectile motion",
       },
       position: {
         x: STAGE_WIDTH / 2 - 195,

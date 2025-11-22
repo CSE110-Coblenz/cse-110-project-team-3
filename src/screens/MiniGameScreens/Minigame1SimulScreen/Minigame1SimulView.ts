@@ -3,7 +3,7 @@ import {
   COLORS,
   SIMULATION_CONSTANTS,
   STAGE_WIDTH,
-  FONT_FAMILY,
+  FONTS,
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
 
@@ -43,7 +43,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 20,
       text: `Initial Speed: ${Math.round(initialSpeed)} m/s`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(this.speedText);
@@ -53,7 +53,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 50,
       text: `Mass: ${mass.toFixed(1)} kg`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(massText);
@@ -63,7 +63,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 80,
       text: `Friction Coeff.: ${friction.toFixed(2)}`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(frictionText);
@@ -73,7 +73,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 110,
       text: `Target Distance: ${distanceX.toFixed(2)} m`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(distanceText);
@@ -83,7 +83,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 140,
       text: `Current Speed: ${Math.round(this.currentSpeed)} m/s`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.currSpeedText.hide();
@@ -110,7 +110,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       const t = new Konva.Text({
         text: label,
         fontSize: 18,
-        fontFamily: FONT_FAMILY,
+        fontFamily: FONTS.physics,
         fill: COLORS.buttonText,
         width: 28,
         height: 24,

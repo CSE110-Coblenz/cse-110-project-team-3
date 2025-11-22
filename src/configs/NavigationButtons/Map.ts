@@ -27,16 +27,6 @@ export const Map1ScreenNavigationButtons: NavButton[] = [
         height: 64,
       },
     },
-<<<<<<< HEAD
-  },
-  {
-    id: "rules",
-    label: "RULES",
-    target: { type: "rules", returnTo: { type: "map" } },
-    position: {
-      x: 0.05,  // (32 + 160/2) / STAGE_WIDTH ≈ 0.14
-      y: 0.85, // (STAGE_HEIGHT - 92) / STAGE_HEIGHT ≈ 0.847, adjusted for centering
-=======
     {
       id: "next-map",
       label: "→",
@@ -49,7 +39,6 @@ export const Map1ScreenNavigationButtons: NavButton[] = [
         width: 60,
         height: 64,
       },
->>>>>>> 2e44d99 (Added second map screen)
     },
     {
       id: "exit",
@@ -64,16 +53,6 @@ export const Map1ScreenNavigationButtons: NavButton[] = [
         height: 64,
       },
     },
-<<<<<<< HEAD
-  },
-  {
-    id: "exit",
-    label: "EXIT",
-    target: { type: "menu" },
-    position: {
-      x: 0.75,  // (STAGE_WIDTH - 192 + 160/2) / STAGE_WIDTH ≈ 0.86
-      y: 0.85, // (STAGE_HEIGHT - 96) / STAGE_HEIGHT ≈ 0.84, adjusted for centering
-=======
   ];
 
 export const Map2ScreenNavigationButtons: NavButton[] = [
@@ -89,7 +68,6 @@ export const Map2ScreenNavigationButtons: NavButton[] = [
         width: 220,
         height: 64,
       },
->>>>>>> 2e44d99 (Added second map screen)
     },
     {
       id: "rules",

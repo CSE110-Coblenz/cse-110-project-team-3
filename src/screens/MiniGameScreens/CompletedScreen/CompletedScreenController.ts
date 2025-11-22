@@ -12,7 +12,7 @@ export class CompletedScreenController extends ScreenController {
     this.screenSwitcher = screenSwitcher;
 
     // Create navigation buttons
-    const navigationButtons = getCompletedScreenNavigationButtons();
+    const navigationButtons = getCompletedScreenNavigationButtons(level);
 
     // Create view with navigation buttons and click handler
     this.view = new MinigameCompletedScreenView(

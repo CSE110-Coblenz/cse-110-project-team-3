@@ -1,5 +1,5 @@
 import type { Group } from "konva/lib/Group";
-import { COLORS, FONT_FAMILY, STAGE_HEIGHT, STAGE_WIDTH } from "./constants";
+import { COLORS, FONTS, STAGE_HEIGHT, STAGE_WIDTH } from "./constants";
 import Konva from "konva";
 
 export interface View {
@@ -232,7 +232,7 @@ export abstract class BaseMinigameSimulView implements View {
         y: 0,
         text: heartChar,
         fontSize: 28,
-        fontFamily: FONT_FAMILY,
+        fontFamily: FONTS.dungeon, 
         fill: i < lives ? "#ff4d4f" : "#555555",
       });
       this.heartsGroup.add(t);
@@ -250,6 +250,8 @@ export abstract class BaseMinigameSimulView implements View {
     const g = new Konva.Group({ x, y });
 
     const r = Math.min(height / 2 + 6, 24);
+
+    // Create pill-shaped button rectangle with shadow (stone tablet base)
     const rect = new Konva.Rect({
       width,
       height,
@@ -257,22 +259,62 @@ export abstract class BaseMinigameSimulView implements View {
       fill: COLORS.buttonFill,
       stroke: COLORS.buttonStroke,
       strokeWidth: 4,
+      shadowColor: "#000",
       shadowOpacity: 0.15,
       shadowBlur: 8,
     });
     g.add(rect);
 
+    // Chiseled edge highlight (inner highlight for 3D carved stone effect)
+    const chiselHighlight = new Konva.Rect({
+      x: 2,
+      y: 2,
+      width: width - 4,
+      height: height - 4,
+      stroke: COLORS.stoneLight,
+      strokeWidth: 2,
+      cornerRadius: r - 2,
+      opacity: 0.3,
+      listening: false,
+    });
+    g.add(chiselHighlight);
+
+    // Create button text with centered alignment (carved text effect)
     const text = new Konva.Text({
       text: label,
       fontSize: 32,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.dungeon,
+      fontStyle: "bold",
       fill: COLORS.buttonText,
       width,
       height,
       align: "center",
       verticalAlign: "middle",
+      shadowColor: COLORS.black,
+      shadowBlur: 2,
+      shadowOpacity: 0.8,
+      shadowOffsetY: 2,  // Engraved text effect
     });
     g.add(text);
+
+    // Add hover effects - stone tablet glows like torchlight
+    g.on("mouseenter", () => {
+      if (g.getAttr("disabled") || g.getAttr("locked")) return;
+      document.body.style.cursor = "pointer";
+      rect.fill(COLORS.buttonHover);  // Lit stone
+      rect.shadowBlur(16);  // Stronger glow
+      text.fill(COLORS.textHighlight);  // Torch yellow glow
+      g.getLayer()?.batchDraw();
+    });
+
+    g.on("mouseleave", () => {
+      if (g.getAttr("disabled") || g.getAttr("locked")) return;
+      document.body.style.cursor = "default";
+      rect.fill(COLORS.buttonFill);  // Return to stone tablet
+      rect.shadowBlur(8);  // Normal shadow
+      text.fill(COLORS.buttonText);  // Return to normal text
+      g.getLayer()?.batchDraw();
+    });
 
     return g;
   }
