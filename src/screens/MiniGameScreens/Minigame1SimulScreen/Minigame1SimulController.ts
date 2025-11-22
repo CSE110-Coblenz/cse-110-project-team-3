@@ -60,8 +60,8 @@ export class Minigame1SimulController extends MinigameController {
       y: SIMULATION_CONSTANTS.ground_level - 50,
     });
     this.view.hideCurrentSpeedText();
-    // Update distance arrows back to start state
-    this.view.updateArrows(box.x());
+    // Update distance arrows back to start state (if supported by view)
+    (this.view as any).updateArrows?.(box.x());
     this.view.getGroup().getLayer()?.draw();
 
     // After reset, allow playing again
@@ -109,7 +109,7 @@ export class Minigame1SimulController extends MinigameController {
       if (proposedX >= maxX) {
         // Clamp to right edge and end the turn
         box.x(maxX);
-        this.view.updateArrows(box.x());
+        (this.view as any).updateArrows?.(box.x());
         animation.stop();
         this.view.updateCurrentSpeed(0);
         const finalDistance = box.x() - initialX;
@@ -119,7 +119,7 @@ export class Minigame1SimulController extends MinigameController {
       }
       box.x(proposedX);
       // Update distance arrows as the box moves
-      this.view.updateArrows(box.x());
+      (this.view as any).updateArrows?.(box.x());
 
       // Stop animation when the box stops
       if (currentVelocity <= 0) {
