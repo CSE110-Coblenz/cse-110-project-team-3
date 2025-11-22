@@ -213,8 +213,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.group.add(groundLine);
 
     // Precompute checkpoint x positions
-    const firstCheckpointX =
-      SIMULATION_CONSTANTS.starting_x + this.distanceX;
+    const firstCheckpointX = SIMULATION_CONSTANTS.starting_x + this.distanceX;
     const secondCheckpointX = firstCheckpointX + this.gapX;
 
     // Add Two Target
@@ -249,7 +248,12 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
 
     // Gap arrow between checkpoints
     this.gapArrow = new Konva.Arrow({
-      points: [firstCheckpointX, this.arrowYGap, secondCheckpointX, this.arrowYGap],
+      points: [
+        firstCheckpointX,
+        this.arrowYGap,
+        secondCheckpointX,
+        this.arrowYGap,
+      ],
       stroke: COLORS.arrow,
       strokeWidth: 2,
       pointerAtBeginning: true,
@@ -344,8 +348,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
 
   // Update arrows and labels based on the current box x
   updateArrows(currentBoxX: number): void {
-    const firstCheckpointX =
-      SIMULATION_CONSTANTS.starting_x + this.distanceX;
+    const firstCheckpointX = SIMULATION_CONSTANTS.starting_x + this.distanceX;
     const secondCheckpointX = firstCheckpointX + this.gapX;
 
     // Update gap arrow (static horizontal span)
@@ -364,7 +367,10 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     const a = Math.min(currentBoxX, firstCheckpointX);
     const b = Math.max(currentBoxX, firstCheckpointX);
     this.boxToFirstArrow.points([a, this.arrowYBox, b, this.arrowYBox]);
-    const d1 = Math.max(0, Math.round(Math.abs(firstCheckpointX - currentBoxX)));
+    const d1 = Math.max(
+      0,
+      Math.round(Math.abs(firstCheckpointX - currentBoxX)),
+    );
     const d1Center = (a + b) / 2;
     this.boxToFirstLabel.text(`${d1} m`);
     this.boxToFirstLabel.x(d1Center - this.boxToFirstLabel.width() / 2);
