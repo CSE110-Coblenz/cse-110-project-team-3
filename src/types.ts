@@ -88,6 +88,14 @@ export abstract class MinigameController extends ScreenController {
 
   protected handleHit(hit: boolean): void {
     if (hit) {
+      if (this.level === 1) {
+        // game1 completed -> unlock lev-4
+        setCurrentLevelIndex(4);
+      } else if (this.level === 2) {
+        //  game2 completed
+        setCurrentLevelIndex(8);
+      }
+
       this.screenSwitcher.switchToScreen({
         type: "minigame",
         screen: "completed",
@@ -414,6 +422,7 @@ export interface MapNode {
     stroke?: string;
     textFill?: string;
   };
+  unlockIndex?: number; // to unblock nodes
 }
 
 /**
@@ -471,4 +480,14 @@ export interface MapScreenConfig {
   style?: {
     backgroundColor?: string;
   };
+}
+
+// global progress value
+export let currentLevelIndex = 0;
+
+// upgrade to the current max level reached by the player
+export function setCurrentLevelIndex(newIndex: number): void {
+  if (newIndex > currentLevelIndex) {
+    currentLevelIndex = newIndex;
+  }
 }

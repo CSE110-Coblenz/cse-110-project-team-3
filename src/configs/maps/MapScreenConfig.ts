@@ -10,6 +10,7 @@ export const map1Config: MapScreenConfig = {
     {
       id: "level-1",
       label: "1",
+      unlockIndex: 0,
       target: {
         type: "topic",
         level: "force",
@@ -23,6 +24,7 @@ export const map1Config: MapScreenConfig = {
     {
       id: "level-2",
       label: "2",
+      unlockIndex: 1,
       target: {
         type: "topic",
         level: "friction",
@@ -36,6 +38,7 @@ export const map1Config: MapScreenConfig = {
     {
       id: "level-3",
       label: "3",
+      unlockIndex: 2,
       target: {
         type: "topic",
         level: "distance",
@@ -49,6 +52,7 @@ export const map1Config: MapScreenConfig = {
     {
       id: "game-1",
       label: "Game 1",
+      unlockIndex: 3,
       target: {
         type: "minigame",
         screen: "title",
@@ -94,6 +98,7 @@ export const map2Config: MapScreenConfig = {
     {
       id: "level-4",
       label: "4",
+      unlockIndex: 4,
       target: {
         type: "topic",
         level: "gravity",
@@ -107,6 +112,7 @@ export const map2Config: MapScreenConfig = {
     {
       id: "level-5",
       label: "5",
+      unlockIndex: 5,
       target: {
         type: "topic",
         level: "projectile motion",
@@ -120,6 +126,7 @@ export const map2Config: MapScreenConfig = {
     {
       id: "level-6",
       label: "6",
+      unlockIndex: 6,
       target: {
         type: "topic",
         level: "trajectory",
@@ -133,6 +140,7 @@ export const map2Config: MapScreenConfig = {
     {
       id: "game-2",
       label: "Game 2",
+      unlockIndex: 7,
       target: {
         type: "minigame",
         screen: "title",

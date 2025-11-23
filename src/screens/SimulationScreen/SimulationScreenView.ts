@@ -7,18 +7,19 @@ import { createKonvaButton } from "../../utils/ui/NavigationButton";
 export class SimulationScreenView implements View {
   private group: Konva.Group;
   private content: SimulationContentView;
-  private nextBtn!: Konva.Group;
+  private nextBtn!: Konva.Group;            // reference to NEXT button to control its state
 
   constructor(
     config: SimulationScreenConfig,
     navigationButtons: NavButton[],
-    onButtonClick: (buttonId: string) => void,
+    onButtonClick: (buttonId: string) => void,    
   ) {
     this.group = new Konva.Group();
 
-    this.content = new SimulationContentView(config, () =>
-      this.setNextEnabled(true),
-    );
+    this.content = new SimulationContentView(config, () => {
+      // unlock NEXT
+      this.setNextEnabled(true);
+    });
     this.group.add(this.content.getGroup());
 
     // Navigation buttons using configuration
@@ -33,11 +34,9 @@ export class SimulationScreenView implements View {
       if (buttonConfig.id === "next") {
         this.nextBtn = buttonGroup;
       }
-
       this.group.add(buttonGroup);
     });
-
-    // NEXT starts disabled until the user answers correctly
+   // NEXT starts disabled until the user answers correctly
     this.setNextEnabled(false);
   }
 
