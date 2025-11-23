@@ -19,7 +19,7 @@ export interface View {
  */
 
 export type Screen =
-  | {type: "menu"}
+  | { type: "menu" }
   | { type: "rules"; returnTo?: Screen }
   | { type: "level" }
   | { type: "map"; mapId?: number }
@@ -240,7 +240,7 @@ export abstract class BaseMinigameSimulView implements View {
         y: 0,
         text: heartChar,
         fontSize: 28,
-        fontFamily: FONTS.dungeon, 
+        fontFamily: FONTS.dungeon,
         fill: i < lives ? "#ff4d4f" : "#555555",
       });
       this.heartsGroup.add(t);
@@ -301,7 +301,7 @@ export abstract class BaseMinigameSimulView implements View {
       shadowColor: COLORS.black,
       shadowBlur: 2,
       shadowOpacity: 0.8,
-      shadowOffsetY: 2,  // Engraved text effect
+      shadowOffsetY: 2, // Engraved text effect
     });
     g.add(text);
 
@@ -309,18 +309,18 @@ export abstract class BaseMinigameSimulView implements View {
     g.on("mouseenter", () => {
       if (g.getAttr("disabled") || g.getAttr("locked")) return;
       document.body.style.cursor = "pointer";
-      rect.fill(COLORS.buttonHover);  // Lit stone
-      rect.shadowBlur(16);  // Stronger glow
-      text.fill(COLORS.textHighlight);  // Torch yellow glow
+      rect.fill(COLORS.buttonHover); // Lit stone
+      rect.shadowBlur(16); // Stronger glow
+      text.fill(COLORS.textHighlight); // Torch yellow glow
       g.getLayer()?.batchDraw();
     });
 
     g.on("mouseleave", () => {
       if (g.getAttr("disabled") || g.getAttr("locked")) return;
       document.body.style.cursor = "default";
-      rect.fill(COLORS.buttonFill);  // Return to stone tablet
-      rect.shadowBlur(8);  // Normal shadow
-      text.fill(COLORS.buttonText);  // Return to normal text
+      rect.fill(COLORS.buttonFill); // Return to stone tablet
+      rect.shadowBlur(8); // Normal shadow
+      text.fill(COLORS.buttonText); // Return to normal text
       g.getLayer()?.batchDraw();
     });
 
@@ -411,8 +411,8 @@ export interface MapNode {
   label: string;
   target: Screen;
   position: {
-    x: number;  // Absolute x position on the map
-    y: number;  // Absolute y position on the map
+    x: number; // Absolute x position on the map
+    y: number; // Absolute y position on the map
   };
   isBoss?: boolean;
   style?: {
@@ -429,8 +429,8 @@ export interface MapNode {
  * Arrow connection between map nodes
  */
 export interface MapArrow {
-  from: string;  // ID of the source node
-  to: string;    // ID of the destination node
+  from: string; // ID of the source node
+  to: string; // ID of the destination node
 }
 
 export interface MenuNode {
@@ -458,7 +458,7 @@ export interface MenuNode {
 export interface TopicScreenConfig {
   title: string;
   description: string;
-  buttons: NavButton[];    // Array of buttons on the screen
+  buttons: NavButton[]; // Array of buttons on the screen
   style?: {
     titleColor: string;
     descriptionColor: string;

@@ -5,60 +5,60 @@ export const STAGE_HEIGHT = 600;
 // Color palette
 export const COLORS = {
   // Dungeon atmosphere
-  bg: "#1a1410",              // Dark stone brown (replaces pure black)
-  bgDark: "#0f0a08",          // Deeper shadow brown for depth
-  
+  bg: "#1a1410", // Dark stone brown (replaces pure black)
+  bgDark: "#0f0a08", // Deeper shadow brown for depth
+
   // Stone textures
-  stoneLight: "#4a4238",      // Lighter stone for highlights
-  stoneMid: "#2d2620",        // Mid-tone stone
-  stoneDark: "#1a1410",       // Dark stone (matches bg)
-  
+  stoneLight: "#4a4238", // Lighter stone for highlights
+  stoneMid: "#2d2620", // Mid-tone stone
+  stoneDark: "#1a1410", // Dark stone (matches bg)
+
   // Torch/fire warm accents
-  torchOrange: "#ff6b35",     // Bright torch flame
-  torchYellow: "#ffb84d",     // Torch glow
-  emberRed: "#d94632",        // Hot ember red
-  
+  torchOrange: "#ff6b35", // Bright torch flame
+  torchYellow: "#ffb84d", // Torch glow
+  emberRed: "#d94632", // Hot ember red
+
   // Metal/iron accents
-  ironGray: "#6b6b6b",        // Chains, bars, metal elements
-  rustBrown: "#8b4513",       // Rusted metal
-  
+  ironGray: "#6b6b6b", // Chains, bars, metal elements
+  rustBrown: "#8b4513", // Rusted metal
+
   // Text colors
-  text: "#f4e8d0",            // Parchment/aged paper color
-  textHighlight: "#ffb84d",   // Highlighted text (torch yellow)
-  textDim: "#9a8a7a",         // Dimmed/secondary text
-  
+  text: "#f4e8d0", // Parchment/aged paper color
+  textHighlight: "#ffb84d", // Highlighted text (torch yellow)
+  textDim: "#9a8a7a", // Dimmed/secondary text
+
   // Button colors (stone tablets)
-  buttonFill: "#3d3328",      // Stone tablet
-  buttonStroke: "#6b5d4f",    // Chiseled edges
-  buttonText: "#f4e8d0",      // Carved text
-  buttonHover: "#4a4238",     // Lit stone
-  
+  buttonFill: "#3d3328", // Stone tablet
+  buttonStroke: "#6b5d4f", // Chiseled edges
+  buttonText: "#f4e8d0", // Carved text
+  buttonHover: "#4a4238", // Lit stone
+
   // Map node colors (dungeon rooms)
-  nodeFill: "#2d2620",        // Locked room
-  nodeStroke: "#8b7355",      // Door frame
-  nodeActive: "#ff6b35",      // Torch-lit active room
-  
+  nodeFill: "#2d2620", // Locked room
+  nodeStroke: "#8b7355", // Door frame
+  nodeActive: "#ff6b35", // Torch-lit active room
+
   // UI elements
-  arrow: "#8b7355",           // Aged bronze arrows
-  ground: "#4a4238",          // Stone floor
-  
+  arrow: "#8b7355", // Aged bronze arrows
+  ground: "#4a4238", // Stone floor
+
   // Utility
   black: "#000000",
   white: "#ffffff",
-  
+
   // Status colors
-  success: "#00ff88",         // Physics green (correct)
-  error: "#ff4444",           // Danger red (incorrect)
-  warning: "#ffb84d",         // Torch yellow (caution)
+  success: "#00ff88", // Physics green (correct)
+  error: "#ff4444", // Danger red (incorrect)
+  warning: "#ffb84d", // Torch yellow (caution)
 };
 
 export const FONTS = {
   // For dungeon-themed text (titles, flavor text)
   dungeon: "Luminari, Papyrus, Georgia, serif",
-  
+
   // For physics/technical content (formulas, numbers, descriptions)
   physics: "JetBrains Mono, Courier New, monospace",
-  
+
   // For buttons and UI
   ui: "Trebuchet MS, Arial Black, sans-serif",
 };
@@ -106,5 +106,5 @@ export const NAVIGATION_BUTTON_DEFAULT_STYLES = {
   cornerRadius: 10,
   textFill: COLORS.buttonText,
   fontSize: 24,
-  fontFamily: FONTS.ui
+  fontFamily: FONTS.ui,
 };

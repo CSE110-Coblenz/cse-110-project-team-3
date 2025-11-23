@@ -1,11 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import {
-  COLORS,
-  STAGE_WIDTH,
-  STAGE_HEIGHT,
-  FONTS,
-} from "../../constants.ts";
+import { COLORS, STAGE_WIDTH, STAGE_HEIGHT, FONTS } from "../../constants.ts";
 
 /**
  * MenuScreenView - Konva rendering for the welcome screen
@@ -64,8 +59,10 @@ export class MenuScreenView implements View {
       fillRadialGradientEndPoint: { x: STAGE_WIDTH / 2, y: STAGE_HEIGHT / 2 },
       fillRadialGradientEndRadius: STAGE_WIDTH / 1.5,
       fillRadialGradientColorStops: [
-        0, "rgba(0,0,0,0.3)",      // Slightly dark center
-        1, "rgba(0,0,0,0.8)"       // Very dark edges
+        0,
+        "rgba(0,0,0,0.3)", // Slightly dark center
+        1,
+        "rgba(0,0,0,0.8)", // Very dark edges
       ],
       listening: false,
     });
@@ -75,7 +72,7 @@ export class MenuScreenView implements View {
     // Shadow layer (depth effect)
     const shadowTitle = new Konva.Text({
       x: 0,
-      y: 82,  // Offset from main title for 3D effect
+      y: 82, // Offset from main title for 3D effect
       width: STAGE_WIDTH,
       align: "center",
       text: "PHUNGEON",
@@ -100,9 +97,12 @@ export class MenuScreenView implements View {
       fillLinearGradientStartPoint: { x: 0, y: 0 },
       fillLinearGradientEndPoint: { x: 0, y: 72 },
       fillLinearGradientColorStops: [
-        0, COLORS.torchYellow,      // Top: torch glow
-        0.5, COLORS.torchOrange,    // Middle: flame
-        1, COLORS.emberRed          // Bottom: ember
+        0,
+        COLORS.torchYellow, // Top: torch glow
+        0.5,
+        COLORS.torchOrange, // Middle: flame
+        1,
+        COLORS.emberRed, // Bottom: ember
       ],
       stroke: COLORS.rustBrown,
       strokeWidth: 3,
@@ -228,7 +228,7 @@ export class MenuScreenView implements View {
       shadowColor: COLORS.black,
       shadowBlur: 2,
       shadowOpacity: 0.8,
-      shadowOffsetY: 2,  // Engraved text effect
+      shadowOffsetY: 2, // Engraved text effect
     });
     g.add(text);
 
@@ -236,18 +236,18 @@ export class MenuScreenView implements View {
     g.on("mouseenter", () => {
       if ((g as any)._disabled) return;
       document.body.style.cursor = "pointer";
-      rect.fill(COLORS.buttonHover);  // Lit stone
-      rect.shadowBlur(16);  // Stronger glow
-      text.fill(COLORS.textHighlight);  // Torch yellow glow
+      rect.fill(COLORS.buttonHover); // Lit stone
+      rect.shadowBlur(16); // Stronger glow
+      text.fill(COLORS.textHighlight); // Torch yellow glow
       g.getLayer()?.batchDraw();
     });
 
     g.on("mouseleave", () => {
       if ((g as any)._disabled) return;
       document.body.style.cursor = "default";
-      rect.fill(COLORS.buttonFill);  // Return to stone tablet
-      rect.shadowBlur(8);  // Normal shadow
-      text.fill(COLORS.buttonText);  // Return to normal text
+      rect.fill(COLORS.buttonFill); // Return to stone tablet
+      rect.shadowBlur(8); // Normal shadow
+      text.fill(COLORS.buttonText); // Return to normal text
       g.getLayer()?.batchDraw();
     });
 

@@ -10,7 +10,7 @@ import { BaseMinigameSimulView } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 
 export class MinigameSimulView extends BaseMinigameSimulView {
-  private projectile: Konva.Circle | Konva.Group;  // Can be Circle or Group (fireball)
+  private projectile: Konva.Circle | Konva.Group; // Can be Circle or Group (fireball)
   private speedText: Konva.Text;
   private angleText: Konva.Text;
   private onSpeedChange?: (delta: number) => void;
@@ -295,9 +295,12 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       fillRadialGradientEndPoint: { x: 0, y: 0 },
       fillRadialGradientEndRadius: 15,
       fillRadialGradientColorStops: [
-        0, COLORS.torchYellow,
-        0.5, COLORS.torchOrange,
-        1, "rgba(255,107,53,0)"  // Fade to transparent
+        0,
+        COLORS.torchYellow,
+        0.5,
+        COLORS.torchOrange,
+        1,
+        "rgba(255,107,53,0)", // Fade to transparent
       ],
       opacity: 0.6,
     });

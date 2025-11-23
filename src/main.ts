@@ -209,7 +209,7 @@ class App implements ScreenSwitcher {
         break;
       case "rules":
         this.rulesScreenController.setReturnTo(
-          screen.returnTo || { type: "map" }
+          screen.returnTo || { type: "map" },
         );
         this.rulesScreenController.getView().show();
         break;
@@ -217,7 +217,7 @@ class App implements ScreenSwitcher {
         // Always set returnTo, defaulting to map if not specified
         // This ensures the controller's state is reset properly
         this.referenceScreenController.setReturnTo(
-          screen.returnTo || { type: "map" }
+          screen.returnTo || { type: "map" },
         );
         this.referenceScreenController.getView().show();
         break;

@@ -36,7 +36,7 @@ export class MapScreenController extends ScreenController {
 
     // Find the button configuration
     const buttonConfig = this.currentConfig.buttons.find(
-      (btn) => btn.id === buttonId
+      (btn) => btn.id === buttonId,
     );
 
     if (!buttonConfig) {
@@ -53,7 +53,7 @@ export class MapScreenController extends ScreenController {
 
     // Find the node configuration
     const nodeConfig = this.currentConfig.nodes.find(
-      (node) => node.id === nodeId
+      (node) => node.id === nodeId,
     );
 
     if (!nodeConfig) {

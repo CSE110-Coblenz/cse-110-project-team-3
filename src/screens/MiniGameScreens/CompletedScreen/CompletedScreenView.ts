@@ -1,10 +1,5 @@
 import Konva from "konva";
-import {
-  COLORS,
-  STAGE_HEIGHT,
-  STAGE_WIDTH,
-  FONTS,
-} from "../../../constants";
+import { COLORS, STAGE_HEIGHT, STAGE_WIDTH, FONTS } from "../../../constants";
 import type { View, NavButton } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 

@@ -39,8 +39,8 @@ export class MenuScreenController extends ScreenController {
 
   private handleResumeClick(): void {}
   private startGame() {
-   MenuScreenModel.setLastScreen("menu");
-   this.screenSwitcher.switchToScreen({ type: "map" });
+    MenuScreenModel.setLastScreen("menu");
+    this.screenSwitcher.switchToScreen({ type: "map" });
   }
 
   private resume() {
@@ -57,7 +57,10 @@ export class MenuScreenController extends ScreenController {
 
   private handleRulesClick(): void {
     MenuScreenModel.setLastScreen("rules");
-    this.screenSwitcher.switchToScreen({ type: "rules", returnTo: { type: "menu" } });
+    this.screenSwitcher.switchToScreen({
+      type: "rules",
+      returnTo: { type: "menu" },
+    });
   }
 
   private handleQuitClick(): void {

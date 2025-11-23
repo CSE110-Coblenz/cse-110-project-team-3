@@ -7,12 +7,12 @@ import { createKonvaButton } from "../../utils/ui/NavigationButton";
 export class SimulationScreenView implements View {
   private group: Konva.Group;
   private content: SimulationContentView;
-  private nextBtn!: Konva.Group;            // reference to NEXT button to control its state
+  private nextBtn!: Konva.Group; // reference to NEXT button to control its state
 
   constructor(
     config: SimulationScreenConfig,
     navigationButtons: NavButton[],
-    onButtonClick: (buttonId: string) => void,    
+    onButtonClick: (buttonId: string) => void,
   ) {
     this.group = new Konva.Group();
 
@@ -36,7 +36,7 @@ export class SimulationScreenView implements View {
       }
       this.group.add(buttonGroup);
     });
-   // NEXT starts disabled until the user answers correctly
+    // NEXT starts disabled until the user answers correctly
     this.setNextEnabled(false);
   }
 

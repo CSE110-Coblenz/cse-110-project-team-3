@@ -6,8 +6,8 @@ export const ReferenceScreenNavigationButtons: NavButton[] = [
     label: "EXIT",
     target: { type: "map" },
     position: {
-      x: 0.75,  
-      y: 0.85, 
+      x: 0.75,
+      y: 0.85,
     },
     style: {
       width: 160,

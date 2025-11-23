@@ -1,11 +1,6 @@
 import Konva from "konva";
 import type { RuleConfig, NavButton } from "../../../types";
-import {
-  COLORS,
-  STAGE_HEIGHT,
-  STAGE_WIDTH,
-  FONTS,
-} from "../../../constants";
+import { COLORS, STAGE_HEIGHT, STAGE_WIDTH, FONTS } from "../../../constants";
 import type { View } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 

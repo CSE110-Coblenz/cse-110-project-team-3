@@ -11,7 +11,7 @@ export class RulesScreenController extends ScreenController {
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
     this.view = new RulesScreenView((buttonId: string) =>
-      this.handleButtonClick(buttonId)
+      this.handleButtonClick(buttonId),
     );
     this.screenSwitcher = screenSwitcher;
   }
@@ -29,7 +29,7 @@ export class RulesScreenController extends ScreenController {
     }
 
     const buttonConfig = RulesScreenNavigationButtons.find(
-      (btn) => btn.id === buttonId
+      (btn) => btn.id === buttonId,
     );
 
     if (!buttonConfig) {

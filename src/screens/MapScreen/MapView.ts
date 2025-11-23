@@ -1,10 +1,6 @@
 import Konva from "konva";
 import type { View, NavButton, MapScreenConfig, MapNode } from "../../types";
-import {
-  COLORS,
-  STAGE_WIDTH,
-  FONTS,
-} from "../../constants";
+import { COLORS, STAGE_WIDTH, FONTS } from "../../constants";
 import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { defaultMapConfig } from "../../configs/maps/MapScreenConfig.ts";
@@ -53,7 +49,10 @@ export class MapScreenView implements View {
 
     // Add torch lights in corners (optional)
     const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
-    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
     this.group.add(topLeftTorch);
     this.group.add(topRightTorch);
 
@@ -61,7 +60,11 @@ export class MapScreenView implements View {
     const nodeMap = new Map<string, NodeDescription>();
     config.nodes.forEach((nodeConfig: MapNode) => {
       const unlockIndex = nodeConfig.unlockIndex ?? 0;
-      const node = this.createNodeFromConfig(nodeConfig, handleNodeClick, unlockIndex);
+      const node = this.createNodeFromConfig(
+        nodeConfig,
+        handleNodeClick,
+        unlockIndex,
+      );
       nodeMap.set(nodeConfig.id, node);
       this.nodes.push(node);
     });
@@ -151,7 +154,7 @@ export class MapScreenView implements View {
     const isBoss = opts.isBoss ?? false;
 
     const group = new Konva.Group({ x, y });
-    group.setAttr("unlockIndex", unlockIndex);  // keep unlockIndex as Konva attribute 
+    group.setAttr("unlockIndex", unlockIndex); // keep unlockIndex as Konva attribute
 
     // Border rectangle (dungeon room door/archway)
     const outer = new Konva.Rect({
@@ -219,9 +222,9 @@ export class MapScreenView implements View {
 
     // Hover glow effect for rooms
     group.on("mouseenter", () => {
-      if (group.getAttr("disabled")) return;  // ignore hover if node is disabled
-      outer.stroke(COLORS.torchOrange);       // Torch-lit glow
-      outer.shadowBlur(30);                   // Increased glow
+      if (group.getAttr("disabled")) return; // ignore hover if node is disabled
+      outer.stroke(COLORS.torchOrange); // Torch-lit glow
+      outer.shadowBlur(30); // Increased glow
       if (group.getStage()) {
         group.getStage()!.container().style.cursor = "pointer";
       }
@@ -229,8 +232,8 @@ export class MapScreenView implements View {
     });
 
     group.on("mouseleave", () => {
-      if (group.getAttr("disabled")) return;  // ignore hover if node is disabled
-      outer.stroke(COLORS.nodeActive);        // Return to normal
+      if (group.getAttr("disabled")) return; // ignore hover if node is disabled
+      outer.stroke(COLORS.nodeActive); // Return to normal
       outer.shadowBlur(20);
       if (group.getStage()) {
         group.getStage()!.container().style.cursor = "default";
@@ -241,8 +244,8 @@ export class MapScreenView implements View {
     // Click handler
     if (handleClick) {
       group.on("click", () => {
-        if (group.getAttr("disabled")) return;  // block click when node locked
-        handleClick()
+        if (group.getAttr("disabled")) return; // block click when node locked
+        handleClick();
       });
     }
 

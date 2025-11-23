@@ -1,11 +1,6 @@
 import Konva from "konva";
 import type { View, NavButton } from "../../types.ts";
-import {
-  COLORS,
-  STAGE_HEIGHT,
-  STAGE_WIDTH,
-  FONTS,
-} from "../../constants";
+import { COLORS, STAGE_HEIGHT, STAGE_WIDTH, FONTS } from "../../constants";
 import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { ReferenceScreenNavigationButtons } from "../../configs/NavigationButtons/Reference.ts";
@@ -20,14 +15,17 @@ export class ReferenceScreenView implements View {
     this.group = new Konva.Group({ visible: true });
 
     this.group = new Konva.Group({ visible: false });
-  
+
     // Add dungeon background
     const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
-  
+
     // Add torch lights in corners (optional)
     const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
-    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
     this.group.add(topLeftTorch);
     this.group.add(topRightTorch);
 

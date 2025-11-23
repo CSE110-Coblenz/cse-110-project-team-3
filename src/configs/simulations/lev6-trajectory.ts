@@ -34,6 +34,6 @@ A ball is launched from ground level at the origin O with an initial angle of 45
 
   navigation: {
     backScreen: { type: "topic", level: "trajectory" },
-    nextScreen: { type: "map", mapId: 2},
+    nextScreen: { type: "map", mapId: 2 },
   },
 };
