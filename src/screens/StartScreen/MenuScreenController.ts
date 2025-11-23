@@ -46,13 +46,17 @@ export class MenuScreenController extends ScreenController {
     // Complex types (topic, minigame, simulation) would need JSON storage
     const validSimpleTypes = ["map", "rules", "level", "reference"] as const;
     if (!validSimpleTypes.includes(last as any)) {
-      console.warn(`Invalid screen type stored: ${last}. Clearing resume state.`);
+      console.warn(
+        `Invalid screen type stored: ${last}. Clearing resume state.`,
+      );
       MenuScreenModel.clearLastScreen();
       this.view.setResumeEnabled(false);
       return;
     }
 
-    this.screenSwitcher.switchToScreen({ type: last as "map" | "rules" | "level" | "reference" });
+    this.screenSwitcher.switchToScreen({
+      type: last as "map" | "rules" | "level" | "reference",
+    });
   }
 
   private handleRulesClick(): void {
