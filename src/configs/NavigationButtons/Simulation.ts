@@ -6,7 +6,7 @@ import type { NavButton, Screen } from "../../types";
  */
 export function getSimulationNavigationButtons(
   backScreen: Screen,
-  nextScreen: Screen
+  nextScreen: Screen,
 ): NavButton[] {
   return [
     {
@@ -14,8 +14,8 @@ export function getSimulationNavigationButtons(
       label: "BACK",
       target: backScreen,
       position: {
-        x: 0.025,  // 20px from left (20/800)
-        y: 0.883,  // 530px from top ((600-50-20)/600)
+        x: 0.025,
+        y: 0.883,
       },
       style: {
         width: 150,
@@ -27,8 +27,8 @@ export function getSimulationNavigationButtons(
       label: "NEXT",
       target: nextScreen,
       position: {
-        x: 0.7875, // 630px from left ((800-150-20)/800)
-        y: 0.883,  // 530px from top
+        x: 0.7875,
+        y: 0.883,
       },
       style: {
         width: 150,

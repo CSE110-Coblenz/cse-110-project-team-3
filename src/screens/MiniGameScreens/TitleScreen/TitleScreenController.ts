@@ -15,7 +15,7 @@ export class TitleScreenController extends ScreenController {
     const navigationButtons = getTitleScreenNavigationButtons(level);
 
     // Create view with navigation buttons and click handler
-    this.view = new TitleScreenView(navigationButtons, (buttonId) => {
+    this.view = new TitleScreenView(navigationButtons, level, (buttonId) => {
       const button = navigationButtons.find((b) => b.id === buttonId);
       if (button) {
         console.log(`TitleScreen: ${button.label} clicked`);

@@ -8,6 +8,7 @@ import {
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
+import { BackgroundHelper } from "../../../utils/ui/BackgroundHelper";
 
 export class Minigame1SimulView extends BaseMinigameSimulView {
   private box: Konva.Rect;
@@ -40,6 +41,12 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.onSpeedChange = onSpeedChange;
     this.currentSpeed = initialSpeed;
     this.gapX = gapX;
+
+    // Add background and move to bottom of z-order
+    const background = BackgroundHelper.createMiniGameBackground(1);
+    this.group.add(background);
+    // Use zIndex to ensure background stays at the bottom
+    background.zIndex(0);
 
     // Display parameters
     this.speedText = new Konva.Text({
@@ -161,7 +168,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     });
     this.group.add(this.speedKnob);
     this.speedKnob.on("dragmove", () => this.handleSpeedDrag());
-    speedTrack.on("mousedown", (evt) => {
+    speedTrack.on("mousedown", (_evt) => {
       const p = this.group.getStage()?.getPointerPosition();
       if (!p) return;
       this.speedKnob.x(

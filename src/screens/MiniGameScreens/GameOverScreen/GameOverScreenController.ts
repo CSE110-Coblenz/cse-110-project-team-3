@@ -15,17 +15,13 @@ export class GameOverScreenController extends ScreenController {
     const navigationButtons = getGameOverScreenNavigationButtons(level);
 
     // Create view with navigation buttons and click handler
-    this.view = new GameOverScreenView(
-      level,
-      navigationButtons,
-      (buttonId) => {
-        const button = navigationButtons.find((b) => b.id === buttonId);
-        if (button) {
-          console.log(`GameOverScreen: ${button.label} clicked`);
-          this.screenSwitcher.switchToScreen(button.target);
-        }
-      },
-    );
+    this.view = new GameOverScreenView(level, navigationButtons, (buttonId) => {
+      const button = navigationButtons.find((b) => b.id === buttonId);
+      if (button) {
+        console.log(`GameOverScreen: ${button.label} clicked`);
+        this.screenSwitcher.switchToScreen(button.target);
+      }
+    });
   }
 
   getView(): GameOverScreenView {

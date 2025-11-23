@@ -6,13 +6,11 @@ import { map1Config, map2Config } from "../../configs/maps/MapScreenConfig.ts";
 export class MapScreenController extends ScreenController {
   private view: MapScreenView;
   private screenSwitcher: ScreenSwitcher;
-  private currentMapId: number;
   private currentConfig: MapScreenConfig;
 
   constructor(screenSwitcher: ScreenSwitcher, mapId: number = 1) {
     super();
     this.screenSwitcher = screenSwitcher;
-    this.currentMapId = mapId;
     this.currentConfig = this.getConfigForMap(mapId);
     this.view = MapScreenView.fromConfig(
       this.currentConfig,
@@ -27,6 +25,7 @@ export class MapScreenController extends ScreenController {
         return map2Config;
       case 1:
       default:
+        console.error(`Unknown mapId: ${mapId}, defaulting to map 1`);
         return map1Config;
     }
   }
@@ -36,7 +35,7 @@ export class MapScreenController extends ScreenController {
 
     // Find the button configuration
     const buttonConfig = this.currentConfig.buttons.find(
-      (btn) => btn.id === buttonId
+      (btn) => btn.id === buttonId,
     );
 
     if (!buttonConfig) {
@@ -53,7 +52,7 @@ export class MapScreenController extends ScreenController {
 
     // Find the node configuration
     const nodeConfig = this.currentConfig.nodes.find(
-      (node) => node.id === nodeId
+      (node) => node.id === nodeId,
     );
 
     if (!nodeConfig) {

@@ -4,10 +4,10 @@ export const ReferenceScreenNavigationButtons: NavButton[] = [
   {
     id: "exit",
     label: "EXIT",
-    target: { type: "map" },
+    target: { type: "map" }, // overwritten dynamically in controller via setReturnTo()
     position: {
-      x: 0.75,  
-      y: 0.85, 
+      x: 0.75,
+      y: 0.85,
     },
     style: {
       width: 160,

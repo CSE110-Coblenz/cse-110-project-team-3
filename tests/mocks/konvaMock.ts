@@ -106,6 +106,11 @@ export class FakeNode {
     return this.config.height ?? 0;
   }
 
+  zIndex(val?: number) {
+    if (val !== undefined) this.setAttr("zIndex", val);
+    return this.getAttr("zIndex") ?? 0;
+  }
+
   destroy() {
     this.remove();
   }

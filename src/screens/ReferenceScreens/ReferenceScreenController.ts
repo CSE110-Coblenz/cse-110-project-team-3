@@ -16,7 +16,7 @@ export class ReferenceScreenController extends ScreenController {
     super();
     this.screenSwitcher = screenSwitcher;
     this.view = new ReferenceScreenView((buttonId: string) =>
-      this.handleButtonClick(buttonId)
+      this.handleButtonClick(buttonId),
     );
   }
 
@@ -35,7 +35,7 @@ export class ReferenceScreenController extends ScreenController {
 
     // Find the button configuration
     const buttonConfig = ReferenceScreenNavigationButtons.find(
-      (btn) => btn.id === buttonId
+      (btn) => btn.id === buttonId,
     );
 
     if (!buttonConfig) {

@@ -1,11 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import {
-  STAGE_WIDTH,
-  STAGE_HEIGHT,
-  FONTS,
-  COLORS,
-} from "../../constants";
+import { STAGE_WIDTH, STAGE_HEIGHT, FONTS, COLORS } from "../../constants";
 import type { SimulationScreenConfig, SimulationOptionConfig } from "./types";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper";
 
@@ -34,10 +29,13 @@ export class SimulationContentView implements View {
     // Background
     const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
-  
+
     // Add torch lights in corners (optional)
     const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
-    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
     this.group.add(topLeftTorch);
     this.group.add(topRightTorch);
 

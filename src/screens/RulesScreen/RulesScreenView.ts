@@ -1,15 +1,9 @@
 import Konva from "konva";
 import type { View, NavButton } from "../../types";
-import {
-  COLORS,
-  STAGE_HEIGHT,
-  STAGE_WIDTH,
-  FONTS,
-} from "../../constants";
+import { COLORS, STAGE_WIDTH, FONTS } from "../../constants";
 import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { RulesScreenNavigationButtons } from "../../configs/NavigationButtons/Rules.ts";
-
 
 export class RulesScreenView implements View {
   private group: Konva.Group;
@@ -32,12 +26,15 @@ export class RulesScreenView implements View {
     const GUTTER = BULLET_SIZE + BULLET_GAP;
     const BODY_WIDTH = STAGE_WIDTH - PAD_X * 2 - GUTTER;
 
-      const background = BackgroundHelper.createDungeonBackground();
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
-  
+
     // Add torch lights in corners (optional)
     const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
-    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
     this.group.add(topLeftTorch);
     this.group.add(topRightTorch);
 
@@ -97,7 +94,7 @@ export class RulesScreenView implements View {
     ];
 
     let cursorY = title.y() + TITLE_SIZE + 36; // space under title
-    bullets.forEach((t, i) => {
+    bullets.forEach((t) => {
       const item = addBulletedItem(t, PAD_X, cursorY);
       this.group.add(item);
 

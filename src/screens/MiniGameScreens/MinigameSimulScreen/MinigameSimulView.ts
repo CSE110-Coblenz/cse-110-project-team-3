@@ -8,9 +8,10 @@ import {
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
+import { BackgroundHelper } from "../../../utils/ui/BackgroundHelper";
 
 export class MinigameSimulView extends BaseMinigameSimulView {
-  private projectile: Konva.Circle | Konva.Group;  // Can be Circle or Group (fireball)
+  private projectile: Konva.Circle | Konva.Group; // Can be Circle or Group (fireball)
   private speedText: Konva.Text;
   private angleText: Konva.Text;
   private onSpeedChange?: (delta: number) => void;
@@ -50,6 +51,12 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     this.onAngleChange = onAngleChange;
     this.currentSpeed = initialSpeed;
     this.currentAngle = angle;
+
+    // Add background and move to bottom of z-order
+    const background = BackgroundHelper.createMiniGameBackground(2);
+    this.group.add(background);
+    // Use zIndex to ensure background stays at the bottom
+    background.zIndex(0);
 
     // Display parameters
     this.speedText = new Konva.Text({
@@ -160,7 +167,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     });
     this.group.add(this.speedKnob);
     this.speedKnob.on("dragmove", () => this.handleSpeedDrag());
-    speedTrack.on("mousedown", () => {
+    speedTrack.on("mousedown", (_evt) => {
       const p = this.group.getStage()?.getPointerPosition();
       if (!p) return;
       this.speedKnob.x(
@@ -295,9 +302,12 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       fillRadialGradientEndPoint: { x: 0, y: 0 },
       fillRadialGradientEndRadius: 15,
       fillRadialGradientColorStops: [
-        0, COLORS.torchYellow,
-        0.5, COLORS.torchOrange,
-        1, "rgba(255,107,53,0)"  // Fade to transparent
+        0,
+        COLORS.torchYellow,
+        0.5,
+        COLORS.torchOrange,
+        1,
+        "rgba(255,107,53,0)", // Fade to transparent
       ],
       opacity: 0.6,
     });

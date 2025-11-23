@@ -19,13 +19,17 @@ export class SimulationScreenController extends ScreenController {
     );
 
     // Create view with navigation buttons and click handler
-    this.view = new SimulationScreenView(config, navigationButtons, (buttonId) => {
-      const button = navigationButtons.find((b) => b.id === buttonId);
-      if (button) {
-        console.log(`Simulation: ${button.label} clicked`);
-        this.screenSwitcher.switchToScreen(button.target);
-      }
-    });
+    this.view = new SimulationScreenView(
+      config,
+      navigationButtons,
+      (buttonId) => {
+        const button = navigationButtons.find((b) => b.id === buttonId);
+        if (button) {
+          console.log(`Simulation: ${button.label} clicked`);
+          this.screenSwitcher.switchToScreen(button.target);
+        }
+      },
+    );
   }
 
   getView(): SimulationScreenView {

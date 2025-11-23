@@ -1,9 +1,11 @@
 import type { MapScreenConfig } from "../../types";
 import { STAGE_HEIGHT, STAGE_WIDTH } from "../../constants";
-import { Map1ScreenNavigationButtons, Map2ScreenNavigationButtons } from "../../configs/NavigationButtons/Map";
+import {
+  Map1ScreenNavigationButtons,
+  Map2ScreenNavigationButtons,
+} from "../../configs/NavigationButtons/Map";
 /**
  * Map 1: Levels 1-3 and Boss Game 1
- * Layout: 3 levels in a triangular pattern converging to the boss room
  */
 export const map1Config: MapScreenConfig = {
   nodes: [
@@ -87,7 +89,6 @@ export const map1Config: MapScreenConfig = {
 
 /**
  * Map 2: Levels 4-6 and Boss Game 2
- * Layout: 3 levels in a triangular pattern converging to the boss room
  */
 export const map2Config: MapScreenConfig = {
   nodes: [

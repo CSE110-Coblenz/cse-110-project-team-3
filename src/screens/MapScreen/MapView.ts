@@ -1,10 +1,6 @@
 import Konva from "konva";
 import type { View, NavButton, MapScreenConfig, MapNode } from "../../types";
-import {
-  COLORS,
-  STAGE_WIDTH,
-  FONTS,
-} from "../../constants";
+import { COLORS, STAGE_WIDTH, FONTS } from "../../constants";
 import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { defaultMapConfig } from "../../configs/maps/MapScreenConfig.ts";
@@ -50,7 +46,10 @@ export class MapScreenView implements View {
 
     // Add torch lights in corners (optional)
     const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
-    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
     this.group.add(topLeftTorch);
     this.group.add(topRightTorch);
 
@@ -120,7 +119,7 @@ export class MapScreenView implements View {
     label: string,
     opts: { height?: number; width?: number; isBoss?: boolean } = {},
     handleClick?: () => void,
-    nodeId?: string,
+    _nodeId?: string,
   ): NodeDescription {
     const height = opts.height ?? 120;
     const width = opts.width ?? height;
@@ -197,8 +196,8 @@ export class MapScreenView implements View {
 
     // Hover glow effect for rooms
     group.on("mouseenter", () => {
-      outer.stroke(COLORS.torchOrange);  // Torch-lit glow
-      outer.shadowBlur(30);  // Increased glow
+      outer.stroke(COLORS.torchOrange); // Torch-lit glow
+      outer.shadowBlur(30); // Increased glow
       if (group.getStage()) {
         group.getStage()!.container().style.cursor = "pointer";
       }
@@ -206,7 +205,7 @@ export class MapScreenView implements View {
     });
 
     group.on("mouseleave", () => {
-      outer.stroke(COLORS.nodeActive);  // Return to normal
+      outer.stroke(COLORS.nodeActive); // Return to normal
       outer.shadowBlur(20);
       if (group.getStage()) {
         group.getStage()!.container().style.cursor = "default";

@@ -26,12 +26,15 @@ export class TopicScreenView implements View {
 
   private initializeUI(): void {
     // Background
-      const background = BackgroundHelper.createDungeonBackground();
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
-  
+
     // Add torch lights in corners (optional)
     const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
-    const topRightTorch = BackgroundHelper.createTorchLight(STAGE_WIDTH - 80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
     this.group.add(topLeftTorch);
     this.group.add(topRightTorch);
 
@@ -56,7 +59,8 @@ export class TopicScreenView implements View {
       fontSize: TOPIC_DEFAULT_STYLES.description.fontSize,
       fontFamily: TOPIC_DEFAULT_STYLES.description.fontFamily,
       fill:
-        this.config.style?.descriptionColor || TOPIC_DEFAULT_STYLES.description.fill,
+        this.config.style?.descriptionColor ||
+        TOPIC_DEFAULT_STYLES.description.fill,
       align: "center",
       width: STAGE_WIDTH * 0.8, // 80% of stage width
       wrap: "word",

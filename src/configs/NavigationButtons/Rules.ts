@@ -6,8 +6,8 @@ export const RulesScreenNavigationButtons: NavButton[] = [
     label: "EXIT",
     target: { type: "rules" }, // Placeholder, actual target handled dynamically in controller
     position: {
-      x: 0.7,  
-      y: 0.85, 
+      x: 0.7,
+      y: 0.85,
     },
     style: {
       width: 180,

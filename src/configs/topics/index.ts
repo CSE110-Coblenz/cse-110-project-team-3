@@ -1,4 +1,4 @@
-// Easier way to export types. Add new topic configs here as needed.
+// Barrel Export.
 export { forceConfig } from "./force";
 export { frictionConfig } from "./friction";
 export { distanceConfig } from "./distance";
