@@ -14,6 +14,15 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
   private currentSpeed: number = 0;
   private currSpeedText: Konva.Text;
   private gapX: number;
+  private distanceX: number;
+
+  // Distance arrows and labels
+  private gapArrow!: Konva.Arrow;
+  private gapLabel!: Konva.Text;
+  private boxToFirstArrow!: Konva.Arrow;
+  private boxToFirstLabel!: Konva.Text;
+  private arrowYGap: number;
+  private arrowYBox: number;
 
   // Slider state
   private speedTrackX = 360;
@@ -36,6 +45,11 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.onSpeedChange = onSpeedChange;
     this.currentSpeed = initialSpeed;
     this.gapX = gapX;
+    this.distanceX = distanceX;
+
+    // Arrow vertical positions
+    this.arrowYGap = SIMULATION_CONSTANTS.ground_level - 36;
+    this.arrowYBox = SIMULATION_CONSTANTS.ground_level - 72;
 
     // Display parameters
     this.speedText = new Konva.Text({
@@ -198,11 +212,15 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     });
     this.group.add(groundLine);
 
+    // Precompute checkpoint x positions
+    const firstCheckpointX = SIMULATION_CONSTANTS.starting_x + this.distanceX;
+    const secondCheckpointX = firstCheckpointX + this.gapX;
+
     // Add Two Target
     Konva.Image.fromURL("/target.png", (image) => {
       image.width(30);
       image.height(30);
-      image.x(SIMULATION_CONSTANTS.starting_x + distanceX - 15);
+      image.x(firstCheckpointX - 15);
       image.y(SIMULATION_CONSTANTS.ground_level - 15);
       this.group.add(image);
     });
@@ -210,7 +228,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     Konva.Image.fromURL("/target.png", (image) => {
       image.width(30);
       image.height(30);
-      image.x(SIMULATION_CONSTANTS.starting_x + distanceX + this.gapX - 15);
+      image.x(secondCheckpointX - 15);
       image.y(SIMULATION_CONSTANTS.ground_level - 15);
       this.group.add(image);
     });
@@ -227,6 +245,56 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       cornerRadius: 6,
     });
     this.group.add(this.box);
+
+    // Gap arrow between checkpoints
+    this.gapArrow = new Konva.Arrow({
+      points: [
+        firstCheckpointX,
+        this.arrowYGap,
+        secondCheckpointX,
+        this.arrowYGap,
+      ],
+      stroke: COLORS.arrow,
+      strokeWidth: 2,
+      pointerAtBeginning: true,
+      pointerLength: 10,
+      pointerWidth: 10,
+    });
+    this.group.add(this.gapArrow);
+    this.gapLabel = new Konva.Text({
+      x: (firstCheckpointX + secondCheckpointX) / 2,
+      y: this.arrowYGap - 20,
+      text: `${this.gapX.toFixed(0)} m`,
+      fontSize: 16,
+      fontFamily: FONT_FAMILY,
+      fill: COLORS.text,
+      align: "center",
+    });
+    this.group.add(this.gapLabel);
+
+    // Arrow from box (left edge) to first checkpoint
+    this.boxToFirstArrow = new Konva.Arrow({
+      points: [this.box.x(), this.arrowYBox, firstCheckpointX, this.arrowYBox],
+      stroke: COLORS.arrow,
+      strokeWidth: 2,
+      pointerAtBeginning: true,
+      pointerLength: 10,
+      pointerWidth: 10,
+    });
+    this.group.add(this.boxToFirstArrow);
+    this.boxToFirstLabel = new Konva.Text({
+      x: (this.box.x() + firstCheckpointX) / 2,
+      y: this.arrowYBox - 20,
+      text: `${Math.max(0, Math.round(firstCheckpointX - this.box.x()))} m`,
+      fontSize: 16,
+      fontFamily: FONT_FAMILY,
+      fill: COLORS.text,
+      align: "center",
+    });
+    this.group.add(this.boxToFirstLabel);
+
+    // Initial alignment of labels
+    this.updateArrows(this.box.x());
   }
 
   setSpeedDisplay(value: number): void {
@@ -276,6 +344,39 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.currSpeedText.text(
       `Current Speed: ${Math.max(0, Math.round(speed))} m/s`,
     );
+  }
+
+  // Update arrows and labels based on the current box x
+  updateArrows(currentBoxX: number): void {
+    const firstCheckpointX = SIMULATION_CONSTANTS.starting_x + this.distanceX;
+    const secondCheckpointX = firstCheckpointX + this.gapX;
+
+    // Update gap arrow (static horizontal span)
+    this.gapArrow.points([
+      firstCheckpointX,
+      this.arrowYGap,
+      secondCheckpointX,
+      this.arrowYGap,
+    ]);
+    // Center gap label
+    const gapCenterX = (firstCheckpointX + secondCheckpointX) / 2;
+    this.gapLabel.text(`${this.gapX.toFixed(0)} m`);
+    this.gapLabel.x(gapCenterX - this.gapLabel.width() / 2);
+
+    // Update box-to-first arrow (use absolute order so arrow always left->right)
+    const a = Math.min(currentBoxX, firstCheckpointX);
+    const b = Math.max(currentBoxX, firstCheckpointX);
+    this.boxToFirstArrow.points([a, this.arrowYBox, b, this.arrowYBox]);
+    const d1 = Math.max(
+      0,
+      Math.round(Math.abs(firstCheckpointX - currentBoxX)),
+    );
+    const d1Center = (a + b) / 2;
+    this.boxToFirstLabel.text(`${d1} m`);
+    this.boxToFirstLabel.x(d1Center - this.boxToFirstLabel.width() / 2);
+
+    // Ensure redraw
+    this.group.getLayer()?.draw();
   }
 
   getBox(): Konva.Rect {
