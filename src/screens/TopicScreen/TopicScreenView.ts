@@ -152,13 +152,13 @@ export class TopicScreenView implements View {
       Array.isArray((this.config as any).descriptionSegments) &&
       (this.config as any).descriptionSegments.length > 0
     ) {
-      const segments: Array<{ text: string; bold?: boolean; color?: string }> = (
-        this.config as any
-      ).descriptionSegments;
+      const segments: Array<{ text: string; bold?: boolean; color?: string }> =
+        (this.config as any).descriptionSegments;
 
       const fontSize = DEFAULT_STYLES.description.fontSize;
       const fontFamily = DEFAULT_STYLES.description.fontFamily;
-      const defaultFill = this.config.style?.descriptionColor || DEFAULT_STYLES.description.fill;
+      const defaultFill =
+        this.config.style?.descriptionColor || DEFAULT_STYLES.description.fill;
       const lineHeight = Math.round(fontSize * 1.3);
 
       let curX = descX;
@@ -221,7 +221,8 @@ export class TopicScreenView implements View {
         fontSize: DEFAULT_STYLES.description.fontSize,
         fontFamily: DEFAULT_STYLES.description.fontFamily,
         fill:
-          this.config.style?.descriptionColor || DEFAULT_STYLES.description.fill,
+          this.config.style?.descriptionColor ||
+          DEFAULT_STYLES.description.fill,
         align: "left",
         width: maxWidth,
         wrap: "word",
