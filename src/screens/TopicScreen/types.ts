@@ -41,7 +41,13 @@ export interface TopicButton {
  */
 export interface TopicScreenConfig {
   title: string;
-  description: string;
+  description?: string;
+  /**
+   * Optional richer description made of text segments.
+   * Each segment can enable `bold` to indicate this phrase should be rendered bold.
+   * If present, `descriptionSegments` will be used in preference to `description`.
+   */
+  descriptionSegments?: Array<{ text: string; bold?: boolean; color?: string }>;
   buttons: TopicButton[];
   style?: {
     titleColor: string;

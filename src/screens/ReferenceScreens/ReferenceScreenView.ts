@@ -42,12 +42,27 @@ export class ReferenceScreenView implements View {
     // middle text
     const referencesText = new Konva.Text({
       x: STAGE_WIDTH / 2,
-      y: STAGE_HEIGHT / 2,
-      text: "Forces: \n Sum of Forces = total mass * acceleration\nProjectile Motion: \nx = v_0x * t\n y = v_0y * t - 0.5 * g * t^2\nFriction: \n f_friction = μ * N",
-      fontSize: 32,
+      y: STAGE_HEIGHT / 2 + 65,
+      text: `      Projectile Motion:
+      vₓ = v · cos(θ)
+      vᵧ = v · sin(θ)
+      vᵧ = vᵧ₀ + g·t
+      0 = v * sin(θ) + gt
+      v * sin(θ) / g = t
+      y = y₀ + v₀·sin(θ)·t + ½ g t²
+      x = v₀ * cos(0) * t
+      R = v₀² * sin(2θ) / g
+
+      Friction:
+      fₖ = μₖN
+      F = m · a
+      N = mg.
+      fₛ ≤ μₛN.
+      `,
+      fontSize: 24,
       fontFamily: FONT_FAMILY,
       fill: COLORS.text,
-      align: "center",
+      align: "left",
     });
     referencesText.offsetX(referencesText.width() / 2);
     referencesText.offsetY(referencesText.height() / 2);
