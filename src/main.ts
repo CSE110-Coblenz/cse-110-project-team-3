@@ -11,6 +11,7 @@ import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGame
 import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
 import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
 import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
+import { LoginScreenController } from "./screens/LoginScreen/LoginScreenController.ts";
 import { Minigame1SimulController } from "./screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController.ts";
 
 // Import configurations for minigames
@@ -39,6 +40,7 @@ class App implements ScreenSwitcher {
   private stage: Konva.Stage;
   private layer: Konva.Layer;
 
+  private loginScreenController: LoginScreenController;
   private menuScreenController: MenuScreenController;
   private mapScreenController: MapScreenController;
   private referenceScreenController: ReferenceScreenController;
@@ -79,6 +81,7 @@ class App implements ScreenSwitcher {
     this.stage.add(this.layer);
 
     // Initialize screen controllers
+    this.loginScreenController = new LoginScreenController(this);
     this.menuScreenController = new MenuScreenController(this);
     this.mapScreenController = new MapScreenController(this);
     this.rulesScreenController = new RulesScreenController(this);
@@ -135,6 +138,7 @@ class App implements ScreenSwitcher {
     );
 
     // add all screen views to the layer
+    this.layer.add(this.loginScreenController.getView().getGroup());
     this.layer.add(this.menuScreenController.getView().getGroup());
     this.layer.add(this.mapScreenController.getView().getGroup());
     this.layer.add(this.referenceScreenController.getView().getGroup());
@@ -158,12 +162,13 @@ class App implements ScreenSwitcher {
     // Draw the layer
     this.layer.draw();
 
-    // Start with the menu screen
-    this.switchToScreen({ type: "menu" });
+    // Start with the login screen
+    this.switchToScreen({ type: "login" });
   }
 
   switchToScreen(screen: Screen): void {
     // Hide all screens
+    this.loginScreenController.getView().hide();
     this.menuScreenController.getView().hide();
     this.mapScreenController.getView().hide();
     this.referenceScreenController.getView().hide();
@@ -192,6 +197,9 @@ class App implements ScreenSwitcher {
 
     // Show the selected screen
     switch (screen.type) {
+      case "login":
+        this.loginScreenController.show();
+        break;
       case "menu":
         this.menuScreenController.show();
         break;

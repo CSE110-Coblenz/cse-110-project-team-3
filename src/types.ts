@@ -11,6 +11,7 @@ export interface View {
 /**
  * Screen types for navigation
  *
+ * - "login": Login screen for username entry
  * - "menu": Menu/Start screen
  * - "rules": Rules screen
  * - "level": Level screen
@@ -22,6 +23,7 @@ export interface View {
  */
 
 export type Screen =
+  | { type: "login" }
   | { type: "menu" }
   | { type: "rules" }
   | { type: "level" }
