@@ -1,8 +1,10 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
-import type { TopicButton, TopicScreenConfig } from "./types";
-import { COLORS, FONT_FAMILY } from "../../constants";
+import { STAGE_WIDTH, TOPIC_DEFAULT_STYLES } from "../../constants";
+import type { TopicScreenConfig } from "../../types";
+import { createKonvaButton } from "../../utils/ui/NavigationButton";
+import { BackgroundHelper } from "../../utils/ui/BackgroundHelper";
+import { COLORS, FONTS } from "../../constants";
 
 /**
  * Default styles for topic screen elements
@@ -10,13 +12,13 @@ import { COLORS, FONT_FAMILY } from "../../constants";
 const DEFAULT_STYLES = {
   title: {
     fontSize: 48,
-    fontFamily: FONT_FAMILY,
+    fontFamily: FONTS.topic,
     fill: COLORS.text,
     y: 80,
   },
   description: {
     fontSize: 18,
-    fontFamily: FONT_FAMILY,
+    fontFamily: FONTS.topic,
     fill: COLORS.text,
     y: 150,
   },
@@ -51,97 +53,38 @@ export class TopicScreenView implements View {
     this.initializeUI();
   }
 
-  private createButton(button: TopicButton): Konva.Group {
-    const buttonGroup = new Konva.Group();
-
-    // Calculate button position
-    const buttonWidth = button.style?.width || DEFAULT_STYLES.button.width;
-    const buttonHeight = button.style?.height || DEFAULT_STYLES.button.height;
-
-    // Calculate x position
-    let xPos = STAGE_WIDTH / 2; // Default center
-    if (button.position?.x !== undefined) {
-      xPos = button.position.x * STAGE_WIDTH;
-    }
-
-    // Calculate y position
-    let yPos = DEFAULT_STYLES.description.y + 100;
-    if (button.position?.y !== undefined) {
-      yPos = button.position.y * window.innerHeight;
-    }
-
-    const buttonRect = new Konva.Rect({
-      x: xPos - buttonWidth / 2,
-      y: yPos,
-      width: buttonWidth,
-      height: buttonHeight,
-      fill: button.style?.fill || DEFAULT_STYLES.button.fill,
-      stroke: button.style?.stroke || DEFAULT_STYLES.button.stroke,
-      strokeWidth: DEFAULT_STYLES.button.strokeWidth,
-      cornerRadius: DEFAULT_STYLES.button.cornerRadius,
-    });
-
-    const buttonText = new Konva.Text({
-      x: xPos,
-      y: yPos + buttonHeight / 2,
-      text: button.label,
-      fontSize: DEFAULT_STYLES.button.fontSize,
-      fontFamily: DEFAULT_STYLES.title.fontFamily,
-      fill: button.style?.textFill || DEFAULT_STYLES.button.textFill,
-      align: "center",
-    });
-    buttonText.offsetX(buttonText.width() / 2);
-    buttonText.offsetY(buttonText.height() / 2);
-
-    buttonGroup.add(buttonRect);
-    buttonGroup.add(buttonText);
-
-    // Add hover effects
-    buttonGroup.on("mouseenter", () => {
-      document.body.style.cursor = "pointer";
-      buttonRect.shadowEnabled(true);
-      buttonRect.shadowBlur(10);
-      buttonRect.shadowColor("black");
-      buttonRect.shadowOpacity(0.3);
-      this.group.getLayer()?.draw();
-    });
-
-    buttonGroup.on("mouseleave", () => {
-      document.body.style.cursor = "default";
-      buttonRect.shadowEnabled(false);
-      this.group.getLayer()?.draw();
-    });
-
-    // Wire up click handler
-    buttonGroup.on("click", () => this.onButtonClick(button.id));
-
-    return buttonGroup;
-  }
-
   private initializeUI(): void {
     // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: this.config.style?.backgroundColor || "#ffffff",
-    });
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
+
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
 
     // Title
     const title = new Konva.Text({
-      x: STAGE_WIDTH - STAGE_WIDTH / 2,
-      y: DEFAULT_STYLES.title.y,
+      x: TOPIC_DEFAULT_STYLES.title.x,
+      y: TOPIC_DEFAULT_STYLES.title.y,
       text: this.config.title,
-      fontSize: DEFAULT_STYLES.title.fontSize,
-      fontFamily: DEFAULT_STYLES.title.fontFamily,
-      fill: this.config.style?.titleColor || DEFAULT_STYLES.title.fill,
+      fontSize: TOPIC_DEFAULT_STYLES.title.fontSize,
+      fontFamily: TOPIC_DEFAULT_STYLES.title.fontFamily,
+      fill: this.config.style?.titleColor || TOPIC_DEFAULT_STYLES.title.fill,
       align: "center",
     });
     title.offsetX(title.width() / 2);
     this.group.add(title);
 
+    // Buttons
+    this.config.buttons.forEach((buttonConfig) => {
+      const buttonGroup = createKonvaButton(buttonConfig, this.onButtonClick);
+      this.group.add(buttonGroup);
+    });
     // Description: support either plain string `description` (legacy)
     // or rich `descriptionSegments` (array of { text, bold? }) for inline bolding.
     const maxWidth = STAGE_WIDTH * 0.8; // 80% of stage width
@@ -230,65 +173,6 @@ export class TopicScreenView implements View {
       description.offsetX(description.width() / 2);
       this.group.add(description);
     }
-
-    // Buttons from config
-    this.config.buttons.forEach((buttonConfig) => {
-      const buttonGroup = this.createButton(buttonConfig);
-      this.group.add(buttonGroup);
-    });
-
-    // Exit button (same pill style as ReferenceScreenView)
-    const exitBtn = this.createPillButton(
-      "EXIT",
-      STAGE_WIDTH - 192,
-      STAGE_HEIGHT - 96,
-      160,
-      64,
-    );
-    exitBtn.on("click", () => this.onButtonClick("exit"));
-    this.group.add(exitBtn);
-  }
-
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const r = Math.min(height / 2 + 6, 24);
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: r,
-      fill: COLORS.buttonFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
-      shadowBlur: 8,
-    });
-
-    const text = new Konva.Text({
-      x: 0,
-      y: 0,
-      width,
-      height,
-      text: label,
-      fill: COLORS.buttonText,
-      fontSize: 32,
-      fontStyle: "bold",
-      align: "center",
-      verticalAlign: "middle",
-      horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
-    });
-
-    g.add(rect, text);
-
-    return g;
   }
 
   show(): void {

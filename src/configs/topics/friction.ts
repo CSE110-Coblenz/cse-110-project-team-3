@@ -1,4 +1,5 @@
-import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
+import type { TopicScreenConfig } from "../../types";
+import { FrictionTopicNavigationButtons } from "../../configs/NavigationButtons/Topic";
 import { COLORS } from "../../constants";
 
 /**
@@ -22,36 +23,7 @@ export const frictionConfig: TopicScreenConfig = {
     { text: "fₛ ≤ μₛN. ", bold: true, color: "#FFD54F" },
   ],
 
-  buttons: [
-    {
-      id: "back",
-      label: "Back",
-      target: { type: "map" },
-      position: {
-        x: 0.225,
-        y: 0.725,
-      },
-      style: {
-        fill: COLORS.buttonFill,
-        color: COLORS.buttonStroke,
-        textFill: COLORS.buttonText,
-      },
-    },
-    {
-      id: "simulation",
-      label: "Simulation",
-      target: { type: "simulation", topic: "friction" },
-      position: {
-        x: 0.775,
-        y: 0.725,
-      },
-      style: {
-        fill: COLORS.buttonFill,
-        color: COLORS.buttonStroke,
-        textFill: COLORS.buttonText,
-      },
-    },
-  ],
+  buttons: FrictionTopicNavigationButtons,
   style: {
     titleColor: COLORS.text,
     descriptionColor: COLORS.text,

@@ -1,39 +1,14 @@
-import type { TopicScreenConfig } from "../../screens/TopicScreen/types";
+import type { TopicScreenConfig } from "../../types";
+import { DistanceTopicNavigationButtons } from "../../configs/NavigationButtons/Topic";
 import { COLORS } from "../../constants";
 
+/**
+ * Configuration for the distance topic screen. Find implementation details in "../../screens/TopicScreen/types"
+ */
 export const distanceConfig: TopicScreenConfig = {
   title: "Stopping Distance",
   description: "TODO",
-  buttons: [
-    {
-      id: "back",
-      label: "Back",
-      target: { type: "map" },
-      position: {
-        x: 0.225,
-        y: 0.725,
-      },
-      style: {
-        fill: COLORS.buttonFill,
-        color: COLORS.buttonStroke,
-        textFill: COLORS.buttonText,
-      },
-    },
-    {
-      id: "simulation",
-      label: "Simulation",
-      target: { type: "simulation", topic: "distance" },
-      position: {
-        x: 0.775,
-        y: 0.725,
-      },
-      style: {
-        fill: COLORS.buttonFill,
-        color: COLORS.buttonStroke,
-        textFill: COLORS.buttonText,
-      },
-    },
-  ],
+  buttons: DistanceTopicNavigationButtons,
   style: {
     titleColor: COLORS.text,
     descriptionColor: COLORS.text,

@@ -1,11 +1,9 @@
 import Konva from "konva";
-import type { View } from "../../types";
-import {
-  COLORS,
-  STAGE_HEIGHT,
-  STAGE_WIDTH,
-  FONT_FAMILY,
-} from "../../constants";
+import type { View, NavButton, MapScreenConfig, MapNode } from "../../types";
+import { COLORS, STAGE_WIDTH, FONTS } from "../../constants";
+import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
+import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
+import { defaultMapConfig } from "../../configs/maps/MapScreenConfig.ts";
 
 type NodeDescription = {
   group: Konva.Group;
@@ -17,132 +15,157 @@ type NodeDescription = {
 
 export class MapScreenView implements View {
   private group: Konva.Group;
+  private config: MapScreenConfig;
+
+  /**
+   * Factory method to create a MapScreenView from a configuration
+   * @param config - Map screen configuration
+   * @param handleButtonClick - Callback for button clicks
+   * @param handleNodeClick - Callback for node clicks (receives node id)
+   * @returns A new MapScreenView instance
+   */
+  static fromConfig(
+    config: MapScreenConfig,
+    handleButtonClick?: (buttonId: string) => void,
+    handleNodeClick?: (nodeId: string) => void,
+  ): MapScreenView {
+    return new MapScreenView(config, handleButtonClick, handleNodeClick);
+  }
 
   constructor(
-    handleReferenceClick?: () => void,
-    handleRulesClick?: () => void,
-    handleExitClick?: () => void,
-    handleNodeClick?: (level: string) => void,
+    config: MapScreenConfig = defaultMapConfig,
+    handleButtonClick?: (buttonId: string) => void,
+    handleNodeClick?: (nodeId: string) => void,
   ) {
-    this.group = new Konva.Group();
+    this.config = config;
+    this.group = new Konva.Group({ visible: false });
 
-    // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: COLORS.bg,
-    });
+    // Add dungeon background
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
 
-    // Map Nodes
-    const nodeA = this.createNode(
-      100,
-      STAGE_HEIGHT / 2 - 50,
-      "1",
-      {},
-      handleNodeClick,
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
     );
-    const nodeB = this.createNode(
-      300,
-      STAGE_HEIGHT / 2 - 50,
-      "2",
-      {},
-      handleNodeClick,
-    );
-    const nodeC = this.createNode(
-      500,
-      STAGE_HEIGHT / 2 - 50,
-      "Game 1",
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
+
+    // Create nodes from configuration
+    const nodeMap = new Map<string, NodeDescription>();
+    config.nodes.forEach((nodeConfig: MapNode) => {
+      const node = this.createNodeFromConfig(nodeConfig, handleNodeClick);
+      nodeMap.set(nodeConfig.id, node);
+    });
+
+    // Create arrows from configuration
+    const arrows: Konva.Arrow[] = [];
+    config.arrows.forEach((arrowConfig) => {
+      const fromNode = nodeMap.get(arrowConfig.from);
+      const toNode = nodeMap.get(arrowConfig.to);
+
+      if (fromNode && toNode) {
+        const arrow = this.createArrow(
+          fromNode.x + fromNode.width,
+          fromNode.y + fromNode.height / 2,
+          toNode.x,
+          toNode.y + toNode.height / 2,
+        );
+        arrows.push(arrow);
+      }
+    });
+
+    // Add arrows first (so they appear behind nodes)
+    arrows.forEach((arrow) => this.group.add(arrow));
+
+    // Add nodes on top of arrows
+    nodeMap.forEach((node) => this.group.add(node.group));
+
+    // Create navigation buttons from configuration
+    if (handleButtonClick) {
+      config.buttons.forEach((buttonConfig: NavButton) => {
+        const button = createKonvaButton(buttonConfig, handleButtonClick);
+        this.group.add(button);
+      });
+    }
+  }
+
+  /**
+   * Creates a map node from configuration
+   */
+  private createNodeFromConfig(
+    nodeConfig: MapNode,
+    handleClick?: (nodeId: string) => void,
+  ): NodeDescription {
+    return this.createNode(
+      nodeConfig.position.x,
+      nodeConfig.position.y,
+      nodeConfig.label,
       {
-        height: 120,
-        width: 250,
+        height: nodeConfig.style?.height,
+        width: nodeConfig.style?.width,
+        isBoss: nodeConfig.isBoss,
       },
-      handleNodeClick,
+      handleClick ? () => handleClick(nodeConfig.id) : undefined,
+      nodeConfig.id,
     );
-
-    // Level Buttons
-    const refBtn = this.createPillButton(
-      "REFERENCE",
-      STAGE_WIDTH - 260,
-      24,
-      220,
-      64,
-    );
-    const rulesBtn = this.createPillButton(
-      "RULES",
-      32,
-      STAGE_HEIGHT - 92,
-      160,
-      64,
-    );
-    const exitBtn = this.createPillButton(
-      "EXIT",
-      STAGE_WIDTH - 192,
-      STAGE_HEIGHT - 96,
-      160,
-      64,
-    );
-
-    // Link handle clicks
-    if (handleReferenceClick) {
-      refBtn.on("click", handleReferenceClick);
-    }
-    if (handleRulesClick) {
-      rulesBtn.on("click", handleRulesClick);
-    }
-    if (handleExitClick) {
-      exitBtn.on("click", handleExitClick);
-    }
-
-    // Arrows (add BEFORE nodes so nodes sit on top)
-    const arrowAB = this.createArrow(
-      nodeA.x + nodeA.width,
-      nodeA.y + nodeA.height / 2,
-      nodeB.x,
-      nodeB.y + nodeB.height / 2,
-    );
-    const arrowBC = this.createArrow(
-      nodeB.x + nodeB.width,
-      nodeB.y + nodeB.height / 2,
-      nodeC.x,
-      nodeC.y + nodeC.height / 2,
-    );
-
-    // Add all elements to the main group
-    this.group.add(refBtn, rulesBtn, exitBtn);
-    this.group.add(nodeA.group, nodeB.group, nodeC.group);
-    this.group.add(arrowAB, arrowBC);
   }
 
   private createNode(
     x: number,
     y: number,
     label: string,
-    opts: { height?: number; width?: number } = {},
-    handleClick?: (level: string) => void,
+    opts: { height?: number; width?: number; isBoss?: boolean } = {},
+    handleClick?: () => void,
+    _nodeId?: string,
   ): NodeDescription {
     const height = opts.height ?? 120;
     const width = opts.width ?? height;
     const radius = 24;
     const isWide = width > height + 20;
     const pad = isWide ? 18 : 0;
+    const isBoss = opts.isBoss ?? false;
 
     const group = new Konva.Group({ x, y });
 
-    // Border rectangle
+    // Border rectangle (dungeon room door/archway)
     const outer = new Konva.Rect({
       width,
       height,
       cornerRadius: radius,
-      fill: COLORS.nodeFill,
-      stroke: COLORS.nodeStroke,
-      strokeWidth: 6,
-      shadowColor: "#000",
-      shadowBlur: 10,
-      shadowOpacity: 0.3,
+      fill: COLORS.stoneMid,
+      stroke: COLORS.nodeActive,
+      strokeWidth: isBoss ? 8 : 6,
+      shadowColor: COLORS.black,
+      shadowBlur: 20,
+      shadowOpacity: 0.8,
     });
+
+    // Torch brackets for rooms (decorative fire glow)
+    const leftTorch = new Konva.Circle({
+      x: 15,
+      y: height / 2,
+      radius: 8,
+      fill: COLORS.torchOrange,
+      shadowColor: COLORS.torchYellow,
+      shadowBlur: 15,
+      opacity: 0.8,
+      listening: false,
+    });
+    const rightTorch = new Konva.Circle({
+      x: width - 15,
+      y: height / 2,
+      radius: 8,
+      fill: COLORS.torchOrange,
+      shadowColor: COLORS.torchYellow,
+      shadowBlur: 15,
+      opacity: 0.8,
+      listening: false,
+    });
+    group.add(leftTorch);
+    group.add(rightTorch);
 
     // For wide nodes, pick a size that respects BOTH height and width
     const wideFontSize = Math.min(
@@ -157,65 +180,45 @@ export class MapScreenView implements View {
       height: height - pad * 2,
       text: label,
       fill: COLORS.text,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.dungeon,
       fontStyle: "bold",
       fontSize: isWide ? wideFontSize : 64,
       align: "center",
       verticalAlign: "middle",
       wrap: isWide ? "word" : "none",
       lineHeight: 1.0,
+      shadowColor: COLORS.black,
+      shadowBlur: 3,
+      shadowOpacity: 1,
     });
 
     group.add(outer, text);
 
+    // Hover glow effect for rooms
+    group.on("mouseenter", () => {
+      outer.stroke(COLORS.torchOrange); // Torch-lit glow
+      outer.shadowBlur(30); // Increased glow
+      if (group.getStage()) {
+        group.getStage()!.container().style.cursor = "pointer";
+      }
+      group.getLayer()?.batchDraw();
+    });
+
+    group.on("mouseleave", () => {
+      outer.stroke(COLORS.nodeActive); // Return to normal
+      outer.shadowBlur(20);
+      if (group.getStage()) {
+        group.getStage()!.container().style.cursor = "default";
+      }
+      group.getLayer()?.batchDraw();
+    });
+
     // Click handler
     if (handleClick) {
-      group.on("click", () => handleClick(label));
+      group.on("click", () => handleClick());
     }
 
     return { group, x, y, height, width };
-  }
-
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const r = Math.min(height / 2 + 6, 24);
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: r,
-      fill: COLORS.buttonFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
-      shadowBlur: 8,
-    });
-
-    const text = new Konva.Text({
-      x: 0,
-      y: 0,
-      width,
-      height,
-      text: label,
-      fill: COLORS.buttonText,
-      fontSize: 32,
-      fontStyle: "bold",
-      align: "center",
-      verticalAlign: "middle",
-      horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
-    });
-
-    g.add(rect, text);
-
-    return g;
   }
 
   private createArrow(

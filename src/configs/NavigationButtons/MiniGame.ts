@@ -1,0 +1,180 @@
+import type { NavButton } from "../../types";
+
+/**
+ * Navigation buttons for MiniGame Title Screen
+ */
+export function getTitleScreenNavigationButtons(level: number): NavButton[] {
+  return [
+    {
+      id: "back",
+      label: "BACK",
+      target: { type: "map", mapId: level },
+      position: {
+        x: 0.04,
+        y: 0.84,
+      },
+      style: {
+        width: 160,
+        height: 64,
+      },
+    },
+    {
+      id: "next",
+      label: "NEXT",
+      target: { type: "minigame", screen: "rules", level },
+      position: {
+        x: 0.76,
+        y: 0.84,
+      },
+      style: {
+        width: 160,
+        height: 64,
+      },
+    },
+  ];
+}
+
+/**
+ * Navigation buttons for MiniGame Rule Screen
+ */
+export function getMiniGameRuleScreenNavigationButtons(
+  level: number,
+): NavButton[] {
+  return [
+    {
+      id: "back",
+      label: "BACK",
+      target: { type: "minigame", screen: "title", level },
+      position: {
+        x: 0.04,
+        y: 0.84,
+      },
+      style: {
+        width: 160,
+        height: 64,
+      },
+    },
+    {
+      id: "next",
+      label: "NEXT",
+      target: { type: "minigame", screen: "simulation", level },
+      position: {
+        x: 0.76,
+        y: 0.84,
+      },
+      style: {
+        width: 160,
+        height: 64,
+      },
+    },
+  ];
+}
+
+/**
+ * Navigation button for MiniGame Simulation Screen (Reference button)
+ */
+export function getMinigameSimulScreenNavigationButtons(
+  level: number,
+): NavButton[] {
+  return [
+    {
+      id: "reference",
+      label: "REFERENCE",
+      target: {
+        type: "reference",
+        returnTo: { type: "minigame", screen: "simulation", level },
+      },
+      position: {
+        x: 0.025,
+        y: 0.867,
+      },
+      style: {
+        width: 200,
+        height: 55,
+      },
+    },
+  ];
+}
+
+/**
+ * Navigation button for Minigame1 Simulation Screen (Reference button)
+ */
+export function getMinigame1SimulScreenNavigationButtons(
+  level: number,
+): NavButton[] {
+  return [
+    {
+      id: "reference",
+      label: "REFERENCE",
+      target: {
+        type: "reference",
+        returnTo: { type: "minigame", screen: "simulation", level },
+      },
+      position: {
+        x: 0.025,
+        y: 0.867,
+      },
+      style: {
+        width: 200,
+        height: 55,
+      },
+    },
+  ];
+}
+
+/**
+ * Navigation button for Completed Screen
+ */
+export function getCompletedScreenNavigationButtons(
+  level: number,
+): NavButton[] {
+  return [
+    {
+      id: "exit",
+      label: "EXIT",
+      target: { type: "map", mapId: level },
+      position: {
+        x: 0.38,
+        y: 0.833,
+      },
+      style: {
+        width: 192,
+        height: 60,
+      },
+    },
+  ];
+}
+
+/**
+ * Navigation buttons for Game Over Screen
+ */
+export function getGameOverScreenNavigationButtons(level: number): NavButton[] {
+  return [
+    {
+      id: "back",
+      label: "BACK",
+      target: { type: "minigame", screen: "title", level },
+      position: {
+        x: 0.38,
+        y: 0.7,
+      },
+      style: {
+        width: 192,
+        height: 60,
+      },
+    },
+    {
+      id: "exit",
+      label: "EXIT",
+      target: { type: "map", mapId: level },
+      position: {
+        x: 0.38,
+        y: 0.833,
+      },
+      style: {
+        width: 192,
+        height: 60,
+      },
+    },
+  ];
+}

@@ -1,24 +1,18 @@
 import Konva from "konva";
-import type { View } from "../../types";
-import {
-  COLORS,
-  STAGE_HEIGHT,
-  STAGE_WIDTH,
-  FONT_FAMILY,
-} from "../../constants";
+import type { View, NavButton } from "../../types";
 import type { SimulationScreenConfig } from "./types";
 import { SimulationContentView } from "./SimulationContentView";
+import { createKonvaButton } from "../../utils/ui/NavigationButton";
 
 export class SimulationScreenView implements View {
   private group: Konva.Group;
   private content: SimulationContentView;
-  private nextBtn: Konva.Group;
-  private backBtn: Konva.Group;
+  private nextBtn!: Konva.Group;
 
   constructor(
     config: SimulationScreenConfig,
-    handleBackClick?: () => void,
-    handleNextClick?: () => void,
+    navigationButtons: NavButton[],
+    onButtonClick: (buttonId: string) => void,
   ) {
     this.group = new Konva.Group();
 
@@ -27,92 +21,24 @@ export class SimulationScreenView implements View {
     );
     this.group.add(this.content.getGroup());
 
-    // Navigation buttons
-    const NAV_W = 150;
-    const NAV_H = 50;
+    // Navigation buttons using configuration
+    navigationButtons.forEach((buttonConfig) => {
+      const buttonGroup = createKonvaButton(buttonConfig, (buttonId) => {
+        // Prevent clicks if next button is disabled
+        if (buttonId === "next" && buttonGroup.getAttr("disabled")) return;
+        onButtonClick(buttonId);
+      });
 
-    this.backBtn = this.createPillButton(
-      "BACK",
-      20,
-      STAGE_HEIGHT - NAV_H - 20,
-      NAV_W,
-      NAV_H,
-      28,
-    );
-    this.nextBtn = this.createPillButton(
-      "NEXT",
-      STAGE_WIDTH - NAV_W - 20,
-      STAGE_HEIGHT - NAV_H - 20,
-      NAV_W,
-      NAV_H,
-      28,
-    );
+      // Store reference to next button for state management
+      if (buttonConfig.id === "next") {
+        this.nextBtn = buttonGroup;
+      }
+
+      this.group.add(buttonGroup);
+    });
 
     // NEXT starts disabled until the user answers correctly
     this.setNextEnabled(false);
-
-    if (handleBackClick) this.backBtn.on("click", handleBackClick);
-    if (handleNextClick)
-      this.nextBtn.on("click", () => {
-        // Prevent clicks if button is disabled
-        if (this.nextBtn.getAttr("disabled")) return;
-        handleNextClick();
-      });
-
-    this.group.add(this.backBtn, this.nextBtn);
-  }
-
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    fontSize: number = 32,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const baseFill = COLORS.buttonFill;
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: Math.min(height / 2 + 6, 24),
-      fill: baseFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
-      shadowBlur: 8,
-    });
-
-    const text = new Konva.Text({
-      width,
-      height,
-      text: label,
-      fill: COLORS.buttonText,
-      fontSize,
-      fontStyle: "bold",
-      align: "center",
-      verticalAlign: "middle",
-      fontFamily: FONT_FAMILY,
-    });
-
-    g.on("mouseenter", () => {
-      if (g.getAttr("disabled") || g.getAttr("locked")) return;
-      document.body.style.cursor = "pointer";
-      rect.fill("white");
-      g.getLayer()?.batchDraw();
-    });
-
-    g.on("mouseleave", () => {
-      if (g.getAttr("disabled") || g.getAttr("locked")) return;
-      document.body.style.cursor = "default";
-      rect.fill(baseFill);
-      g.getLayer()?.batchDraw();
-    });
-
-    g.add(rect, text);
-    return g;
   }
 
   // Called when the correct answer is selected.

@@ -4,6 +4,7 @@ import type { ScreenSwitcher } from "../../../types";
 import { MinigameController } from "../../../types";
 import { Minigame1SimulModel } from "./Minigame1SimulModel";
 import { Minigame1SimulView } from "./Minigame1SimulView";
+import { getMinigame1SimulScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
 export class Minigame1SimulController extends MinigameController {
   private view: Minigame1SimulView;
@@ -35,6 +36,10 @@ export class Minigame1SimulController extends MinigameController {
       SIMULATION_CONSTANTS.error_margin, // error margin in pixels
     );
 
+    // Create navigation buttons with level
+    const navigationButtons = getMinigame1SimulScreenNavigationButtons(level);
+
+    // Create view with navigation buttons and click handler
     this.view = new Minigame1SimulView(
       () => this.playSimulation(),
       () => this.resetSimulation(),
@@ -45,6 +50,14 @@ export class Minigame1SimulController extends MinigameController {
       this.model.getInitialSpeed(),
       this.model.getGapX(),
       (delta) => this.adjustSpeed(delta),
+      navigationButtons,
+      (buttonId) => {
+        const button = navigationButtons.find((b) => b.id === buttonId);
+        if (button) {
+          console.log(`Minigame1SimulScreen: ${button.label} clicked`);
+          this.screenSwitcher.switchToScreen(button.target);
+        }
+      },
     );
   }
 

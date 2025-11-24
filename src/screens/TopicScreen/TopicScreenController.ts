@@ -1,5 +1,5 @@
 import { ScreenController, type ScreenSwitcher } from "../../types";
-import type { TopicScreenConfig } from "./types";
+import type { TopicScreenConfig } from "../../types";
 import { TopicScreenView } from "./TopicScreenView";
 
 /**

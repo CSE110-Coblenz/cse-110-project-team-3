@@ -1,12 +1,15 @@
 import Konva from "konva";
+import type { NavButton } from "../../../types";
 import {
   COLORS,
   SIMULATION_CONSTANTS,
   STAGE_WIDTH,
+  FONTS,
   STAGE_HEIGHT,
-  FONT_FAMILY,
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
+import { createKonvaButton } from "../../../utils/ui/NavigationButton";
+import { BackgroundHelper } from "../../../utils/ui/BackgroundHelper";
 
 export class Minigame1SimulView extends BaseMinigameSimulView {
   private box: Konva.Rect;
@@ -42,6 +45,8 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     initialSpeed: number = 0,
     gapX: number = 0,
     onSpeedChange?: (delta: number) => void,
+    navigationButtons?: NavButton[],
+    onButtonClick?: (buttonId: string) => void,
   ) {
     super(handlePlay, handleReset);
     this.onSpeedChange = onSpeedChange;
@@ -66,13 +71,19 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.arrowYGap = SIMULATION_CONSTANTS.ground_level - 36;
     this.arrowYBox = SIMULATION_CONSTANTS.ground_level - 72;
 
+    // Add background and move to bottom of z-order
+    const background = BackgroundHelper.createMiniGameBackground(1);
+    this.group.add(background);
+    // Use zIndex to ensure background stays at the bottom
+    background.zIndex(0);
+
     // Display parameters
     this.speedText = new Konva.Text({
       x: 20,
       y: 20,
       text: `Initial Speed: ${Math.round(initialSpeed)} m/s`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(this.speedText);
@@ -82,7 +93,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 50,
       text: `Mass: ${mass.toFixed(1)} kg`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(massText);
@@ -92,7 +103,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 80,
       text: `Friction Coeff.: ${friction.toFixed(2)}`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(frictionText);
@@ -102,7 +113,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 110,
       text: `Target Distance: ${distanceX.toFixed(2)} m`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(distanceText);
@@ -112,7 +123,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: 140,
       text: `Current Speed: ${Math.round(this.currentSpeed)} m/s`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.currSpeedText.hide();
@@ -139,7 +150,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       const t = new Konva.Text({
         text: label,
         fontSize: 18,
-        fontFamily: FONT_FAMILY,
+        fontFamily: FONTS.physics,
         fill: COLORS.buttonText,
         width: 28,
         height: 24,
@@ -186,7 +197,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     });
     this.group.add(this.speedKnob);
     this.speedKnob.on("dragmove", () => this.handleSpeedDrag());
-    speedTrack.on("mousedown", (evt) => {
+    speedTrack.on("mousedown", (_evt) => {
       const p = this.group.getStage()?.getPointerPosition();
       if (!p) return;
       this.speedKnob.x(
@@ -261,6 +272,13 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     });
     this.group.add(this.box);
 
+    // Navigation buttons using configuration
+    if (navigationButtons && onButtonClick) {
+      navigationButtons.forEach((buttonConfig) => {
+        const buttonGroup = createKonvaButton(buttonConfig, onButtonClick);
+        this.group.add(buttonGroup);
+      });
+    }
     // Gap arrow between checkpoints
     this.gapArrow = new Konva.Arrow({
       points: [
@@ -281,7 +299,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: this.arrowYGap - 20,
       text: `${this.gapX.toFixed(0)} m`,
       fontSize: 16,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.topic,
       fill: COLORS.text,
       align: "center",
     });
@@ -302,7 +320,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
       y: this.arrowYBox - 20,
       text: `${Math.max(0, Math.round(firstCheckpointX - this.box.x()))} m`,
       fontSize: 16,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.topic,
       fill: COLORS.text,
       align: "center",
     });

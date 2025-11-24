@@ -4,6 +4,7 @@ import type { ScreenSwitcher } from "../../../types";
 import { MinigameController } from "../../../types";
 import { MinigameSimulModel } from "./MinigameSimulModel";
 import { MinigameSimulView } from "./MinigameSimulView";
+import { getMinigameSimulScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
 export class MinigameSimulController extends MinigameController {
   private view: MinigameSimulView;
@@ -38,10 +39,14 @@ export class MinigameSimulController extends MinigameController {
       0,
       SIMULATION_CONSTANTS.error_margin,
     );
+
+    // Create navigation buttons with level
+    const navigationButtons = getMinigameSimulScreenNavigationButtons(level);
+
+    // Create view with navigation buttons and click handler
     this.view = new MinigameSimulView(
       () => this.playSimulation(),
       () => this.resetSimulation(),
-      () => this.handleReferenceClick(),
       this.model.getDistanceX(),
       this.model.getInitialHeight(),
       this.model.getInitialSpeed(),
@@ -49,6 +54,14 @@ export class MinigameSimulController extends MinigameController {
       this.model.getGravity(),
       (delta) => this.adjustSpeed(delta),
       (delta) => this.adjustAngle(delta),
+      navigationButtons,
+      (buttonId) => {
+        const button = navigationButtons.find((b) => b.id === buttonId);
+        if (button) {
+          console.log(`MinigameSimulScreen: ${button.label} clicked`);
+          this.screenSwitcher.switchToScreen(button.target);
+        }
+      },
     );
   }
 
@@ -75,13 +88,6 @@ export class MinigameSimulController extends MinigameController {
     // After reset, allow playing again
     this.view.hideResetButton();
     if (this.lives > 0) this.view.showPlayButton();
-  }
-
-  handleReferenceClick(): void {
-    this.screenSwitcher.switchToScreen({
-      type: "reference",
-      returnTo: { type: "minigame", screen: "simulation", level: this.level },
-    });
   }
 
   playSimulation(): void {

@@ -1,55 +1,67 @@
-import type { ScreenSwitcher } from "../../types";
+import type { ScreenSwitcher, MapScreenConfig } from "../../types";
 import { ScreenController } from "../../types";
 import { MapScreenView } from "./MapView";
+import { map1Config, map2Config } from "../../configs/maps/MapScreenConfig.ts";
 
 export class MapScreenController extends ScreenController {
   private view: MapScreenView;
   private screenSwitcher: ScreenSwitcher;
+  private currentConfig: MapScreenConfig;
 
-  constructor(screenSwitcher: ScreenSwitcher) {
+  constructor(screenSwitcher: ScreenSwitcher, mapId: number = 1) {
     super();
-    this.view = new MapScreenView(
-      () => this.handleReferenceClick(),
-      () => this.handleRulesClick(),
-      () => this.handleExitClick(),
-      (level: string) => this.handleNodeClick(level),
-    );
     this.screenSwitcher = screenSwitcher;
+    this.currentConfig = this.getConfigForMap(mapId);
+    this.view = MapScreenView.fromConfig(
+      this.currentConfig,
+      (buttonId: string) => this.handleButtonClick(buttonId),
+      (nodeId: string) => this.handleNodeClick(nodeId),
+    );
   }
 
-  private handleNodeClick = (level: string) => {
-    switch (level) {
-      case "1":
-        this.screenSwitcher.switchToScreen({
-          type: "topic",
-          level: "friction",
-        });
-        break;
-      case "2":
-        this.screenSwitcher.switchToScreen({
-          type: "topic",
-          level: "projectile motion",
-        });
-        break;
-      case "Game 1":
-        this.screenSwitcher.switchToScreen({
-          type: "minigame",
-          screen: "title",
-          level: 1,
-        });
+  private getConfigForMap(mapId: number): MapScreenConfig {
+    switch (mapId) {
+      case 2:
+        return map2Config;
+      case 1:
+      default:
+        console.error(`Unknown mapId: ${mapId}, defaulting to map 1`);
+        return map1Config;
     }
+  }
+
+  private handleButtonClick = (buttonId: string) => {
+    console.log(`Button ${buttonId} clicked`);
+
+    // Find the button configuration
+    const buttonConfig = this.currentConfig.buttons.find(
+      (btn) => btn.id === buttonId,
+    );
+
+    if (!buttonConfig) {
+      console.warn(`No configuration found for button: ${buttonId}`);
+      return;
+    }
+
+    // Navigate to the target screen
+    this.screenSwitcher.switchToScreen(buttonConfig.target);
   };
 
-  private handleReferenceClick = () => {
-    this.screenSwitcher.switchToScreen({ type: "reference" });
-  };
+  private handleNodeClick = (nodeId: string) => {
+    console.log(`Node ${nodeId} clicked`);
 
-  private handleRulesClick = () => {
-    this.screenSwitcher.switchToScreen({ type: "rules" });
-  };
+    // Find the node configuration
+    const nodeConfig = this.currentConfig.nodes.find(
+      (node) => node.id === nodeId,
+    );
 
-  private handleExitClick = () => {
-    console.log("Exit button clicked");
+    if (!nodeConfig) {
+      console.warn(`No configuration found for node: ${nodeId}`);
+      return;
+    }
+
+    // Navigate to the target screen
+    this.screenSwitcher.switchToScreen(nodeConfig.target);
   };
 
   getView(): MapScreenView {

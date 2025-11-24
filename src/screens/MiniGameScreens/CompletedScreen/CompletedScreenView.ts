@@ -1,27 +1,31 @@
 import Konva from "konva";
-import {
-  COLORS,
-  STAGE_HEIGHT,
-  STAGE_WIDTH,
-  FONT_FAMILY,
-} from "../../../constants";
-import type { View } from "../../../types";
+import { COLORS, STAGE_HEIGHT, STAGE_WIDTH, FONTS } from "../../../constants";
+import type { View, NavButton } from "../../../types";
+import { createKonvaButton } from "../../../utils/ui/NavigationButton";
+import { BackgroundHelper } from "../../../utils/ui/BackgroundHelper";
 
 export class MinigameCompletedScreenView implements View {
   private group: Konva.Group;
 
-  constructor(level: number, handleNextClick?: () => void) {
+  constructor(
+    level: number,
+    navigationButtons: NavButton[],
+    onButtonClick: (buttonId: string) => void,
+  ) {
     this.group = new Konva.Group();
 
     // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: COLORS.bg,
-    });
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
+
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
 
     // Title Text
     const titleText = new Konva.Text({
@@ -29,7 +33,7 @@ export class MinigameCompletedScreenView implements View {
       y: STAGE_HEIGHT / 2 - 100,
       text: `Mini Game ${level}\nCompleted!`,
       fontSize: 60,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.dungeon,
       fill: COLORS.text,
       fontStyle: "bold",
       align: "center",
@@ -37,57 +41,11 @@ export class MinigameCompletedScreenView implements View {
     titleText.offsetX(titleText.width() / 2);
     this.group.add(titleText);
 
-    // Back to Map Button
-    const backButton = this.createPillButton(
-      "EXIT",
-      STAGE_WIDTH / 2 - 96,
-      STAGE_HEIGHT - 100,
-      192,
-      60,
-    );
-    if (handleNextClick) {
-      backButton.on("click", handleNextClick);
-    }
-    this.group.add(backButton);
-  }
-
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const r = Math.min(height / 2 + 6, 24);
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: r,
-      fill: COLORS.buttonFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
+    // Navigation buttons using configuration
+    navigationButtons.forEach((buttonConfig) => {
+      const buttonGroup = createKonvaButton(buttonConfig, onButtonClick);
+      this.group.add(buttonGroup);
     });
-
-    const text = new Konva.Text({
-      x: 0,
-      y: 0,
-      width,
-      height,
-      text: label,
-      fill: COLORS.buttonText,
-      fontSize: 32,
-      fontStyle: "bold",
-      align: "center",
-      verticalAlign: "middle",
-      horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
-    });
-
-    g.add(rect, text);
-
-    return g;
   }
 
   getGroup(): Konva.Group {
