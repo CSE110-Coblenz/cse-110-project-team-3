@@ -1,6 +1,5 @@
 import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
-import { VALID_SIMPLE_SCREEN_TYPES } from "../../constants";
 import { MenuScreenModel } from "./MenuScreenModel";
 import { MenuScreenView } from "./MenuScreenView";
 
@@ -33,40 +32,33 @@ export class MenuScreenController extends ScreenController {
   }
 
   private handleStartClick(): void {
-    // New game: clear any saved last screen and go to the map
+    // New game: clear resume info and go through login before the map
     MenuScreenModel.clearLastScreen();
-    this.screenSwitcher.switchToScreen({ type: "map" });
-  }
-
-  private handleResumeClick(): void {}
-  private startGame() {
-    MenuScreenModel.setLastScreen("menu");
-    this.screenSwitcher.switchToScreen({ type: "map" });
-  }
-
-  private resume() {
-    const last = this.model.getLastScreen();
-    if (!last) return;
-
-    // Validate that the stored screen type is a valid simple screen type
-    // Note: This only handles simple screen types (map, rules, level, reference)
-    // Complex types (topic, minigame, simulation) would need JSON storage
-    if (!VALID_SIMPLE_SCREEN_TYPES.includes(last as any)) {
-      console.warn(
-        `Invalid screen type stored: ${last}. Clearing resume state.`,
-      );
-      MenuScreenModel.clearLastScreen();
-      this.view.setResumeEnabled(false);
-      return;
-    }
-
     this.screenSwitcher.switchToScreen({
-      type: last as "map" | "rules" | "level" | "reference",
+      type: "login",
+      nextScreen: { type: "map" },
     });
   }
 
+  private handleResumeClick(): void {
+    console.log("Resume button clicked");
+    const lastScreen = this.model.getLastScreen();
+    console.log("Last screen from model:", lastScreen);
+
+    if (!lastScreen) {
+      console.warn("No last screen found, resume button should be disabled");
+      return;
+    }
+
+    console.log("Navigating directly to:", lastScreen);
+    this.screenSwitcher.switchToScreen(lastScreen);
+  }
+
   private handleRulesClick(): void {
-    MenuScreenModel.setLastScreen("rules");
+    MenuScreenModel.setLastScreen({
+      type: "rules",
+      returnTo: { type: "menu" },
+    });
     this.screenSwitcher.switchToScreen({
       type: "rules",
       returnTo: { type: "menu" },

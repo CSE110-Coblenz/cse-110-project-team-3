@@ -167,8 +167,8 @@ class App implements ScreenSwitcher {
     // Draw the layer
     this.layer.draw();
 
-    // Start with the login screen
-    this.switchToScreen({ type: "login" });
+    // Start with the menu screen
+    this.switchToScreen({ type: "menu" });
   }
 
   switchToScreen(screen: Screen): void {
@@ -204,6 +204,11 @@ class App implements ScreenSwitcher {
     // Show the selected screen
     switch (screen.type) {
       case "login":
+        if (screen.nextScreen) {
+          this.loginScreenController.setNextScreen(screen.nextScreen);
+        } else {
+          this.loginScreenController.setNextScreen({ type: "map" });
+        }
         this.loginScreenController.show();
         break;
       case "menu":
@@ -331,6 +336,10 @@ class App implements ScreenSwitcher {
             break;
         }
         break;
+    }
+
+    if (screen.type !== "login" && screen.type !== "menu") {
+      MenuScreenModel.setLastScreen(screen);
     }
   }
 }
