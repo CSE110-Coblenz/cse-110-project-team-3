@@ -23,7 +23,7 @@ export interface View {
  */
 
 export type Screen =
-  | { type: "login" }
+  | { type: "login"; nextScreen?: Screen }
   | { type: "menu" }
   | { type: "rules" }
   | { type: "level" }

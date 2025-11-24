@@ -1,5 +1,5 @@
 import { ScreenController } from "../../types";
-import type { ScreenSwitcher } from "../../types";
+import type { ScreenSwitcher, Screen } from "../../types";
 import { LoginScreenModel } from "./LoginScreenModel";
 import { LoginScreenView } from "./LoginScreenView";
 
@@ -10,6 +10,7 @@ export class LoginScreenController extends ScreenController {
   private model: LoginScreenModel;
   private view: LoginScreenView;
   private screenSwitcher: ScreenSwitcher;
+  private nextScreen: Screen = { type: "map" };
 
   constructor(screenSwitcher: ScreenSwitcher) {
     super();
@@ -22,6 +23,10 @@ export class LoginScreenController extends ScreenController {
 
     // Attach input to document body when controller is created
     document.body.appendChild(this.view.getUsernameInput());
+  }
+
+  setNextScreen(screen: Screen): void {
+    this.nextScreen = screen;
   }
 
   /** Called when this screen becomes active */
@@ -58,8 +63,8 @@ export class LoginScreenController extends ScreenController {
       return;
     }
 
-    // Navigate to menu screen
-    this.screenSwitcher.switchToScreen({ type: "menu" });
+    // Navigate to queued destination (map by default)
+    this.screenSwitcher.switchToScreen(this.nextScreen);
   }
 
   getView(): LoginScreenView {

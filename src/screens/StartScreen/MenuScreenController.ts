@@ -1,5 +1,5 @@
 import { ScreenController } from "../../types";
-import type { ScreenSwitcher } from "../../types";
+import type { ScreenSwitcher, Screen } from "../../types";
 import { MenuScreenModel } from "./MenuScreenModel";
 import { MenuScreenView } from "./MenuScreenView";
 
@@ -32,35 +32,25 @@ export class MenuScreenController extends ScreenController {
   }
 
   private handleStartClick(): void {
-    // New game: clear any saved last screen and go to the map
+    // New game: clear resume info and go through login before the map
     MenuScreenModel.clearLastScreen();
-    this.screenSwitcher.switchToScreen({ type: "map" });
+    this.screenSwitcher.switchToScreen({
+      type: "login",
+      nextScreen: { type: "map" },
+    });
   }
 
   private handleResumeClick(): void {
     const last = this.model.getLastScreen();
-    if (!last) return;
-
-    // Validate that the stored screen type is a valid simple screen type
-    // Note: This only handles simple screen types (map, rules, level, reference)
-    // Complex types (topic, minigame, simulation) would need JSON storage
-    const validSimpleTypes = ["map", "rules", "level", "reference"] as const;
-    if (!validSimpleTypes.includes(last as any)) {
-      console.warn(
-        `Invalid screen type stored: ${last}. Clearing resume state.`,
-      );
-      MenuScreenModel.clearLastScreen();
-      this.view.setResumeEnabled(false);
+    if (!last) {
       return;
     }
 
-    this.screenSwitcher.switchToScreen({
-      type: last as "map" | "rules" | "level" | "reference",
-    });
+    const nextScreen: Screen = last;
+    this.screenSwitcher.switchToScreen({ type: "login", nextScreen });
   }
 
   private handleRulesClick(): void {
-    MenuScreenModel.setLastScreen("rules");
     this.screenSwitcher.switchToScreen({ type: "rules" });
   }
 
