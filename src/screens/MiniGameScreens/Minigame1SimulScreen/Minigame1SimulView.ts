@@ -50,18 +50,18 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.distanceX = distanceX;
 
     // Add Reference Button
-        const referenceButton = this.createPillButton(
-          "REFERENCE",
-          20,
-          STAGE_HEIGHT - 80,
-          200,
-          55,
-        );
-        if (handleReferenceClick) {
-          referenceButton.on("click", handleReferenceClick);
-        }
-        this.group.add(referenceButton);
-        
+    const referenceButton = this.createPillButton(
+      "REFERENCE",
+      20,
+      STAGE_HEIGHT - 80,
+      200,
+      55,
+    );
+    if (handleReferenceClick) {
+      referenceButton.on("click", handleReferenceClick);
+    }
+    this.group.add(referenceButton);
+
     // Arrow vertical positions
     this.arrowYGap = SIMULATION_CONSTANTS.ground_level - 36;
     this.arrowYBox = SIMULATION_CONSTANTS.ground_level - 72;
@@ -390,7 +390,6 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.boxToFirstLabel.text(`${d1} m`);
     this.boxToFirstLabel.x(d1Center - this.boxToFirstLabel.width() / 2);
 
-    
     // Ensure redraw
     this.group.getLayer()?.draw();
   }
