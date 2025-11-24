@@ -10,30 +10,53 @@ import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/Tit
 import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
 import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
 import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
+import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
 import { Minigame1SimulController } from "./screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController.ts";
 
-// Import configurations for topics and rules
-import { frictionConfig, projectileMotionConfig } from "./configs/topics";
+// Import configurations for minigames
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
 import { miniGameRuleConfig } from "./configs/rules";
 
+// Import coonfigurations for levels (topic + simulation)
 import {
-  frictionLev1SimulationConfig,
-  projectileLev2SimulationConfig,
+  forceConfig,
+  frictionConfig,
+  distanceConfig,
+  gravityConfig,
+  projectileMotionConfig,
+  trajectoryConfig,
+} from "./configs/topics";
+import {
+  Lev1SimulationConfig,
+  Lev2SimulationConfig,
+  Lev3SimulationConfig,
+  Lev4SimulationConfig,
+  Lev5SimulationConfig,
+  Lev6SimulationConfig,
 } from "./configs/simulations";
 
 class App implements ScreenSwitcher {
   private stage: Konva.Stage;
   private layer: Konva.Layer;
 
+  private menuScreenController: MenuScreenController;
   private mapScreenController: MapScreenController;
   private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
+  // Topics
+  private forceTopicController: TopicScreenController;
   private frictionTopicController: TopicScreenController;
+  private distanceTopicController: TopicScreenController;
+  private gravityTopicController: TopicScreenController;
   private projectileMotionTopicController: TopicScreenController;
-
+  private trajectoryTopicController: TopicScreenController;
+  // Simulations
   private lev1SimulationController: SimulationScreenController;
   private lev2SimulationController: SimulationScreenController;
+  private lev3SimulationController: SimulationScreenController;
+  private lev4SimulationController: SimulationScreenController;
+  private lev5SimulationController: SimulationScreenController;
+  private lev6SimulationController: SimulationScreenController;
 
   // for minigame they depend on the level
   private titleScreenController?: TitleScreenController;
@@ -56,57 +79,109 @@ class App implements ScreenSwitcher {
     this.stage.add(this.layer);
 
     // Initialize screen controllers
+    this.menuScreenController = new MenuScreenController(this);
     this.mapScreenController = new MapScreenController(this);
     this.rulesScreenController = new RulesScreenController(this);
     this.referenceScreenController = new ReferenceScreenController(this);
     //this.minigameSimulController = new MinigameSimulController(this);
 
     // Initialize topic screens with different configurations
+    this.forceTopicController = new TopicScreenController(this, forceConfig);
     this.frictionTopicController = new TopicScreenController(
       this,
       frictionConfig,
+    );
+    this.distanceTopicController = new TopicScreenController(
+      this,
+      distanceConfig,
+    );
+    this.gravityTopicController = new TopicScreenController(
+      this,
+      gravityConfig,
     );
     this.projectileMotionTopicController = new TopicScreenController(
       this,
       projectileMotionConfig,
     );
+    this.trajectoryTopicController = new TopicScreenController(
+      this,
+      trajectoryConfig,
+    );
 
+    // Initialize Simulation screens with different configurations
     this.lev1SimulationController = new SimulationScreenController(
       this,
-      frictionLev1SimulationConfig,
+      Lev1SimulationConfig,
     );
     this.lev2SimulationController = new SimulationScreenController(
       this,
-      projectileLev2SimulationConfig,
+      Lev2SimulationConfig,
+    );
+    this.lev3SimulationController = new SimulationScreenController(
+      this,
+      Lev3SimulationConfig,
+    );
+    this.lev4SimulationController = new SimulationScreenController(
+      this,
+      Lev4SimulationConfig,
+    );
+    this.lev5SimulationController = new SimulationScreenController(
+      this,
+      Lev5SimulationConfig,
+    );
+    this.lev6SimulationController = new SimulationScreenController(
+      this,
+      Lev6SimulationConfig,
     );
 
     // add all screen views to the layer
+    this.layer.add(this.menuScreenController.getView().getGroup());
     this.layer.add(this.mapScreenController.getView().getGroup());
-    this.layer.add(this.frictionTopicController.getView().getGroup());
-    this.layer.add(this.projectileMotionTopicController.getView().getGroup());
     this.layer.add(this.referenceScreenController.getView().getGroup());
     this.layer.add(this.rulesScreenController.getView().getGroup());
 
+    this.layer.add(this.forceTopicController.getView().getGroup());
+    this.layer.add(this.frictionTopicController.getView().getGroup());
+    this.layer.add(this.distanceTopicController.getView().getGroup());
+    this.layer.add(this.gravityTopicController.getView().getGroup());
+    this.layer.add(this.projectileMotionTopicController.getView().getGroup());
+    this.layer.add(this.trajectoryTopicController.getView().getGroup());
+
     this.layer.add(this.lev1SimulationController.getView().getGroup());
     this.layer.add(this.lev2SimulationController.getView().getGroup());
+    this.layer.add(this.lev3SimulationController.getView().getGroup());
+    this.layer.add(this.lev4SimulationController.getView().getGroup());
+    this.layer.add(this.lev5SimulationController.getView().getGroup());
+    this.layer.add(this.lev6SimulationController.getView().getGroup());
+    //this.layer.add(this.minigameSimulController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
 
-    // Start with the map screen
-    this.switchToScreen({ type: "reference" });
+    // Start with the menu screen
+    this.switchToScreen({ type: "menu" });
   }
 
   switchToScreen(screen: Screen): void {
     // Hide all screens
+    this.menuScreenController.getView().hide();
     this.mapScreenController.getView().hide();
     this.referenceScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
+
+    this.forceTopicController.getView().hide();
     this.frictionTopicController.getView().hide();
+    this.distanceTopicController.getView().hide();
+    this.gravityTopicController.getView().hide();
     this.projectileMotionTopicController.getView().hide();
+    this.trajectoryTopicController.getView().hide();
 
     this.lev1SimulationController.getView().hide();
     this.lev2SimulationController.getView().hide();
+    this.lev3SimulationController.getView().hide();
+    this.lev4SimulationController.getView().hide();
+    this.lev5SimulationController.getView().hide();
+    this.lev6SimulationController.getView().hide();
 
     this.titleScreenController?.getView().hide();
     this.miniGameRuleScreenController?.getView().hide();
@@ -117,6 +192,9 @@ class App implements ScreenSwitcher {
 
     // Show the selected screen
     switch (screen.type) {
+      case "menu":
+        this.menuScreenController.show();
+        break;
       case "map":
         this.mapScreenController.getView().show();
         break;
@@ -130,20 +208,33 @@ class App implements ScreenSwitcher {
         this.referenceScreenController.getView().show();
         break;
       case "topic":
-        if (screen.level === "friction") {
+        if (screen.level === "force") {
+          this.forceTopicController.getView().show();
+        } else if (screen.level === "friction") {
           this.frictionTopicController.getView().show();
+        } else if (screen.level === "distance") {
+          this.distanceTopicController.getView().show();
+        } else if (screen.level === "gravity") {
+          this.gravityTopicController.getView().show();
         } else if (screen.level === "projectile motion") {
           this.projectileMotionTopicController.getView().show();
+        } else if (screen.level === "trajectory") {
+          this.trajectoryTopicController.getView().show();
         }
         break;
       case "simulation":
-        if (screen.topic === "friction" && screen.level === "lev1") {
+        if (screen.topic === "force") {
           this.lev1SimulationController.getView().show();
-        } else if (
-          screen.topic === "projectile motion" &&
-          screen.level === "lev2"
-        ) {
+        } else if (screen.topic === "friction") {
           this.lev2SimulationController.getView().show();
+        } else if (screen.topic === "distance") {
+          this.lev3SimulationController.getView().show();
+        } else if (screen.topic === "gravity") {
+          this.lev4SimulationController.getView().show();
+        } else if (screen.topic === "projectile motion") {
+          this.lev5SimulationController.getView().show();
+        } else if (screen.topic === "trajectory") {
+          this.lev6SimulationController.getView().show();
         }
         break;
 

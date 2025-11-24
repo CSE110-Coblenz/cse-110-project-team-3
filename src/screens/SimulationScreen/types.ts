@@ -9,9 +9,13 @@ export interface SimulationOptionConfig {
 }
 
 export interface SimulationVideoConfig {
-  src: string; // "/Force.mp4"
+  src: string; // e.g. "/trajectory.mp4"
   loop?: boolean;
   muted?: boolean;
+}
+
+export interface SimulationPictureConfig {
+  src: string; // e.g. "/force.png"
 }
 
 export interface SimulationLayoutConfig {
@@ -24,13 +28,18 @@ export interface SimulationLayoutConfig {
 export interface SimulationScreenConfig {
   id: string; // "lev1-friction" or "lev2-projectile"
 
-  // default content
+  // Default textual content
   title: string;
   description: string;
-  video: SimulationVideoConfig;
+
+  // Visual content: either a looping video OR a static picture.
+  video?: SimulationVideoConfig;
+  picture?: SimulationPictureConfig;
+
+  // Multiple-choice options
   options: SimulationOptionConfig[];
 
-  // optional layout/style
+  // Optional layout/style overrides
   layout?: SimulationLayoutConfig;
   style?: {
     backgroundColor?: string;
@@ -38,9 +47,9 @@ export interface SimulationScreenConfig {
     descriptionColor?: string;
   };
 
-  // navigation buttons
+  // Navigation targets for BACK/NEXT buttons
   navigation: {
-    backScreen: Screen; // same topic level
-    nextScreen: Screen; // map
+    backScreen: Screen; // previous topic level
+    nextScreen: Screen; // usually the map
   };
 }

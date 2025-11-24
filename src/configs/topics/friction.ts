@@ -36,7 +36,7 @@ export const frictionConfig: TopicScreenConfig = {
     {
       id: "simulation",
       label: "Simulation",
-      target: { type: "topic", level: "projectile motion" },
+      target: { type: "simulation", topic: "friction" },
       position: {
         x: 0.775,
         y: 0.725,

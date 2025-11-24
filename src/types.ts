@@ -19,20 +19,35 @@ export interface View {
  */
 
 export type Screen =
+  | { type: "menu" }
   | { type: "rules" }
   | { type: "level" }
   | { type: "map" }
   | { type: "reference"; returnTo?: Screen }
-  | { type: "topic"; level: "friction" | "projectile motion" }
   | {
       type: "minigame";
       screen: "title" | "rules" | "completed" | "gameover" | "simulation";
       level: number;
     }
   | {
+      type: "topic";
+      level:
+        | "force"
+        | "friction"
+        | "distance"
+        | "gravity"
+        | "projectile motion"
+        | "trajectory";
+    }
+  | {
       type: "simulation";
-      topic: "friction" | "projectile motion";
-      level: "lev1" | "lev2";
+      topic:
+        | "force"
+        | "friction"
+        | "distance"
+        | "gravity"
+        | "projectile motion"
+        | "trajectory";
     };
 
 export type RuleConfig = {
