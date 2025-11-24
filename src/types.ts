@@ -413,17 +413,16 @@ export interface MapArrow {
   to: string; // ID of the destination node
 }
 
-/**
- * Configuration for a screen
- * - title: Title of the screen
- * - description: Description text for the screen
- * - buttons: Array of buttons to display on the screen
- * - style: Optional styling for the screen
- */
 export interface TopicScreenConfig {
   title: string;
-  description: string;
-  buttons: NavButton[]; // Array of buttons on the screen
+  description?: string;
+  /**
+   * Optional richer description made of text segments.
+   * Each segment can enable `bold` to indicate this phrase should be rendered bold.
+   * If present, `descriptionSegments` will be used in preference to `description`.
+   */
+  descriptionSegments?: Array<{ text: string; bold?: boolean; color?: string }>;
+  buttons: NavButton[];
   style?: {
     titleColor: string;
     descriptionColor: string;

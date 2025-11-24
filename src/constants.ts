@@ -12,6 +12,8 @@ export const COLORS = {
   stoneLight: "#4a4238", // Lighter stone for highlights
   stoneMid: "#2d2620", // Mid-tone stone
 
+  arrow: "#cfd2d6",
+
   // Torch/fire warm accents
   torchOrange: "#ff6b35", // Bright torch flame
   torchYellow: "#ffb84d", // Torch glow
@@ -46,6 +48,8 @@ export const FONTS = {
 
   // For physics/technical content (formulas, numbers, descriptions)
   physics: "JetBrains Mono, Courier New, monospace",
+
+  topic: "JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace",
 
   // For buttons and UI
   ui: "Trebuchet MS, Arial Black, sans-serif",
