@@ -1,10 +1,8 @@
-export class MinigameSimulModel {
-  private initial_speed: number;
+import { BaseMinigameSimulModel } from "../../../types";
+
+export class MinigameSimulModel extends BaseMinigameSimulModel {
   private angle: number;
-  private gravity: number;
   private initial_height: number;
-  private distance_x: number;
-  private margin_of_error: number;
 
   constructor(
     initial_speed: number,
@@ -14,23 +12,9 @@ export class MinigameSimulModel {
     initial_height: number = 0,
     margin_of_error: number = 5,
   ) {
-    this.initial_speed = initial_speed;
+    super(initial_speed, distance_x, margin_of_error, gravity);
     this.angle = angle;
-    this.gravity = gravity;
     this.initial_height = initial_height;
-    this.distance_x = distance_x;
-    this.margin_of_error = margin_of_error;
-  }
-
-  getInitialSpeed(): number {
-    return this.initial_speed;
-  }
-
-  setInitialSpeed(v: number): void {
-    // integer m/s, prevent negative, cap reasonable upper bound
-    const rounded = Math.round(v);
-    const clamped = Math.max(0, Math.min(rounded, 300));
-    this.initial_speed = clamped;
   }
 
   getAngle(): number {
@@ -44,19 +28,7 @@ export class MinigameSimulModel {
     this.angle = clamped;
   }
 
-  getGravity(): number {
-    return this.gravity;
-  }
-
   getInitialHeight(): number {
     return this.initial_height;
-  }
-
-  getDistanceX(): number {
-    return this.distance_x;
-  }
-
-  isHit(landingDistance: number): boolean {
-    return Math.abs(landingDistance - this.distance_x) <= this.margin_of_error;
   }
 }

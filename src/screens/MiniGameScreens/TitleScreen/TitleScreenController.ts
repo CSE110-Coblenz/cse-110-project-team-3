@@ -27,7 +27,6 @@ export class TitleScreenController extends ScreenController {
   }
 
   private handleBackClick(): void {
-    console.log("Back button clicked");
     this.screenSwitcher.switchToScreen({ type: "map" });
   }
 
