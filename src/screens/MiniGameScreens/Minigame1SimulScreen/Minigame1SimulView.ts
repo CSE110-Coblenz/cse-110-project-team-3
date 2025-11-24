@@ -3,6 +3,7 @@ import {
   COLORS,
   SIMULATION_CONSTANTS,
   STAGE_WIDTH,
+  STAGE_HEIGHT,
   FONT_FAMILY,
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
@@ -34,6 +35,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
   constructor(
     handlePlay?: () => void,
     handleReset?: () => void,
+    handleReferenceClick?: () => void,
     distanceX: number = 0,
     mass: number = 1,
     friction: number = 0.2,
@@ -47,6 +49,19 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.gapX = gapX;
     this.distanceX = distanceX;
 
+    // Add Reference Button
+        const referenceButton = this.createPillButton(
+          "REFERENCE",
+          20,
+          STAGE_HEIGHT - 80,
+          200,
+          55,
+        );
+        if (handleReferenceClick) {
+          referenceButton.on("click", handleReferenceClick);
+        }
+        this.group.add(referenceButton);
+        
     // Arrow vertical positions
     this.arrowYGap = SIMULATION_CONSTANTS.ground_level - 36;
     this.arrowYBox = SIMULATION_CONSTANTS.ground_level - 72;
@@ -375,6 +390,7 @@ export class Minigame1SimulView extends BaseMinigameSimulView {
     this.boxToFirstLabel.text(`${d1} m`);
     this.boxToFirstLabel.x(d1Center - this.boxToFirstLabel.width() / 2);
 
+    
     // Ensure redraw
     this.group.getLayer()?.draw();
   }

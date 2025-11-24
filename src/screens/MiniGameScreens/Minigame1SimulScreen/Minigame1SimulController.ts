@@ -38,6 +38,7 @@ export class Minigame1SimulController extends MinigameController {
     this.view = new Minigame1SimulView(
       () => this.playSimulation(),
       () => this.resetSimulation(),
+      () => this.handleReferenceClick(),
       this.model.getDistanceX(),
       this.model.getMass(),
       this.model.getFrictionCoefficient(),
@@ -69,6 +70,12 @@ export class Minigame1SimulController extends MinigameController {
     if (this.lives > 0) this.view.showPlayButton();
   }
 
+  handleReferenceClick(): void {
+    this.screenSwitcher.switchToScreen({
+      type: "reference",
+      returnTo: { type: "minigame", screen: "simulation", level: this.level },
+    });
+  }
   playSimulation(): void {
     if (this.lives <= 0) {
       console.log("No lives left. Game over.");
