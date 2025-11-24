@@ -59,7 +59,7 @@ export class ReferenceScreenView implements View {
       N = mg.
       fₛ ≤ μₛN.
       `,
-      fontSize: 28,
+      fontSize: 24,
       fontFamily: FONT_FAMILY,
       fill: COLORS.text,
       align: "left",
