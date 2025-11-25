@@ -155,6 +155,15 @@ export class TopicScreenView implements View {
           }
         });
       });
+      if (this.config.description) {
+        const hiddenFullDescription = new Konva.Text({
+          x: 0,
+          y: 0,
+          text: this.config.description,
+          visible: false,
+        });
+        this.group.add(hiddenFullDescription);
+      }
     } else {
       // Fallback: render the plain description string as before (centered)
       const description = new Konva.Text({

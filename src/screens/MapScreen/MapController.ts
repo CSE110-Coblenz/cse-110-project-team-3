@@ -20,16 +20,16 @@ export class MapScreenController extends ScreenController {
   }
 
   private getConfigForMap(mapId: number): MapScreenConfig {
-  switch (mapId) {
-    case 2:
-      return map2Config;
-    case 1:
-      return map1Config;
-    default:
-      console.error(`Unknown mapId: ${mapId}, defaulting to map 1`);
-      return map1Config;
+    switch (mapId) {
+      case 2:
+        return map2Config;
+      case 1:
+        return map1Config;
+      default:
+        console.error(`Unknown mapId: ${mapId}, defaulting to map 1`);
+        return map1Config;
+    }
   }
-}
 
   private handleButtonClick = (buttonId: string) => {
     console.log(`Button ${buttonId} clicked`);
