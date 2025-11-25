@@ -242,7 +242,6 @@ export class MapScreenView implements View {
 
     // Click handler
     if (handleClick) {
-      group.on("click", () => handleClick());
       group.on("click", () => {
         if (group.getAttr("disabled")) return; // block click when node locked
         handleClick();
