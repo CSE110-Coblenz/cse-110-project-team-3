@@ -36,6 +36,6 @@ How long does it take for the ball to reach the ground?
 
   navigation: {
     backScreen: { type: "topic", level: "gravity" },
-    nextScreen: { type: "map", mapId: 2},
+    nextScreen: { type: "map", mapId: 2 },
   },
 };

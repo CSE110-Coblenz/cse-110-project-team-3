@@ -7,9 +7,9 @@ import {
 
 // mapping ID config -> progress index
 export const SIM_UNLOCK_INDEX: Record<string, number> = {
-  "lev1-force": 1,      // completed sim 1 -> unlock lev 2
-  "lev2-friction": 2,   
-  "lev3-distance": 3,   // unlock game1
+  "lev1-force": 1, // completed sim 1 -> unlock lev 2
+  "lev2-friction": 2,
+  "lev3-distance": 3, // unlock game1
   "lev4-gravity": 5,
   "lev5-projectile": 6,
   "lev6-trajectory": 7, // unlock game2

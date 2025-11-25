@@ -14,7 +14,7 @@ A ball is launched from ground level at the origin O with an initial angle of 45
   },
 
   options: [
-     { id: "A", label: "A) 19.8 m/s", isCorrect: true },
+    { id: "A", label: "A) 19.8 m/s", isCorrect: true },
     { id: "B", label: "B) 18.8 m/s", isCorrect: false },
     { id: "C", label: "C) 19.5 m/s", isCorrect: false },
   ],
@@ -34,6 +34,6 @@ A ball is launched from ground level at the origin O with an initial angle of 45
 
   navigation: {
     backScreen: { type: "topic", level: "trajectory" },
-    nextScreen: { type: "map", mapId: 2},
+    nextScreen: { type: "map", mapId: 2 },
   },
 };

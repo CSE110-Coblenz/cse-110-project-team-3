@@ -87,7 +87,7 @@ export class TopicScreenView implements View {
     });
     // Description: support either plain string `description` (legacy)
     // or rich `descriptionSegments` (array of { text, bold? }) for inline bolding.
-    const maxWidth = STAGE_WIDTH * 0.90; // 90% of stage width
+    const maxWidth = STAGE_WIDTH * 0.9; // 90% of stage width
     const descX = STAGE_WIDTH / 2 - maxWidth / 2;
     const startY = DEFAULT_STYLES.description.y;
 

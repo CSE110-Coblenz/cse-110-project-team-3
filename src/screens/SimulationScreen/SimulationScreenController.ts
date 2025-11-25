@@ -1,9 +1,9 @@
 import type { ScreenSwitcher } from "../../types";
-import { ScreenController, setCurrentLevelIndex  } from "../../types";
+import { ScreenController, setCurrentLevelIndex } from "../../types";
 import { SimulationScreenView } from "./SimulationScreenView";
 import type { SimulationScreenConfig } from "./types";
 import { getSimulationNavigationButtons } from "../../configs/NavigationButtons/Simulation";
-import { SIM_UNLOCK_INDEX } from "../../configs/maps/MapScreenConfig"
+import { SIM_UNLOCK_INDEX } from "../../configs/maps/MapScreenConfig";
 
 export class SimulationScreenController extends ScreenController {
   private view: SimulationScreenView;
@@ -20,7 +20,10 @@ export class SimulationScreenController extends ScreenController {
     );
 
     // Create view with navigation buttons and click handler
-    this.view = new SimulationScreenView(config, navigationButtons, (buttonId) => {
+    this.view = new SimulationScreenView(
+      config,
+      navigationButtons,
+      (buttonId) => {
         const button = navigationButtons.find((b) => b.id === buttonId);
         if (!button) return;
         if (buttonId === "next") {
@@ -28,7 +31,7 @@ export class SimulationScreenController extends ScreenController {
           if (idx !== undefined) {
             setCurrentLevelIndex(idx);
           }
-        } 
+        }
         console.log(`Simulation: ${button.label} clicked`);
         this.screenSwitcher.switchToScreen(button.target);
       },

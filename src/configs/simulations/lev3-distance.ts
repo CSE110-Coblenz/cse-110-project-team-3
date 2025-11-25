@@ -17,7 +17,7 @@ How far does the block slide before it comes to rest?
 
   options: [
     { id: "A", label: "A) 1.2 m", isCorrect: false },
-     { id: "B", label: "B) 1.8 m", isCorrect: false },
+    { id: "B", label: "B) 1.8 m", isCorrect: false },
     { id: "C", label: "C) 1.5 m", isCorrect: true },
   ],
 
