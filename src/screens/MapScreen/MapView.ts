@@ -4,9 +4,11 @@ import { COLORS, STAGE_WIDTH, FONTS } from "../../constants";
 import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { defaultMapConfig } from "../../configs/maps/MapScreenConfig.ts";
+import { currentLevelIndex } from "../../types";
 
 type NodeDescription = {
   group: Konva.Group;
+  unlockIndex: number;
   x: number;
   y: number;
   height: number;
@@ -16,6 +18,7 @@ type NodeDescription = {
 export class MapScreenView implements View {
   private group: Konva.Group;
   private config: MapScreenConfig;
+  private nodes: NodeDescription[] = [];
 
   /**
    * Factory method to create a MapScreenView from a configuration
@@ -56,8 +59,10 @@ export class MapScreenView implements View {
     // Create nodes from configuration
     const nodeMap = new Map<string, NodeDescription>();
     config.nodes.forEach((nodeConfig: MapNode) => {
-      const node = this.createNodeFromConfig(nodeConfig, handleNodeClick);
+      const unlockIndex = nodeConfig.unlockIndex ?? 0;
+      const node = this.createNodeFromConfig(nodeConfig, handleNodeClick, unlockIndex);
       nodeMap.set(nodeConfig.id, node);
+      this.nodes.push(node);
     });
 
     // Create arrows from configuration
@@ -90,6 +95,18 @@ export class MapScreenView implements View {
         this.group.add(button);
       });
     }
+    this.updateNodeLockState();
+  }
+
+  private updateNodeLockState(): void {
+    this.nodes.forEach((node) => {
+      const unlocked = node.unlockIndex <= currentLevelIndex;
+      const g = node.group;
+      g.setAttr("disabled", !unlocked);
+      g.listening(unlocked);
+      g.opacity(unlocked ? 1 : 0.4);
+    });
+    this.group.getLayer()?.batchDraw();
   }
 
   /**
@@ -97,7 +114,8 @@ export class MapScreenView implements View {
    */
   private createNodeFromConfig(
     nodeConfig: MapNode,
-    handleClick?: (nodeId: string) => void,
+    handleClick: ((nodeId: string) => void) | undefined,
+    unlockIndex: number,
   ): NodeDescription {
     return this.createNode(
       nodeConfig.position.x,
@@ -109,7 +127,8 @@ export class MapScreenView implements View {
         isBoss: nodeConfig.isBoss,
       },
       handleClick ? () => handleClick(nodeConfig.id) : undefined,
-      nodeConfig.id,
+      // nodeConfig.id,
+      unlockIndex,
     );
   }
 
@@ -119,7 +138,8 @@ export class MapScreenView implements View {
     label: string,
     opts: { height?: number; width?: number; isBoss?: boolean } = {},
     handleClick?: () => void,
-    _nodeId?: string,
+    // _nodeId?: string,
+    unlockIndex: number = 0,
   ): NodeDescription {
     const height = opts.height ?? 120;
     const width = opts.width ?? height;
@@ -129,6 +149,7 @@ export class MapScreenView implements View {
     const isBoss = opts.isBoss ?? false;
 
     const group = new Konva.Group({ x, y });
+    group.setAttr("unlockIndex", unlockIndex);  // keep unlockIndex as Konva attribute 
 
     // Border rectangle (dungeon room door/archway)
     const outer = new Konva.Rect({
@@ -196,8 +217,9 @@ export class MapScreenView implements View {
 
     // Hover glow effect for rooms
     group.on("mouseenter", () => {
-      outer.stroke(COLORS.torchOrange); // Torch-lit glow
-      outer.shadowBlur(30); // Increased glow
+      if (group.getAttr("disabled")) return;  // ignore hover if node is disabled
+      outer.stroke(COLORS.torchOrange);       // Torch-lit glow
+      outer.shadowBlur(30);                   // Increased glow
       if (group.getStage()) {
         group.getStage()!.container().style.cursor = "pointer";
       }
@@ -205,7 +227,8 @@ export class MapScreenView implements View {
     });
 
     group.on("mouseleave", () => {
-      outer.stroke(COLORS.nodeActive); // Return to normal
+      if (group.getAttr("disabled")) return;  // ignore hover if node is disabled
+      outer.stroke(COLORS.nodeActive);        // Return to normal
       outer.shadowBlur(20);
       if (group.getStage()) {
         group.getStage()!.container().style.cursor = "default";
@@ -216,9 +239,13 @@ export class MapScreenView implements View {
     // Click handler
     if (handleClick) {
       group.on("click", () => handleClick());
+      group.on("click", () => {
+        if (group.getAttr("disabled")) return;  // block click when node locked
+        handleClick()
+      });
     }
 
-    return { group, x, y, height, width };
+    return { group, unlockIndex, x, y, height, width };
   }
 
   private createArrow(
@@ -245,6 +272,8 @@ export class MapScreenView implements View {
   }
 
   show(): void {
+    // refresh lock state every time you enter the map
+    this.updateNodeLockState();
     this.group.visible(true);
     this.group.getLayer()?.draw();
   }
