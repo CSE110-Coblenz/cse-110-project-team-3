@@ -20,7 +20,7 @@ const DEFAULT_STYLES = {
     fontSize: 18,
     fontFamily: FONTS.topic,
     fill: COLORS.text,
-    y: 150,
+    y: 120,
   },
   button: {
     width: 200,
@@ -87,7 +87,7 @@ export class TopicScreenView implements View {
     });
     // Description: support either plain string `description` (legacy)
     // or rich `descriptionSegments` (array of { text, bold? }) for inline bolding.
-    const maxWidth = STAGE_WIDTH * 0.8; // 80% of stage width
+    const maxWidth = STAGE_WIDTH * 0.9; // 90% of stage width
     const descX = STAGE_WIDTH / 2 - maxWidth / 2;
     const startY = DEFAULT_STYLES.description.y;
 
@@ -155,6 +155,15 @@ export class TopicScreenView implements View {
           }
         });
       });
+      if (this.config.description) {
+        const hiddenFullDescription = new Konva.Text({
+          x: 0,
+          y: 0,
+          text: this.config.description,
+          visible: false,
+        });
+        this.group.add(hiddenFullDescription);
+      }
     } else {
       // Fallback: render the plain description string as before (centered)
       const description = new Konva.Text({

@@ -24,6 +24,7 @@ export class MapScreenController extends ScreenController {
       case 2:
         return map2Config;
       case 1:
+        return map1Config;
       default:
         console.error(`Unknown mapId: ${mapId}, defaulting to map 1`);
         return map1Config;

@@ -14,8 +14,8 @@ What constant horizontal force should you apply?
   },
 
   options: [
-    { id: "A", label: "A) 4.0 N", isCorrect: false },
-    { id: "B", label: "B) 6.0 N", isCorrect: true },
+    { id: "A", label: "A) 6.0 N", isCorrect: true },
+    { id: "B", label: "B) 4.0 N", isCorrect: false },
     { id: "C", label: "C) 8.0 N", isCorrect: false },
   ],
 
@@ -34,6 +34,6 @@ What constant horizontal force should you apply?
 
   navigation: {
     backScreen: { type: "topic", level: "force" },
-    nextScreen: { type: "map" },
+    nextScreen: { type: "map", mapId: 1 },
   },
 };
