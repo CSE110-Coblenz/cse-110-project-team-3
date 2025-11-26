@@ -6,6 +6,11 @@ import { Minigame1SimulModel } from "./Minigame1SimulModel";
 import { Minigame1SimulView } from "./Minigame1SimulView";
 import { getMinigame1SimulScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
+/**
+ * Controller for the friction-based minigame simulation
+ * Coordinates model, view, randomized parameters (mass, friction, distance),
+ * handles play/reset flow, reference routing, and hit detection
+ */
 export class Minigame1SimulController extends MinigameController {
   private view: Minigame1SimulView;
   private model: Minigame1SimulModel;

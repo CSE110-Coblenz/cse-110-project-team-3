@@ -1,5 +1,10 @@
 import { BaseMinigameSimulModel } from "../../../types";
 
+/**
+ * Model for the friction-based minigame simulation
+ * Extends the base minigame model with mass, friction coefficient,
+ * a gap region, and custom hit logic over the target interval
+ */
 export class Minigame1SimulModel extends BaseMinigameSimulModel {
   private friction_coefficient: number;
   private mass: number;

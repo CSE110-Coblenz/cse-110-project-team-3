@@ -11,6 +11,11 @@ import { BaseMinigameSimulView } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 import { BackgroundHelper } from "../../../utils/ui/BackgroundHelper";
 
+/**
+ * Konva view for the friction-based minigame simulation
+ * Renders background, UI controls, reference button, sliding box,
+ * targets, distance arrows, and navigation buttons with speed slider
+ */
 export class Minigame1SimulView extends BaseMinigameSimulView {
   private box: Konva.Rect;
   private speedText: Konva.Text;

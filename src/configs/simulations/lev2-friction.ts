@@ -1,5 +1,9 @@
 import type { SimulationScreenConfig } from "../../screens/SimulationScreen/types";
 
+/**
+ * Configuration for the friction simulation screen
+ * Find implementation details in "../../screens/SimulationScreen/types"
+ */
 export const Lev2SimulationConfig: SimulationScreenConfig = {
   id: "lev2-friction",
   title: "SIMULATION: Friction Force",
