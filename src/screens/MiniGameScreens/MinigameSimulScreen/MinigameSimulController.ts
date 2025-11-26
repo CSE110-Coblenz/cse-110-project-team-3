@@ -19,8 +19,8 @@ export class MinigameSimulController extends MinigameController {
     const maxDistance = Math.max(
       100,
       Math.floor(
-        STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x + targetHalfWidth - 20
-      )
+        STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x + targetHalfWidth - 20,
+      ),
     );
     const minDistance = SIMULATION_CONSTANTS.simulation_min_distance_to_target;
     const distanceX = Math.max(
@@ -28,8 +28,8 @@ export class MinigameSimulController extends MinigameController {
       Math.min(
         maxDistance,
         Math.floor(Math.random() * (maxDistance - minDistance + 1)) +
-          minDistance
-      )
+          minDistance,
+      ),
     );
 
     this.model = new MinigameSimulModel(
@@ -38,7 +38,7 @@ export class MinigameSimulController extends MinigameController {
       9.8,
       distanceX,
       0,
-      SIMULATION_CONSTANTS.error_margin
+      SIMULATION_CONSTANTS.error_margin,
     );
 
     // Create navigation buttons with level
@@ -62,7 +62,7 @@ export class MinigameSimulController extends MinigameController {
           console.log(`MinigameSimulScreen: ${button.label} clicked`);
           this.screenSwitcher.switchToScreen(button.target);
         }
-      }
+      },
     );
 
     //Initialize cannon fire sound
