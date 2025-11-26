@@ -142,7 +142,6 @@ export class MapScreenView implements View {
     label: string,
     opts: { height?: number; width?: number; isBoss?: boolean } = {},
     handleClick?: () => void,
-    // _nodeId?: string,
     unlockIndex: number = 0,
   ): NodeDescription {
     const height = opts.height ?? 120;
