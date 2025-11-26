@@ -72,13 +72,26 @@ describe("TopicScreenController Integration Test", () => {
         expect(titleText).toBeDefined();
         expect(titleText.text()).toBe(config.title);
 
-        const descriptionText = rootGroup.children.find(
-          (child) =>
-            child instanceof FakeText &&
-            child.config.text === config.description,
-        ) as FakeText;
-        expect(descriptionText).toBeDefined();
-        expect(descriptionText.text()).toBe(config.description);
+        const allTextContent = rootGroup.children
+          .filter((c) => c instanceof FakeText)
+          .map((c) => (c as FakeText).text())
+          .join(" ");
+
+        if (config.descriptionSegments) {
+          // Normalize strings by removing whitespace for comparison
+          const normalize = (str: string) => str.replace(/\s/g, "");
+          const actualNormalized = normalize(allTextContent);
+
+          // Check each segment is included in the rendered text
+          for (const segment of config.descriptionSegments) {
+            const segmentNormalized = normalize(segment.text);
+            if (segmentNormalized) {
+              expect(actualNormalized).toContain(segmentNormalized);
+            }
+          }
+        } else if (config.description) {
+          expect(allTextContent).toContain(config.description);
+        }
       });
 
       it("should display all configured buttons", () => {
