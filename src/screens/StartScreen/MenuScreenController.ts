@@ -1,5 +1,6 @@
 import { ScreenController } from "../../types";
 import type { ScreenSwitcher } from "../../types";
+import { VALID_SIMPLE_SCREEN_TYPES } from "../../constants";
 import { MenuScreenModel } from "./MenuScreenModel";
 import { MenuScreenView } from "./MenuScreenView";
 
@@ -50,8 +51,7 @@ export class MenuScreenController extends ScreenController {
     // Validate that the stored screen type is a valid simple screen type
     // Note: This only handles simple screen types (map, rules, level, reference)
     // Complex types (topic, minigame, simulation) would need JSON storage
-    const validSimpleTypes = ["map", "rules", "level", "reference"] as const;
-    if (!validSimpleTypes.includes(last as any)) {
+    if (!VALID_SIMPLE_SCREEN_TYPES.includes(last as any)) {
       console.warn(
         `Invalid screen type stored: ${last}. Clearing resume state.`,
       );
