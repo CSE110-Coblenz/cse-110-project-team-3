@@ -78,7 +78,7 @@ export const TOPIC_DEFAULT_STYLES = {
     fontFamily: FONTS.physics,
     fill: COLORS.text,
     x: STAGE_WIDTH - STAGE_WIDTH / 2,
-    y: 100,
+    y: 50,
   },
   description: {
     fontSize: 24,

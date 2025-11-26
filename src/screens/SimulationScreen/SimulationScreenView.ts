@@ -7,7 +7,7 @@ import { createKonvaButton } from "../../utils/ui/NavigationButton";
 export class SimulationScreenView implements View {
   private group: Konva.Group;
   private content: SimulationContentView;
-  private nextBtn!: Konva.Group;
+  private nextBtn!: Konva.Group; // reference to NEXT button to control its state
 
   constructor(
     config: SimulationScreenConfig,
@@ -17,6 +17,7 @@ export class SimulationScreenView implements View {
     this.group = new Konva.Group();
 
     this.content = new SimulationContentView(config, () =>
+      // unlock NEXT
       this.setNextEnabled(true),
     );
     this.group.add(this.content.getGroup());

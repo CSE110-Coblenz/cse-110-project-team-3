@@ -76,6 +76,22 @@ describe("TopicScreenController Integration Test", () => {
           .filter((c) => c instanceof FakeText)
           .map((c) => (c as FakeText).text())
           .join(" ");
+
+        if (config.descriptionSegments) {
+          // Normalize strings by removing whitespace for comparison
+          const normalize = (str: string) => str.replace(/\s/g, "");
+          const actualNormalized = normalize(allTextContent);
+
+          // Check each segment is included in the rendered text
+          for (const segment of config.descriptionSegments) {
+            const segmentNormalized = normalize(segment.text);
+            if (segmentNormalized) {
+              expect(actualNormalized).toContain(segmentNormalized);
+            }
+          }
+        } else if (config.description) {
+          expect(allTextContent).toContain(config.description);
+        }
       });
 
       it("should display all configured buttons", () => {

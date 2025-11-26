@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { ScreenSwitcher } from "../../../src/types";
 import { createKonvaMock, FakeGroup, FakeText } from "../../mocks/konvaMock";
+import { setCurrentLevelIndex } from "../../../src/types";
 
 // Mock konva BEFORE importing the controller
 vi.mock("konva", () => createKonvaMock());
@@ -28,6 +29,7 @@ describe("Map Screen UI Integration Test", () => {
   beforeEach(() => {
     switchToScreen.mockClear();
     screenSwitcher = { switchToScreen };
+    setCurrentLevelIndex(100); // Unlock all levels
   });
 
   describe("Map 1 Screen", () => {
