@@ -32,7 +32,6 @@ export class SimulationScreenController extends ScreenController {
             setCurrentLevelIndex(idx);
           }
         }
-        console.log(`Simulation: ${button.label} clicked`);
         this.screenSwitcher.switchToScreen(button.target);
       },
     );
