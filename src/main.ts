@@ -162,7 +162,7 @@ class App implements ScreenSwitcher {
     this.layer.draw();
 
     // Start with the menu screen
-    this.switchToScreen({ type: "menu" });
+    this.switchToScreen({ type: "minigame", screen: "simulation", level: 2 });
   }
 
   switchToScreen(screen: Screen): void {

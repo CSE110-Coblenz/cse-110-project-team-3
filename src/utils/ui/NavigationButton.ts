@@ -114,5 +114,11 @@ export function createKonvaButton(
   // Wire up click handler if provided
   buttonGroup.on("click", () => onClick(config.id));
 
+  //Play sound on click
+  buttonGroup.on("click", () => {
+    const clickSound = new Audio("/button_click.mp3");
+    clickSound.play();
+  });
+
   return buttonGroup;
 }
