@@ -143,7 +143,7 @@ describe("MinigameSimulController", () => {
 
     const screenSwitcher: ScreenSwitcher = { switchToScreen };
 
-    controller = new MinigameSimulController(screenSwitcher);
+    controller = new MinigameSimulController(screenSwitcher, 1);
   });
 
   it("resetSimulation hides projectile, resets position, and redraws layer", () => {

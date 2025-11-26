@@ -1,5 +1,6 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
+import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
 import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
@@ -43,7 +44,8 @@ class App implements ScreenSwitcher {
 
   private loginScreenController: LoginScreenController;
   private menuScreenController: MenuScreenController;
-  private mapScreenController: MapScreenController;
+  private map1ScreenController: MapScreenController;
+  private map2ScreenController: MapScreenController;
   private referenceScreenController: ReferenceScreenController;
   private rulesScreenController: RulesScreenController;
   // Topics
@@ -84,7 +86,8 @@ class App implements ScreenSwitcher {
     // Initialize screen controllers
     this.loginScreenController = new LoginScreenController(this);
     this.menuScreenController = new MenuScreenController(this);
-    this.mapScreenController = new MapScreenController(this);
+    this.map1ScreenController = new MapScreenController(this, 1);
+    this.map2ScreenController = new MapScreenController(this, 2);
     this.rulesScreenController = new RulesScreenController(this);
     this.referenceScreenController = new ReferenceScreenController(this);
     //this.minigameSimulController = new MinigameSimulController(this);
@@ -141,7 +144,8 @@ class App implements ScreenSwitcher {
     // add all screen views to the layer
     this.layer.add(this.loginScreenController.getView().getGroup());
     this.layer.add(this.menuScreenController.getView().getGroup());
-    this.layer.add(this.mapScreenController.getView().getGroup());
+    this.layer.add(this.map1ScreenController.getView().getGroup());
+    this.layer.add(this.map2ScreenController.getView().getGroup());
     this.layer.add(this.referenceScreenController.getView().getGroup());
     this.layer.add(this.rulesScreenController.getView().getGroup());
 
@@ -171,7 +175,8 @@ class App implements ScreenSwitcher {
     // Hide all screens
     this.loginScreenController.getView().hide();
     this.menuScreenController.getView().hide();
-    this.mapScreenController.getView().hide();
+    this.map1ScreenController.getView().hide();
+    this.map2ScreenController.getView().hide();
     this.referenceScreenController.getView().hide();
     this.rulesScreenController.getView().hide();
 
@@ -207,18 +212,28 @@ class App implements ScreenSwitcher {
         this.loginScreenController.show();
         break;
       case "menu":
-        this.menuScreenController.show();
+        this.menuScreenController.getView().show();
         break;
       case "map":
-        this.mapScreenController.show();
+        // Show the appropriate map based on mapId (default to map 1)
+        if (screen.mapId === 2) {
+          this.map2ScreenController.getView().show();
+        } else {
+          this.map1ScreenController.getView().show();
+        }
         break;
       case "rules":
-        this.rulesScreenController.show();
+        this.rulesScreenController.setReturnTo(
+          screen.returnTo || { type: "map" },
+        );
+        this.rulesScreenController.getView().show();
         break;
       case "reference":
-        if (screen.returnTo) {
-          this.referenceScreenController.setReturnTo(screen.returnTo);
-        }
+        // Always set returnTo, defaulting to map if not specified
+        // This ensures the controller's state is reset properly
+        this.referenceScreenController.setReturnTo(
+          screen.returnTo || { type: "map" },
+        );
         this.referenceScreenController.getView().show();
         break;
       case "topic":

@@ -15,8 +15,8 @@ What is the maximum height the ball reaches above the launch point?
 
   options: [
     { id: "A", label: "A) 11 m", isCorrect: false },
-    { id: "B", label: "B) 15 m", isCorrect: true },
-    { id: "C", label: "C) 19 m", isCorrect: false },
+    { id: "B", label: "B) 19 m", isCorrect: false },
+    { id: "C", label: "C) 15 m", isCorrect: true },
   ],
 
   layout: {
@@ -34,6 +34,6 @@ What is the maximum height the ball reaches above the launch point?
 
   navigation: {
     backScreen: { type: "topic", level: "projectile motion" },
-    nextScreen: { type: "map" },
+    nextScreen: { type: "map", mapId: 2 },
   },
 };

@@ -4,6 +4,7 @@ import type { ScreenSwitcher } from "../../../types";
 import { MinigameController } from "../../../types";
 import { Minigame1SimulModel } from "./Minigame1SimulModel";
 import { Minigame1SimulView } from "./Minigame1SimulView";
+import { getMinigame1SimulScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
 export class Minigame1SimulController extends MinigameController {
   private view: Minigame1SimulView;
@@ -35,15 +36,28 @@ export class Minigame1SimulController extends MinigameController {
       SIMULATION_CONSTANTS.error_margin, // error margin in pixels
     );
 
+    // Create navigation buttons with level
+    const navigationButtons = getMinigame1SimulScreenNavigationButtons(level);
+
+    // Create view with navigation buttons and click handler
     this.view = new Minigame1SimulView(
       () => this.playSimulation(),
       () => this.resetSimulation(),
+      () => this.handleReferenceClick(),
       this.model.getDistanceX(),
       this.model.getMass(),
       this.model.getFrictionCoefficient(),
       this.model.getInitialSpeed(),
       this.model.getGapX(),
       (delta) => this.adjustSpeed(delta),
+      navigationButtons,
+      (buttonId) => {
+        const button = navigationButtons.find((b) => b.id === buttonId);
+        if (button) {
+          console.log(`Minigame1SimulScreen: ${button.label} clicked`);
+          this.screenSwitcher.switchToScreen(button.target);
+        }
+      },
     );
   }
 
@@ -60,6 +74,8 @@ export class Minigame1SimulController extends MinigameController {
       y: SIMULATION_CONSTANTS.ground_level - 50,
     });
     this.view.hideCurrentSpeedText();
+    // Update distance arrows back to start state (if supported by view)
+    (this.view as any).updateArrows?.(box.x());
     this.view.getGroup().getLayer()?.draw();
 
     // After reset, allow playing again
@@ -67,6 +83,12 @@ export class Minigame1SimulController extends MinigameController {
     if (this.lives > 0) this.view.showPlayButton();
   }
 
+  handleReferenceClick(): void {
+    this.screenSwitcher.switchToScreen({
+      type: "reference",
+      returnTo: { type: "minigame", screen: "simulation", level: this.level },
+    });
+  }
   playSimulation(): void {
     if (this.lives <= 0) {
       console.log("No lives left. Game over.");
@@ -102,7 +124,22 @@ export class Minigame1SimulController extends MinigameController {
       const currentVelocity = initialSpeed + acceleration * t;
 
       this.view.updateCurrentSpeed(currentVelocity);
-      box.x(initialX + distance);
+      const proposedX = initialX + distance;
+      const maxX = STAGE_WIDTH - box.width();
+      if (proposedX >= maxX) {
+        // Clamp to right edge and end the turn
+        box.x(maxX);
+        (this.view as any).updateArrows?.(box.x());
+        animation.stop();
+        this.view.updateCurrentSpeed(0);
+        const finalDistance = box.x() - initialX;
+        console.log(`Final Distance (edge): ${finalDistance.toFixed(2)} m`);
+        this.handleHit(this.model.isHit(finalDistance));
+        return;
+      }
+      box.x(proposedX);
+      // Update distance arrows as the box moves
+      (this.view as any).updateArrows?.(box.x());
 
       // Stop animation when the box stops
       if (currentVelocity <= 0) {

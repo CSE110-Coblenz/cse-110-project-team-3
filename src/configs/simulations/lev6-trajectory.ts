@@ -4,8 +4,7 @@ export const Lev6SimulationConfig: SimulationScreenConfig = {
   id: "lev6-trajectory",
   title: "SIMULATION: Projectile Trajectory",
   description: `
-A ball is launched from ground level at the origin O with an initial angle of 45°. Air resistance is negligible. An obstacle's top is at point 
-A = (20 m, 10 m). What is the minimum launch speed required so that the ball's trajectory passes at or above point A?
+A ball is launched from ground level at the origin O with an initial angle of 45°. Air resistance is negligible. An obstacle's top is at point A = (20 m, 10 m). What is the minimum launch speed required so that the ball's trajectory passes at or above point A?
 `,
 
   video: {
@@ -15,8 +14,8 @@ A = (20 m, 10 m). What is the minimum launch speed required so that the ball's t
   },
 
   options: [
-    { id: "A", label: "A) 18.8 m/s", isCorrect: false },
-    { id: "B", label: "B) 19.8 m/s", isCorrect: true },
+    { id: "A", label: "A) 19.8 m/s", isCorrect: true },
+    { id: "B", label: "B) 18.8 m/s", isCorrect: false },
     { id: "C", label: "C) 19.5 m/s", isCorrect: false },
   ],
 
@@ -35,6 +34,6 @@ A = (20 m, 10 m). What is the minimum launch speed required so that the ball's t
 
   navigation: {
     backScreen: { type: "topic", level: "trajectory" },
-    nextScreen: { type: "map" },
+    nextScreen: { type: "map", mapId: 2 },
   },
 };

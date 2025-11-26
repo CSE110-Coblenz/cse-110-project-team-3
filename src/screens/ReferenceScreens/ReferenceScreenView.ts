@@ -1,11 +1,9 @@
 import Konva from "konva";
-import type { View } from "../../types.ts";
-import {
-  COLORS,
-  STAGE_HEIGHT,
-  STAGE_WIDTH,
-  FONT_FAMILY,
-} from "../../constants";
+import type { View, NavButton } from "../../types.ts";
+import { COLORS, STAGE_HEIGHT, STAGE_WIDTH, FONTS } from "../../constants";
+import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
+import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
+import { ReferenceScreenNavigationButtons } from "../../configs/NavigationButtons/Reference.ts";
 
 /*
 ReferenceScreenView makes the reference screen view
@@ -13,19 +11,23 @@ ReferenceScreenView makes the reference screen view
 export class ReferenceScreenView implements View {
   private group: Konva.Group;
 
-  constructor(handleExitClick?: () => void) {
+  constructor(handleButtonClick?: (buttonId: string) => void) {
     this.group = new Konva.Group({ visible: true });
 
-    //background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: COLORS.bg,
-      cornerRadius: 8,
-    });
+    this.group = new Konva.Group({ visible: false });
+
+    // Add dungeon background
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
+
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
 
     //Title Text
     const titleText = new Konva.Text({
@@ -33,80 +35,49 @@ export class ReferenceScreenView implements View {
       y: 50,
       text: "References",
       fontSize: 64,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.dungeon,
       fill: COLORS.text,
       align: "center",
     });
     titleText.offsetX(titleText.width() / 2);
     this.group.add(titleText);
+
     // middle text
     const referencesText = new Konva.Text({
       x: STAGE_WIDTH / 2,
-      y: STAGE_HEIGHT / 2,
-      text: "Forces: \n Sum of Forces = total mass * acceleration\nProjectile Motion: \nx = v_0x * t\n y = v_0y * t - 0.5 * g * t^2\nFriction: \n f_friction = μ * N",
-      fontSize: 32,
-      fontFamily: FONT_FAMILY,
+      y: STAGE_HEIGHT / 2 + 65,
+      text: `      Projectile Motion:
+      vₓ = v · cos(θ)
+      vᵧ = v · sin(θ)
+      vᵧ = vᵧ₀ + g·t
+      0 = v * sin(θ) + gt
+      v * sin(θ) / g = t
+      y = y₀ + v₀·sin(θ)·t + ½ g t²
+      x = v₀ * cos(0) * t
+      R = v₀² * sin(2θ) / g
+
+      Friction:
+      fₖ = μₖN
+      F = m · a
+      N = mg.
+      fₛ ≤ μₛN.
+      `,
+      fontSize: 24,
+      fontFamily: FONTS.topic,
       fill: COLORS.text,
-      align: "center",
+      align: "left",
     });
     referencesText.offsetX(referencesText.width() / 2);
     referencesText.offsetY(referencesText.height() / 2);
     this.group.add(referencesText);
 
-    const exitBtn = this.createPillButton(
-      "EXIT",
-      STAGE_WIDTH - 192,
-      STAGE_HEIGHT - 96,
-      160,
-      64,
-    );
-
-    // Exit button click handler
-    if (handleExitClick) {
-      exitBtn.on("click", handleExitClick);
+    // Create navigation buttons from configuration
+    if (handleButtonClick) {
+      ReferenceScreenNavigationButtons.forEach((buttonConfig: NavButton) => {
+        const button = createKonvaButton(buttonConfig, handleButtonClick);
+        this.group.add(button);
+      });
     }
-    this.group.add(exitBtn);
-  }
-  private createPillButton(
-    label: string,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  ): Konva.Group {
-    const g = new Konva.Group({ x, y });
-
-    const r = Math.min(height / 2 + 6, 24);
-    const rect = new Konva.Rect({
-      width,
-      height,
-      cornerRadius: r,
-      fill: COLORS.buttonFill,
-      stroke: COLORS.buttonStroke,
-      strokeWidth: 4,
-      shadowColor: "#000",
-      shadowOpacity: 0.15,
-      shadowBlur: 8,
-    });
-
-    const text = new Konva.Text({
-      x: 0,
-      y: 0,
-      width,
-      height,
-      text: label,
-      fill: COLORS.buttonText,
-      fontSize: 32,
-      fontStyle: "bold",
-      align: "center",
-      verticalAlign: "middle",
-      horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
-    });
-
-    g.add(rect, text);
-
-    return g;
   }
 
   /*

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { ScreenSwitcher } from "../../../src/types";
+import type { ScreenSwitcher, TopicScreenConfig } from "../../../src/types";
 import {
   createKonvaMock,
   FakeGroup,
@@ -7,7 +7,14 @@ import {
   FakeNode,
 } from "../../mocks/konvaMock";
 import { TopicScreenController } from "../../../src/screens/TopicScreen/TopicScreenController";
-import type { TopicScreenConfig } from "../../../src/screens/TopicScreen/types";
+import {
+  forceConfig,
+  frictionConfig,
+  distanceConfig,
+  gravityConfig,
+  projectileMotionConfig,
+  trajectoryConfig,
+} from "../../../src/configs/topics";
 
 vi.mock("konva", () => createKonvaMock());
 
@@ -38,73 +45,116 @@ function findGroupWithText(
 describe("TopicScreenController Integration Test", () => {
   const switchToScreen = vi.fn();
   let screenSwitcher: ScreenSwitcher;
-  let controller: TopicScreenController;
-  let config: TopicScreenConfig;
 
   beforeEach(() => {
     switchToScreen.mockClear();
     screenSwitcher = { switchToScreen };
-    config = {
-      title: "Test Topic",
-      description: "This is a test description for the topic screen.",
-      buttons: [
-        { id: "button1", label: "Go to Screen 1", target: { type: "screen1" } },
-        { id: "button2", label: "Go to Screen 2", target: { type: "screen2" } },
-      ],
-    };
-    controller = new TopicScreenController(screenSwitcher, config);
   });
 
-  it("should display the correct title and description", () => {
-    const view = controller.getView();
-    const rootGroup = view.getGroup() as unknown as FakeGroup;
+  // Generic test suite for any topic configuration
+  function testTopicScreen(topicName: string, config: TopicScreenConfig) {
+    describe(`${topicName} Topic Screen`, () => {
+      let controller: TopicScreenController;
 
-    const titleText = rootGroup.children.find(
-      (child) =>
-        child instanceof FakeText && child.config.text === config.title,
-    ) as FakeText;
-    expect(titleText).toBeDefined();
-    expect(titleText.text()).toBe(config.title);
+      beforeEach(() => {
+        switchToScreen.mockClear();
+        controller = new TopicScreenController(screenSwitcher, config);
+      });
 
-    const descriptionText = rootGroup.children.find(
-      (child) =>
-        child instanceof FakeText && child.config.text === config.description,
-    ) as FakeText;
-    expect(descriptionText).toBeDefined();
-    expect(descriptionText.text()).toBe(config.description);
-  });
+      it("should display the correct title and description", () => {
+        const view = controller.getView();
+        const rootGroup = view.getGroup() as unknown as FakeGroup;
 
-  it("should display all configured buttons", () => {
-    const view = controller.getView();
-    const rootGroup = view.getGroup() as unknown as FakeGroup;
+        const titleText = rootGroup.children.find(
+          (child) =>
+            child instanceof FakeText && child.config.text === config.title,
+        ) as FakeText;
+        expect(titleText).toBeDefined();
+        expect(titleText.text()).toBe(config.title);
 
-    config.buttons.forEach((buttonConfig) => {
-      const buttonGroup = findGroupWithText(rootGroup, buttonConfig.label);
-      expect(buttonGroup).toBeDefined();
+        const allTextContent = rootGroup.children
+          .filter((c) => c instanceof FakeText)
+          .map((c) => (c as FakeText).text())
+          .join(" ");
+
+        if (config.descriptionSegments) {
+          // Normalize strings by removing whitespace for comparison
+          const normalize = (str: string) => str.replace(/\s/g, "");
+          const actualNormalized = normalize(allTextContent);
+
+          // Check each segment is included in the rendered text
+          for (const segment of config.descriptionSegments) {
+            const segmentNormalized = normalize(segment.text);
+            if (segmentNormalized) {
+              expect(actualNormalized).toContain(segmentNormalized);
+            }
+          }
+        } else if (config.description) {
+          expect(allTextContent).toContain(config.description);
+        }
+      });
+
+      it("should display all configured buttons", () => {
+        const view = controller.getView();
+        const rootGroup = view.getGroup() as unknown as FakeGroup;
+
+        config.buttons.forEach((buttonConfig) => {
+          const buttonGroup = findGroupWithText(rootGroup, buttonConfig.label);
+          expect(buttonGroup).toBeDefined();
+        });
+      });
+
+      it("should switch to correct screen when Back button is clicked", () => {
+        const view = controller.getView();
+        const rootGroup = view.getGroup() as unknown as FakeGroup;
+
+        const backButton = config.buttons.find((b) => b.id === "back");
+        expect(backButton).toBeDefined();
+
+        const backButtonGroup = findGroupWithText(rootGroup, backButton!.label);
+        expect(backButtonGroup).toBeDefined();
+
+        (backButtonGroup as FakeGroup).fire("click");
+
+        expect(switchToScreen).toHaveBeenCalledTimes(1);
+        expect(switchToScreen).toHaveBeenCalledWith(backButton!.target);
+      });
+
+      it("should switch to simulation screen when Simulation button is clicked", () => {
+        const view = controller.getView();
+        const rootGroup = view.getGroup() as unknown as FakeGroup;
+
+        const simulationButton = config.buttons.find(
+          (b) => b.id === "simulation",
+        );
+        expect(simulationButton).toBeDefined();
+
+        const simulationButtonGroup = findGroupWithText(
+          rootGroup,
+          simulationButton!.label,
+        );
+        expect(simulationButtonGroup).toBeDefined();
+
+        (simulationButtonGroup as FakeGroup).fire("click");
+
+        expect(switchToScreen).toHaveBeenCalledTimes(1);
+        expect(switchToScreen).toHaveBeenCalledWith(simulationButton!.target);
+      });
+
+      it("should not switch screen if an unknown button is clicked", () => {
+        const dummyGroup = new FakeGroup();
+        dummyGroup.fire("click", { target: { id: "nonExistentButton" } });
+
+        expect(switchToScreen).not.toHaveBeenCalled();
+      });
     });
-  });
+  }
 
-  it("should switch to the correct screen when a button is clicked", () => {
-    const view = controller.getView();
-    const rootGroup = view.getGroup() as unknown as FakeGroup;
-
-    const button1Group = findGroupWithText(rootGroup, config.buttons[0].label);
-    expect(button1Group).toBeDefined();
-
-    (button1Group as FakeGroup).fire("click");
-
-    expect(switchToScreen).toHaveBeenCalledTimes(1);
-    expect(switchToScreen).toHaveBeenCalledWith(config.buttons[0].target);
-  });
-
-  it("should not switch screen if an unknown button is clicked (simulated by firing on a non-existent button)", () => {
-    const view = controller.getView();
-    const rootGroup = view.getGroup() as unknown as FakeGroup;
-
-    // Simulate clicking on a non-existent button by creating a dummy group and firing an event
-    const dummyGroup = new FakeGroup();
-    dummyGroup.fire("click", { target: { id: "nonExistentButton" } });
-
-    expect(switchToScreen).not.toHaveBeenCalled();
-  });
+  // Test all topic screens
+  testTopicScreen("Force", forceConfig);
+  testTopicScreen("Friction", frictionConfig);
+  testTopicScreen("Distance", distanceConfig);
+  testTopicScreen("Gravity", gravityConfig);
+  testTopicScreen("Projectile Motion", projectileMotionConfig);
+  testTopicScreen("Trajectory", trajectoryConfig);
 });
