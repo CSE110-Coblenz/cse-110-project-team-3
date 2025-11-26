@@ -1,5 +1,5 @@
 import { ScreenController } from "../../types";
-import type { ScreenSwitcher } from "../../types";
+import type { ScreenSwitcher, Screen } from "../../types";
 import { MenuScreenModel } from "./MenuScreenModel";
 import { MenuScreenView } from "./MenuScreenView";
 
@@ -32,9 +32,12 @@ export class MenuScreenController extends ScreenController {
   }
 
   private handleStartClick(): void {
-    // New game: clear any saved last screen and go to the map
+    // New game: clear resume info and go through login before the map
     MenuScreenModel.clearLastScreen();
-    this.screenSwitcher.switchToScreen({ type: "map" });
+    this.screenSwitcher.switchToScreen({
+      type: "login",
+      nextScreen: { type: "map" },
+    });
   }
 
   private handleResumeClick(): void {}
@@ -45,14 +48,12 @@ export class MenuScreenController extends ScreenController {
 
   private resume() {
     const last = this.model.getLastScreen();
-    if (!last) return;
-
-    // For now, support simple screen types only
-    if (last === "map" || last === "rules" || last === "reference") {
-      this.screenSwitcher.switchToScreen({ type: last });
+    if (!last) {
+      return;
     }
-    // If you later want to resume into topics/simulations,
-    // extend MenuScreenModel to store a richer object.
+
+    const nextScreen: Screen = last;
+    this.screenSwitcher.switchToScreen({ type: "login", nextScreen });
   }
 
   private handleRulesClick(): void {
@@ -66,6 +67,7 @@ export class MenuScreenController extends ScreenController {
   private handleQuitClick(): void {
     // Browser game "quit": clear resume info and stay on menu
     MenuScreenModel.clearLastScreen();
+    this.view.setResumeEnabled(false);
   }
 
   getView(): MenuScreenView {
