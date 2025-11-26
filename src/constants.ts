@@ -55,8 +55,6 @@ export const FONTS = {
   ui: "Trebuchet MS, Arial Black, sans-serif",
 };
 
-export const VALID_SIMPLE_SCREEN_TYPES = ["map", "rules", "level", "reference"] as const;
-
 export const SIMULATION_CONSTANTS = {
   ground_level: STAGE_HEIGHT - 110, // og is 200
   starting_x: 150,

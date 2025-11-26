@@ -60,6 +60,7 @@ export class MenuScreenController extends ScreenController {
     }
 
     // Navigate directly to the last screen (skip login)
+    // MenuScreenModel already validates and stores all screen types correctly
     console.log("Navigating directly to:", lastScreen);
     this.screenSwitcher.switchToScreen(lastScreen);
   }
