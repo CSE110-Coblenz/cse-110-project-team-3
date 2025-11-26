@@ -325,4 +325,4 @@ class App implements ScreenSwitcher {
   }
 }
 
-const app = new App();
+new App();
