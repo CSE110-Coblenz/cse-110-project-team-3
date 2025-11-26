@@ -134,6 +134,12 @@ export class MinigameSimulController extends MinigameController {
 
       projectile.position({ x, y });
 
+      // Stop animation when it goes off screen
+      if (x > STAGE_WIDTH || y > SIMULATION_CONSTANTS.ground_level) {
+        animation.stop();
+        this.handleHit(this.model.isHit(x - initialX));
+      }
+
       // Stop animation when it hits the ground
       if (y > SIMULATION_CONSTANTS.ground_level) {
         animation.stop();
