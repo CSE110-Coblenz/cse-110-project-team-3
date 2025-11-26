@@ -9,6 +9,7 @@ import { getMinigameSimulScreenNavigationButtons } from "../../../configs/Naviga
 export class MinigameSimulController extends MinigameController {
   private view: MinigameSimulView;
   private model: MinigameSimulModel;
+  private cannonFire: HTMLAudioElement;
 
   constructor(screenSwitcher: ScreenSwitcher, level: number) {
     super(screenSwitcher, level);
@@ -63,6 +64,9 @@ export class MinigameSimulController extends MinigameController {
         }
       },
     );
+
+    //Initialize cannon fire sound
+    this.cannonFire = new Audio("/explosion_sound.mp3");
   }
 
   private adjustSpeed(delta: number): void {
@@ -95,6 +99,10 @@ export class MinigameSimulController extends MinigameController {
       console.log("No lives left. Game over.");
       return;
     }
+    // Play cannon fire sound
+    this.cannonFire.play();
+    this.cannonFire.currentTime = 0;
+
     const projectile = this.view.getProjectile();
     projectile.show();
     const initialSpeed = this.model.getInitialSpeed();

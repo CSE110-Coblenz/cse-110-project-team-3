@@ -9,6 +9,7 @@ import { getMinigame1SimulScreenNavigationButtons } from "../../../configs/Navig
 export class Minigame1SimulController extends MinigameController {
   private view: Minigame1SimulView;
   private model: Minigame1SimulModel;
+  private slidingSound: HTMLAudioElement;
 
   constructor(screenSwitcher: ScreenSwitcher, level: number) {
     super(screenSwitcher, level);
@@ -59,6 +60,9 @@ export class Minigame1SimulController extends MinigameController {
         }
       },
     );
+
+    //Initialize sliding sound
+    this.slidingSound = new Audio("/friction_sound.mp3");
   }
 
   private adjustSpeed(delta: number): void {
@@ -94,6 +98,10 @@ export class Minigame1SimulController extends MinigameController {
       console.log("No lives left. Game over.");
       return;
     }
+
+    // Play sliding sound
+    this.slidingSound.currentTime = 0;
+    this.slidingSound.play();
 
     const initialSpeedValue = this.model.getInitialSpeed();
     if (initialSpeedValue <= 0) {
@@ -135,6 +143,7 @@ export class Minigame1SimulController extends MinigameController {
         const finalDistance = box.x() - initialX;
         console.log(`Final Distance (edge): ${finalDistance.toFixed(2)} m`);
         this.handleHit(this.model.isHit(finalDistance));
+        this.slidingSound.pause();
         return;
       }
       box.x(proposedX);
@@ -148,6 +157,7 @@ export class Minigame1SimulController extends MinigameController {
         const finalDistance = box.x() - initialX;
         console.log(`Final Distance: ${finalDistance.toFixed(2)} m`);
         this.handleHit(this.model.isHit(finalDistance));
+        this.slidingSound.pause();
       }
     }, this.view.getGroup().getLayer());
 
