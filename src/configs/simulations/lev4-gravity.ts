@@ -1,5 +1,9 @@
 import type { SimulationScreenConfig } from "../../screens/SimulationScreen/types";
 
+/**
+ * Configuration for the gravity simulation screen
+ * Find implementation details in "../../screens/SimulationScreen/types"
+ */
 export const Lev4SimulationConfig: SimulationScreenConfig = {
   id: "lev4-gravity",
   title: "SIMULATION:Vertical Motion",

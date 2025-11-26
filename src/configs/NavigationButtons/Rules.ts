@@ -1,5 +1,8 @@
 import type { NavButton } from "../../types";
 
+/**
+ * Navigation buttons for the rules screen (exit handled by controller)
+ */
 export const RulesScreenNavigationButtons: NavButton[] = [
   {
     id: "exit",

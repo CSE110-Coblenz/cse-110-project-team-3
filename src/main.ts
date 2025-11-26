@@ -1,20 +1,22 @@
 import Konva from "konva";
 import type { ScreenSwitcher, Screen } from "./types.ts";
+import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
+
 import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
 import { MapScreenController } from "./screens/MapScreen/MapController.ts";
 import { ReferenceScreenController } from "./screens/ReferenceScreens/ReferenceScreenController.ts";
 import { RulesScreenController } from "./screens/RulesScreen/RulesScreenController.ts";
 import { SimulationScreenController } from "./screens/SimulationScreen/SimulationScreenController.ts";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "./constants.ts";
 import { TopicScreenController } from "./screens/TopicScreen/TopicScreenController";
+
 import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/TitleScreenController";
 import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
 import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
 import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
-import { Minigame1SimulController } from "./screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController.ts";
 
 // Import configurations for minigames
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
+import { Minigame1SimulController } from "./screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController.ts";
 import { miniGameRuleConfig } from "./configs/rules";
 
 // Import coonfigurations for levels (topic + simulation)
@@ -85,7 +87,6 @@ class App implements ScreenSwitcher {
     this.map2ScreenController = new MapScreenController(this, 2);
     this.rulesScreenController = new RulesScreenController(this);
     this.referenceScreenController = new ReferenceScreenController(this);
-    //this.minigameSimulController = new MinigameSimulController(this);
 
     // Initialize topic screens with different configurations
     this.forceTopicController = new TopicScreenController(this, forceConfig);
@@ -156,7 +157,6 @@ class App implements ScreenSwitcher {
     this.layer.add(this.lev4SimulationController.getView().getGroup());
     this.layer.add(this.lev5SimulationController.getView().getGroup());
     this.layer.add(this.lev6SimulationController.getView().getGroup());
-    //this.layer.add(this.minigameSimulController.getView().getGroup());
 
     // Draw the layer
     this.layer.draw();
@@ -199,6 +199,7 @@ class App implements ScreenSwitcher {
       case "menu":
         this.menuScreenController.getView().show();
         break;
+
       case "map":
         // Show the appropriate map based on mapId (default to map 1)
         if (screen.mapId === 2) {
@@ -207,12 +208,14 @@ class App implements ScreenSwitcher {
           this.map1ScreenController.getView().show();
         }
         break;
+
       case "rules":
         this.rulesScreenController.setReturnTo(
           screen.returnTo || { type: "map" },
         );
         this.rulesScreenController.getView().show();
         break;
+
       case "reference":
         // Always set returnTo, defaulting to map if not specified
         // This ensures the controller's state is reset properly
@@ -221,6 +224,7 @@ class App implements ScreenSwitcher {
         );
         this.referenceScreenController.getView().show();
         break;
+
       case "topic":
         if (screen.level === "force") {
           this.forceTopicController.getView().show();
@@ -236,6 +240,7 @@ class App implements ScreenSwitcher {
           this.trajectoryTopicController.getView().show();
         }
         break;
+
       case "simulation":
         if (screen.topic === "force") {
           this.lev1SimulationController.getView().show();

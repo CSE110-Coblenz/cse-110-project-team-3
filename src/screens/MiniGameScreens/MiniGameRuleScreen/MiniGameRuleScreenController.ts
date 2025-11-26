@@ -3,6 +3,9 @@ import { MiniGameRuleScreenView } from "./MiniGameRuleScreenView";
 import { ScreenController } from "../../../types";
 import { getMiniGameRuleScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
+/**
+ * Controller for the minigame rules screen
+ */
 export class MiniGameRuleScreenController extends ScreenController {
   private view: MiniGameRuleScreenView;
   private screenSwitcher: ScreenSwitcher;

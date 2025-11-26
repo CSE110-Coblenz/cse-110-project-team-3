@@ -1,5 +1,9 @@
 import type { SimulationScreenConfig } from "../../screens/SimulationScreen/types";
 
+/**
+ * Configuration for the force simulation screen
+ * Find implementation details in "../../screens/SimulationScreen/types"
+ */
 export const Lev1SimulationConfig: SimulationScreenConfig = {
   id: "lev1-force",
   title: `SIMULATION: Force`,

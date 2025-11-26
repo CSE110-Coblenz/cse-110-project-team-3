@@ -3,6 +3,9 @@ import { ScreenController } from "../../types";
 import { MapScreenView } from "./MapView";
 import { map1Config, map2Config } from "../../configs/maps/MapScreenConfig.ts";
 
+/**
+ * Controller for the map screen
+ */
 export class MapScreenController extends ScreenController {
   private view: MapScreenView;
   private screenSwitcher: ScreenSwitcher;

@@ -10,6 +10,11 @@ import { BaseMinigameSimulView } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 import { BackgroundHelper } from "../../../utils/ui/BackgroundHelper";
 
+/**
+ * View for the projectile minigame simulation
+ * Renders background, UI controls, cannon, target, projectile,
+ * and navigation buttons, exposing hooks for speed/angle changes
+ */
 export class MinigameSimulView extends BaseMinigameSimulView {
   private projectile: Konva.Circle | Konva.Group; // Can be Circle or Group (fireball)
   private speedText: Konva.Text;

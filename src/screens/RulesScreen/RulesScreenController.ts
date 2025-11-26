@@ -3,6 +3,9 @@ import { ScreenController } from "../../types";
 import { RulesScreenView } from "./RulesScreenView";
 import { RulesScreenNavigationButtons } from "../../configs/NavigationButtons/Rules.ts";
 
+/**
+ * Controller for the rules screen
+ */
 export class RulesScreenController extends ScreenController {
   private view: RulesScreenView;
   private screenSwitcher: ScreenSwitcher;
