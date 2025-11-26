@@ -143,6 +143,7 @@ export class Minigame1SimulController extends MinigameController {
         const finalDistance = box.x() - initialX;
         console.log(`Final Distance (edge): ${finalDistance.toFixed(2)} m`);
         this.handleHit(this.model.isHit(finalDistance));
+        this.slidingSound.pause();
         return;
       }
       box.x(proposedX);

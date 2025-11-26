@@ -76,8 +76,6 @@ describe("TopicScreenController Integration Test", () => {
           .filter((c) => c instanceof FakeText)
           .map((c) => (c as FakeText).text())
           .join(" ");
-
-        
       });
 
       it("should display all configured buttons", () => {
