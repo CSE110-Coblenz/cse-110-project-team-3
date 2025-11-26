@@ -1,15 +1,17 @@
 import Konva from "konva";
+import type { NavButton } from "../../../types";
 import {
   COLORS,
   SIMULATION_CONSTANTS,
   STAGE_WIDTH,
-  STAGE_HEIGHT,
-  FONT_FAMILY,
+  FONTS,
 } from "../../../constants";
 import { BaseMinigameSimulView } from "../../../types";
+import { createKonvaButton } from "../../../utils/ui/NavigationButton";
+import { BackgroundHelper } from "../../../utils/ui/BackgroundHelper";
 
 export class MinigameSimulView extends BaseMinigameSimulView {
-  private projectile: Konva.Circle;
+  private projectile: Konva.Circle | Konva.Group; // Can be Circle or Group (fireball)
   private speedText: Konva.Text;
   private angleText: Konva.Text;
   private onSpeedChange?: (delta: number) => void;
@@ -32,7 +34,6 @@ export class MinigameSimulView extends BaseMinigameSimulView {
   constructor(
     handlePlay?: () => void,
     handleReset?: () => void,
-    handleReferenceClick?: () => void,
     distanceX: number = 0,
     height: number = 0,
     initialSpeed: number = 0,
@@ -40,12 +41,22 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     gravity: number = 0,
     onSpeedChange?: (delta: number) => void,
     onAngleChange?: (delta: number) => void,
+    navigationButtons?: NavButton[],
+    onButtonClick?: (buttonId: string) => void,
   ) {
+    // Call super first to initialize group, playButton, resetButton, and heartsGroup
     super(handlePlay, handleReset);
+
     this.onSpeedChange = onSpeedChange;
     this.onAngleChange = onAngleChange;
     this.currentSpeed = initialSpeed;
     this.currentAngle = angle;
+
+    // Add background and move to bottom of z-order
+    const background = BackgroundHelper.createMiniGameBackground(2);
+    this.group.add(background);
+    // Use zIndex to ensure background stays at the bottom
+    background.zIndex(0);
 
     // Display parameters
     this.speedText = new Konva.Text({
@@ -53,7 +64,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       y: 20,
       text: `Initial Speed: ${Math.round(initialSpeed)} m/s`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(this.speedText);
@@ -63,7 +74,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       y: 50,
       text: `Angle: ${Math.round(angle / 5) * 5} degrees`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(this.angleText);
@@ -73,7 +84,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       y: 80,
       text: `Gravity: ${gravity.toFixed(2)} m/s²`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(gravityText);
@@ -83,7 +94,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       y: 110,
       text: `Target Distance: ${distanceX.toFixed(2)} m`,
       fontSize: 20,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.physics,
       fill: COLORS.text,
     });
     this.group.add(distanceText);
@@ -109,7 +120,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       const t = new Konva.Text({
         text: label,
         fontSize: 18,
-        fontFamily: FONT_FAMILY,
+        fontFamily: FONTS.ui,
         fill: COLORS.buttonText,
         width: 28,
         height: 24,
@@ -156,7 +167,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     });
     this.group.add(this.speedKnob);
     this.speedKnob.on("dragmove", () => this.handleSpeedDrag());
-    speedTrack.on("mousedown", (evt) => {
+    speedTrack.on("mousedown", (_evt) => {
       const p = this.group.getStage()?.getPointerPosition();
       if (!p) return;
       this.speedKnob.x(
@@ -259,7 +270,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     });
     this.group.add(groundLine);
 
-    // Add cannon image
+    // Add cannon image on top of platform
     Konva.Image.fromURL("/cannon.png", (image) => {
       image.width(150);
       image.height(150);
@@ -277,72 +288,56 @@ export class MinigameSimulView extends BaseMinigameSimulView {
       this.group.add(image);
     });
 
-    // Projectile ball
-    this.projectile = new Konva.Circle({
+    // Projectile - Glowing fireball effect
+    const projectileGroup = new Konva.Group({
       x: SIMULATION_CONSTANTS.starting_x,
       y: SIMULATION_CONSTANTS.ground_level - height,
-      radius: 10,
-      fill: COLORS.nodeStroke,
     });
-    this.group.add(this.projectile);
-    this.projectile.hide();
 
-    // Add Play Button
-    this.playButton = this.createPillButton(
-      "PLAY",
-      STAGE_WIDTH - 150,
-      STAGE_HEIGHT - 80,
-      130,
-      55,
-    );
-    if (handlePlay) {
-      this.playButton.on("click", handlePlay);
+    // Outer glow (gradient halo)
+    const glow = new Konva.Circle({
+      radius: 15,
+      fillRadialGradientStartPoint: { x: 0, y: 0 },
+      fillRadialGradientStartRadius: 0,
+      fillRadialGradientEndPoint: { x: 0, y: 0 },
+      fillRadialGradientEndRadius: 15,
+      fillRadialGradientColorStops: [
+        0,
+        COLORS.torchYellow,
+        0.5,
+        COLORS.torchOrange,
+        1,
+        "rgba(255,107,53,0)", // Fade to transparent
+      ],
+      opacity: 0.6,
+    });
+
+    // Inner core (fireball center)
+    const core = new Konva.Circle({
+      radius: 10,
+      fill: COLORS.emberRed,
+      stroke: COLORS.torchYellow,
+      strokeWidth: 2,
+      shadowColor: COLORS.torchOrange,
+      shadowBlur: 15,
+      shadowOpacity: 0.8,
+    });
+
+    projectileGroup.add(glow);
+    projectileGroup.add(core);
+    this.group.add(projectileGroup);
+    projectileGroup.hide();
+
+    // Store reference for controller (cast to Circle for compatibility)
+    this.projectile = projectileGroup as any;
+
+    // Navigation buttons using configuration
+    if (navigationButtons && onButtonClick) {
+      navigationButtons.forEach((buttonConfig) => {
+        const buttonGroup = createKonvaButton(buttonConfig, onButtonClick);
+        this.group.add(buttonGroup);
+      });
     }
-    this.group.add(this.playButton);
-
-    this.resetButton = this.createPillButton(
-      "RESET",
-      STAGE_WIDTH - 150,
-      STAGE_HEIGHT - 80,
-      130,
-      55,
-    );
-
-    // Add Reference Button
-    const referenceButton = this.createPillButton(
-      "REFERENCE",
-      20,
-      STAGE_HEIGHT - 80,
-      200,
-      55,
-    );
-    if (handleReferenceClick) {
-      referenceButton.on("click", handleReferenceClick);
-    }
-    this.group.add(referenceButton);
-
-    if (handleReset) {
-      this.resetButton.on("click", handleReset);
-    }
-
-    this.resetButton.hide();
-    this.group.add(this.resetButton);
-  }
-
-  hidePlayButton(): void {
-    this.playButton.hide();
-  }
-
-  addResetButton(): void {
-    this.resetButton.show();
-  }
-
-  hideResetButton(): void {
-    this.resetButton.hide();
-  }
-
-  showPlayButton(): void {
-    this.playButton.show();
   }
 
   setSpeedDisplay(value: number): void {
@@ -415,7 +410,7 @@ export class MinigameSimulView extends BaseMinigameSimulView {
     }
   }
 
-  getProjectile(): Konva.Circle {
+  getProjectile(): Konva.Circle | Konva.Group {
     return this.projectile;
   }
 }

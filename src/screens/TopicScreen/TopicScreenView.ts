@@ -1,8 +1,10 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import { STAGE_WIDTH, STAGE_HEIGHT } from "../../constants";
-import type { TopicButton, TopicScreenConfig } from "./types";
-import { COLORS, FONT_FAMILY } from "../../constants";
+import { STAGE_WIDTH, TOPIC_DEFAULT_STYLES } from "../../constants";
+import type { TopicScreenConfig } from "../../types";
+import { createKonvaButton } from "../../utils/ui/NavigationButton";
+import { BackgroundHelper } from "../../utils/ui/BackgroundHelper";
+import { COLORS, FONTS } from "../../constants";
 
 /**
  * Default styles for topic screen elements
@@ -10,15 +12,15 @@ import { COLORS, FONT_FAMILY } from "../../constants";
 const DEFAULT_STYLES = {
   title: {
     fontSize: 48,
-    fontFamily: FONT_FAMILY,
+    fontFamily: FONTS.topic,
     fill: COLORS.text,
-    y: 100,
+    y: 80,
   },
   description: {
-    fontSize: 24,
-    fontFamily: FONT_FAMILY,
+    fontSize: 18,
+    fontFamily: FONTS.topic,
     fill: COLORS.text,
-    y: 200,
+    y: 120,
   },
   button: {
     width: 200,
@@ -53,116 +55,133 @@ export class TopicScreenView implements View {
 
   private initializeUI(): void {
     // Background
-    const background = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: STAGE_WIDTH,
-      height: STAGE_HEIGHT,
-      fill: this.config.style?.backgroundColor || "#ffffff",
-    });
+    const background = BackgroundHelper.createDungeonBackground();
     this.group.add(background);
+
+    // Add torch lights in corners (optional)
+    const topLeftTorch = BackgroundHelper.createTorchLight(80, 80);
+    const topRightTorch = BackgroundHelper.createTorchLight(
+      STAGE_WIDTH - 80,
+      80,
+    );
+    this.group.add(topLeftTorch);
+    this.group.add(topRightTorch);
 
     // Title
     const title = new Konva.Text({
-      x: STAGE_WIDTH - STAGE_WIDTH / 2,
-      y: DEFAULT_STYLES.title.y,
+      x: TOPIC_DEFAULT_STYLES.title.x,
+      y: TOPIC_DEFAULT_STYLES.title.y,
       text: this.config.title,
-      fontSize: DEFAULT_STYLES.title.fontSize,
-      fontFamily: DEFAULT_STYLES.title.fontFamily,
-      fill: this.config.style?.titleColor || DEFAULT_STYLES.title.fill,
+      fontSize: TOPIC_DEFAULT_STYLES.title.fontSize,
+      fontFamily: TOPIC_DEFAULT_STYLES.title.fontFamily,
+      fill: this.config.style?.titleColor || TOPIC_DEFAULT_STYLES.title.fill,
       align: "center",
     });
     title.offsetX(title.width() / 2);
     this.group.add(title);
 
-    // Description
-    const description = new Konva.Text({
-      x: STAGE_WIDTH / 2,
-      y: DEFAULT_STYLES.description.y,
-      text: this.config.description,
-      fontSize: DEFAULT_STYLES.description.fontSize,
-      fontFamily: DEFAULT_STYLES.description.fontFamily,
-      fill:
-        this.config.style?.descriptionColor || DEFAULT_STYLES.description.fill,
-      align: "center",
-      width: STAGE_WIDTH * 0.8, // 80% of stage width
-      wrap: "word",
-    });
-    description.offsetX(description.width() / 2);
-    this.group.add(description);
-
     // Buttons
     this.config.buttons.forEach((buttonConfig) => {
-      const buttonGroup = this.createButton(buttonConfig);
+      const buttonGroup = createKonvaButton(buttonConfig, this.onButtonClick);
       this.group.add(buttonGroup);
     });
-  }
+    // Description: support either plain string `description` (legacy)
+    // or rich `descriptionSegments` (array of { text, bold? }) for inline bolding.
+    const maxWidth = STAGE_WIDTH * 0.9; // 90% of stage width
+    const descX = STAGE_WIDTH / 2 - maxWidth / 2;
+    const startY = DEFAULT_STYLES.description.y;
 
-  private createButton(button: TopicButton): Konva.Group {
-    const buttonGroup = new Konva.Group();
+    if (
+      Array.isArray((this.config as any).descriptionSegments) &&
+      (this.config as any).descriptionSegments.length > 0
+    ) {
+      const segments: Array<{ text: string; bold?: boolean; color?: string }> =
+        (this.config as any).descriptionSegments;
 
-    // Calculate button position
-    const buttonWidth = button.style?.width || DEFAULT_STYLES.button.width;
-    const buttonHeight = button.style?.height || DEFAULT_STYLES.button.height;
+      const fontSize = DEFAULT_STYLES.description.fontSize;
+      const fontFamily = DEFAULT_STYLES.description.fontFamily;
+      const defaultFill =
+        this.config.style?.descriptionColor || DEFAULT_STYLES.description.fill;
+      const lineHeight = Math.round(fontSize * 1.3);
 
-    // Calculate x position
-    let xPos = STAGE_WIDTH / 2; // Default center
-    if (button.position?.x !== undefined) {
-      xPos = button.position.x * STAGE_WIDTH;
+      let curX = descX;
+      let curY = startY;
+
+      // Render segments with basic word-wrapping and inline bold support.
+      segments.forEach((segment) => {
+        // Respect explicit newlines in the segment text by splitting on '\n'
+        const lines = segment.text.split("\n");
+        lines.forEach((line, lineIdx) => {
+          const words = line.split(" ");
+          words.forEach((word, wIdx) => {
+            const wordText = word + (wIdx === words.length - 1 ? "" : " ");
+
+            const temp = new Konva.Text({
+              text: wordText,
+              fontSize,
+              fontFamily,
+              fontStyle: segment.bold ? "bold" : "normal",
+            });
+
+            const wordWidth = temp.width();
+
+            if (curX + wordWidth > descX + maxWidth) {
+              // wrap to next line
+              curX = descX;
+              curY += lineHeight;
+            }
+
+            const segmentFill = segment.color || defaultFill;
+
+            const wordNode = new Konva.Text({
+              x: curX,
+              y: curY,
+              text: wordText,
+              fontSize,
+              fontFamily,
+              fontStyle: segment.bold ? "bold" : "normal",
+              fill: segmentFill,
+              align: "left",
+            });
+            this.group.add(wordNode);
+
+            curX += wordWidth;
+          });
+
+          // After each explicit line in the segment, force line break
+          if (lineIdx < lines.length - 1) {
+            curX = descX;
+            curY += lineHeight;
+          }
+        });
+      });
+      if (this.config.description) {
+        const hiddenFullDescription = new Konva.Text({
+          x: 0,
+          y: 0,
+          text: this.config.description,
+          visible: false,
+        });
+        this.group.add(hiddenFullDescription);
+      }
+    } else {
+      // Fallback: render the plain description string as before (centered)
+      const description = new Konva.Text({
+        x: STAGE_WIDTH / 2,
+        y: DEFAULT_STYLES.description.y,
+        text: this.config.description,
+        fontSize: DEFAULT_STYLES.description.fontSize,
+        fontFamily: DEFAULT_STYLES.description.fontFamily,
+        fill:
+          this.config.style?.descriptionColor ||
+          DEFAULT_STYLES.description.fill,
+        align: "left",
+        width: maxWidth,
+        wrap: "word",
+      });
+      description.offsetX(description.width() / 2);
+      this.group.add(description);
     }
-
-    // Calculate y position
-    let yPos = DEFAULT_STYLES.description.y + 100;
-    if (button.position?.y !== undefined) {
-      yPos = button.position.y * window.innerHeight;
-    }
-
-    const buttonRect = new Konva.Rect({
-      x: xPos - buttonWidth / 2,
-      y: yPos,
-      width: buttonWidth,
-      height: buttonHeight,
-      fill: button.style?.fill || DEFAULT_STYLES.button.fill,
-      stroke: button.style?.stroke || DEFAULT_STYLES.button.stroke,
-      strokeWidth: DEFAULT_STYLES.button.strokeWidth,
-      cornerRadius: DEFAULT_STYLES.button.cornerRadius,
-    });
-
-    const buttonText = new Konva.Text({
-      x: xPos,
-      y: yPos + buttonHeight / 2,
-      text: button.label,
-      fontSize: DEFAULT_STYLES.button.fontSize,
-      fontFamily: DEFAULT_STYLES.title.fontFamily,
-      fill: button.style?.textFill || DEFAULT_STYLES.button.textFill,
-      align: "center",
-    });
-    buttonText.offsetX(buttonText.width() / 2);
-    buttonText.offsetY(buttonText.height() / 2);
-
-    buttonGroup.add(buttonRect);
-    buttonGroup.add(buttonText);
-
-    // Add hover effects
-    buttonGroup.on("mouseenter", () => {
-      document.body.style.cursor = "pointer";
-      buttonRect.shadowEnabled(true);
-      buttonRect.shadowBlur(10);
-      buttonRect.shadowColor("black");
-      buttonRect.shadowOpacity(0.3);
-      this.group.getLayer()?.draw();
-    });
-
-    buttonGroup.on("mouseleave", () => {
-      document.body.style.cursor = "default";
-      buttonRect.shadowEnabled(false);
-      this.group.getLayer()?.draw();
-    });
-
-    // Wire up click handler
-    buttonGroup.on("click", () => this.onButtonClick(button.id));
-
-    return buttonGroup;
   }
 
   show(): void {

@@ -1,5 +1,5 @@
 import { ScreenController, type ScreenSwitcher } from "../../types";
-import type { TopicScreenConfig } from "./types";
+import type { TopicScreenConfig } from "../../types";
 import { TopicScreenView } from "./TopicScreenView";
 
 /**
@@ -13,6 +13,12 @@ export class TopicScreenController extends ScreenController {
     super();
     this.screenSwitcher = screenSwitcher;
     this.view = new TopicScreenView(config, (buttonId) => {
+      // Special-case the built-in exit button
+      if (buttonId === "exit") {
+        this.screenSwitcher.switchToScreen({ type: "map" });
+        return;
+      }
+
       const button = config.buttons.find((b) => b.id === buttonId);
       if (button) {
         this.screenSwitcher.switchToScreen(button.target);

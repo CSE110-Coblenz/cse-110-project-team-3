@@ -71,7 +71,7 @@ describe("MinigameSimulController Integration Test", () => {
 
     const controller = new MinigameSimulController(screenSwitcher, 2);
     const view = controller.getView();
-    const rootGroup = view.getGroup() as any;
+    const rootGroup = view.getGroup();
 
     // Check that the play button exists and has a click handler
     const playGroup = rootGroup.children.find(
@@ -82,7 +82,7 @@ describe("MinigameSimulController Integration Test", () => {
         ),
     );
     expect(playGroup).toBeDefined();
-    (playGroup as FakeGroup).fire("click");
+    (playGroup as unknown as FakeGroup).fire("click");
 
     // Check that the playSimulation method was called
     expect(FakeAnimation.instances.length).toBe(1);

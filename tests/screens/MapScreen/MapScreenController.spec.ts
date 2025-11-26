@@ -1,29 +1,31 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import type { ScreenSwitcher } from "../../../src/types";
+import type { ScreenSwitcher, MapScreenConfig } from "../../../src/types";
 
 let lastCreatedView: any;
+let lastConfig: MapScreenConfig;
+let lastButtonClickHandler: (buttonId: string) => void;
+let lastNodeClickHandler: (nodeId: string) => void;
 
 vi.mock("../../../src/screens/MapScreen/MapView", () => {
   class FakeMapScreenView {
-    referenceClickHandler: () => void;
-    rulesClickHandler: () => void;
-    exitClickHandler: () => void;
-    nodeClickHandler: (level: string) => void;
-
-    constructor(
-      onReferenceClick: () => void,
-      onRulesClick: () => void,
-      onExitClick: () => void,
-      onNodeClick: (level: string) => void,
+    static fromConfig(
+      config: MapScreenConfig,
+      onButtonClick: (buttonId: string) => void,
+      onNodeClick: (nodeId: string) => void,
     ) {
-      this.referenceClickHandler = onReferenceClick;
-      this.rulesClickHandler = onRulesClick;
-      this.exitClickHandler = onExitClick;
-      this.nodeClickHandler = onNodeClick;
-
-      // keep a reference so tests can grab it later
-      lastCreatedView = this;
+      lastConfig = config;
+      lastButtonClickHandler = onButtonClick;
+      lastNodeClickHandler = onNodeClick;
+      lastCreatedView = new FakeMapScreenView();
+      return lastCreatedView;
     }
+
+    getGroup() {
+      return {};
+    }
+
+    show() {}
+    hide() {}
   }
 
   return {
@@ -36,7 +38,6 @@ import { MapScreenController } from "../../../src/screens/MapScreen/MapControlle
 describe("MapScreenController", () => {
   const switchToScreen = vi.fn();
   let controller: MapScreenController;
-  let view: any; // FakeMapScreenView
 
   beforeEach(() => {
     switchToScreen.mockClear();
@@ -45,12 +46,21 @@ describe("MapScreenController", () => {
       switchToScreen,
     };
 
-    controller = new MapScreenController(screenSwitcher);
-    view = lastCreatedView;
+    controller = new MapScreenController(screenSwitcher, 1);
   });
 
-  it("switches to friction topic when node '1' clicked", () => {
-    view.nodeClickHandler("1");
+  it("switches to force topic when node 'level-1' clicked", () => {
+    lastNodeClickHandler("level-1");
+
+    expect(switchToScreen).toHaveBeenCalledTimes(1);
+    expect(switchToScreen).toHaveBeenCalledWith({
+      type: "topic",
+      level: "force",
+    });
+  });
+
+  it("switches to friction topic when node 'level-2' clicked", () => {
+    lastNodeClickHandler("level-2");
 
     expect(switchToScreen).toHaveBeenCalledTimes(1);
     expect(switchToScreen).toHaveBeenCalledWith({
@@ -59,34 +69,77 @@ describe("MapScreenController", () => {
     });
   });
 
-  it("switches to projectile motion topic when node '2' clicked", () => {
-    view.nodeClickHandler("2");
+  it("switches to distance topic when node 'level-3' clicked", () => {
+    lastNodeClickHandler("level-3");
 
     expect(switchToScreen).toHaveBeenCalledTimes(1);
     expect(switchToScreen).toHaveBeenCalledWith({
       type: "topic",
-      level: "projectile motion",
+      level: "distance",
+    });
+  });
+
+  it("switches to minigame title screen when node 'game-1' clicked", () => {
+    lastNodeClickHandler("game-1");
+
+    expect(switchToScreen).toHaveBeenCalledTimes(1);
+    expect(switchToScreen).toHaveBeenCalledWith({
+      type: "minigame",
+      screen: "title",
+      level: 1,
     });
   });
 
   it("switches to rules screen when rules button clicked", () => {
-    view.rulesClickHandler();
+    lastButtonClickHandler("rules");
 
     expect(switchToScreen).toHaveBeenCalledTimes(1);
-    expect(switchToScreen).toHaveBeenCalledWith({ type: "rules" });
+    expect(switchToScreen).toHaveBeenCalledWith({
+      type: "rules",
+      returnTo: { type: "map", mapId: 1 },
+    });
   });
 
   it("switches to reference screen when reference button clicked", () => {
-    view.referenceClickHandler();
+    lastButtonClickHandler("reference");
 
     expect(switchToScreen).toHaveBeenCalledTimes(1);
-    expect(switchToScreen).toHaveBeenCalledWith({ type: "reference" });
+    expect(switchToScreen).toHaveBeenCalledWith({
+      type: "reference",
+      returnTo: { type: "map", mapId: 1 },
+    });
   });
 
-  it("switches to exit screen when exit button clicked", () => {
-    view.exitClickHandler();
+  it("switches to menu screen when exit button clicked", () => {
+    lastButtonClickHandler("exit");
 
-    // expect(switchToScreen).toHaveBeenCalledTimes(1);
-    // expect(switchToScreen).toHaveBeenCalledWith({ type: "exit" });
+    expect(switchToScreen).toHaveBeenCalledTimes(1);
+    expect(switchToScreen).toHaveBeenCalledWith({ type: "menu" });
+  });
+
+  it("initializes with map 2 config when mapId is 2", () => {
+    const controller2 = new MapScreenController({ switchToScreen }, 2);
+
+    // Test map 2 specific node
+    lastNodeClickHandler("level-4");
+
+    expect(switchToScreen).toHaveBeenCalledWith({
+      type: "topic",
+      level: "gravity",
+    });
+  });
+
+  it("does nothing when clicking a non-existent node", () => {
+    switchToScreen.mockClear();
+    lastNodeClickHandler("non-existent-node");
+
+    expect(switchToScreen).not.toHaveBeenCalled();
+  });
+
+  it("does nothing when clicking a non-existent button", () => {
+    switchToScreen.mockClear();
+    lastButtonClickHandler("non-existent-button");
+
+    expect(switchToScreen).not.toHaveBeenCalled();
   });
 });

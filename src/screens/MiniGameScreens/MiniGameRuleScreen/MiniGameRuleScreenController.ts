@@ -1,12 +1,11 @@
 import type { RuleConfig, ScreenSwitcher } from "../../../types";
 import { MiniGameRuleScreenView } from "./MiniGameRuleScreenView";
 import { ScreenController } from "../../../types";
+import { getMiniGameRuleScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
 export class MiniGameRuleScreenController extends ScreenController {
   private view: MiniGameRuleScreenView;
-  private ruleConfig: RuleConfig;
   private screenSwitcher: ScreenSwitcher;
-  private level: number;
 
   constructor(
     screenSwitcher: ScreenSwitcher,
@@ -15,30 +14,22 @@ export class MiniGameRuleScreenController extends ScreenController {
   ) {
     super();
     this.screenSwitcher = screenSwitcher;
-    this.ruleConfig = ruleConfig;
-    this.level = level;
+
+    // Create navigation buttons with level
+    const navigationButtons = getMiniGameRuleScreenNavigationButtons(level);
+
+    // Create view with rule config, navigation buttons and click handler
     this.view = new MiniGameRuleScreenView(
-      this.ruleConfig,
-      () => this.handleNextClick(),
-      () => this.handleBackClick(),
+      ruleConfig,
+      navigationButtons,
+      (buttonId) => {
+        const button = navigationButtons.find((b) => b.id === buttonId);
+        if (button) {
+          console.log(`MiniGameRuleScreen: ${button.label} clicked`);
+          this.screenSwitcher.switchToScreen(button.target);
+        }
+      },
     );
-  }
-
-  private handleNextClick(): void {
-    // TODO: Swith to the actual game screen, passing the level
-    this.screenSwitcher.switchToScreen({
-      type: "minigame",
-      screen: "simulation",
-      level: this.level,
-    });
-  }
-
-  private handleBackClick(): void {
-    this.screenSwitcher.switchToScreen({
-      type: "minigame",
-      screen: "title",
-      level: this.level,
-    });
   }
 
   getView(): MiniGameRuleScreenView {

@@ -1,32 +1,41 @@
 import type { ScreenSwitcher } from "../../types";
-import { ScreenController } from "../../types";
+import { ScreenController, setCurrentLevelIndex } from "../../types";
 import { SimulationScreenView } from "./SimulationScreenView";
 import type { SimulationScreenConfig } from "./types";
+import { getSimulationNavigationButtons } from "../../configs/NavigationButtons/Simulation";
+import { SIM_UNLOCK_INDEX } from "../../configs/maps/MapScreenConfig";
 
 export class SimulationScreenController extends ScreenController {
   private view: SimulationScreenView;
   private screenSwitcher: ScreenSwitcher;
-  private config: SimulationScreenConfig;
 
   constructor(screenSwitcher: ScreenSwitcher, config: SimulationScreenConfig) {
     super();
     this.screenSwitcher = screenSwitcher;
-    this.config = config;
 
+    // Create navigation buttons with screens from config
+    const navigationButtons = getSimulationNavigationButtons(
+      config.navigation.backScreen,
+      config.navigation.nextScreen,
+    );
+
+    // Create view with navigation buttons and click handler
     this.view = new SimulationScreenView(
       config,
-      () => this.handleBackClick(),
-      () => this.handleNextClick(),
+      navigationButtons,
+      (buttonId) => {
+        const button = navigationButtons.find((b) => b.id === buttonId);
+        if (!button) return;
+        if (buttonId === "next") {
+          const idx = SIM_UNLOCK_INDEX[config.id];
+          if (idx !== undefined) {
+            setCurrentLevelIndex(idx);
+          }
+        }
+        this.screenSwitcher.switchToScreen(button.target);
+      },
     );
   }
-
-  private handleBackClick = () => {
-    this.screenSwitcher.switchToScreen(this.config.navigation.backScreen);
-  };
-
-  private handleNextClick = () => {
-    this.screenSwitcher.switchToScreen(this.config.navigation.nextScreen);
-  };
 
   getView(): SimulationScreenView {
     return this.view;

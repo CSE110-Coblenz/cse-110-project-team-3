@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import type { ScreenSwitcher } from "../../../src/types";
 import { TopicScreenController } from "../../../src/screens/TopicScreen/TopicScreenController";
-import type { TopicScreenConfig } from "../../../src/screens/TopicScreen/types";
+import type { TopicScreenConfig } from "../../../src/types";
 
 let lastCreatedView: any;
 let lastConfig: any;
@@ -14,6 +14,13 @@ vi.mock("../../../src/screens/TopicScreen/TopicScreenView", () => {
       lastClickHandler = clickHandler;
       lastCreatedView = this;
     }
+
+    getGroup() {
+      return {};
+    }
+
+    show() {}
+    hide() {}
   }
 
   return {
@@ -29,8 +36,8 @@ describe("TopicScreenController", () => {
     title: "Test Topic",
     description: "Test Description",
     buttons: [
-      { id: "button1", label: "Button 1", target: { type: "test-screen1" } },
-      { id: "button2", label: "Button 2", target: { type: "test-screen2" } },
+      { id: "button1", label: "Button 1", target: { type: "map" } },
+      { id: "button2", label: "Button 2", target: { type: "menu" } },
     ],
   };
 
@@ -53,14 +60,14 @@ describe("TopicScreenController", () => {
     lastClickHandler("button1");
 
     expect(switchToScreen).toHaveBeenCalledTimes(1);
-    expect(switchToScreen).toHaveBeenCalledWith({ type: "test-screen1" });
+    expect(switchToScreen).toHaveBeenCalledWith({ type: "map" });
   });
 
   it("switches to another screen when another button is clicked", () => {
     lastClickHandler("button2");
 
     expect(switchToScreen).toHaveBeenCalledTimes(1);
-    expect(switchToScreen).toHaveBeenCalledWith({ type: "test-screen2" });
+    expect(switchToScreen).toHaveBeenCalledWith({ type: "menu" });
   });
 
   it("does nothing if a button that doesn't exist is clicked", () => {

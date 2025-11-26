@@ -2,8 +2,6 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import type { ScreenSwitcher } from "../../../src/types";
 import { createKonvaMock, FakeGroup } from "../../mocks/konvaMock";
 
-let animationInstances: any[] = [];
-
 // Mock konva BEFORE importing the controller
 vi.mock("konva", () => createKonvaMock());
 
@@ -152,6 +150,8 @@ vi.mock(
       initialSpeed: number,
       _gapX: number,
       adjustSpeed: (delta: number) => void,
+      _navigationButtons: any,
+      _onButtonClick: any,
     ) {
       fakeView.onPlay = onPlay;
       fakeView.onReset = onReset;
@@ -174,7 +174,6 @@ describe("Minigame1SimulController", () => {
   const switchToScreen = vi.fn();
 
   beforeEach(() => {
-    animationInstances = [];
     switchToScreen.mockClear();
 
     const screenSwitcher: ScreenSwitcher = {
@@ -190,7 +189,7 @@ describe("Minigame1SimulController", () => {
     expect(fakeView.onAdjustSpeed).toBeDefined();
 
     const d = fakeModel.getDistanceX();
-    const minDistance = 100;
+    const minDistance = SIMULATION_CONSTANTS.simulation_min_distance_to_target;
     const maxDistance = STAGE_WIDTH - SIMULATION_CONSTANTS.starting_x - 100;
 
     expect(d).toBeGreaterThanOrEqual(minDistance);
