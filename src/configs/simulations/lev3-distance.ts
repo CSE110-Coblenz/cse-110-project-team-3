@@ -1,5 +1,9 @@
 import type { SimulationScreenConfig } from "../../screens/SimulationScreen/types";
 
+/**
+ * Configuration for the distance simulation screen
+ * Find implementation details in "../../screens/SimulationScreen/types"
+ */
 export const Lev3SimulationConfig: SimulationScreenConfig = {
   id: "lev3-distance",
   title: "SIMULATION: Stopping Distance",

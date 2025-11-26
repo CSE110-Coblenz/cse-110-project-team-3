@@ -3,6 +3,9 @@ import { ScreenController } from "../../../types";
 import { GameOverScreenView } from "./GameOverScreenView";
 import { getGameOverScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
+/**
+ * Controller for the minigame game over screen
+ */
 export class GameOverScreenController extends ScreenController {
   private view: GameOverScreenView;
   private screenSwitcher: ScreenSwitcher;

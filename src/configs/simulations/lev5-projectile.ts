@@ -1,5 +1,9 @@
 import type { SimulationScreenConfig } from "../../screens/SimulationScreen/types";
 
+/**
+ * Configuration for the projectile motion simulation screen
+ * Find implementation details in "../../screens/SimulationScreen/types"
+ */
 export const Lev5SimulationConfig: SimulationScreenConfig = {
   id: "lev5-projectile",
   title: "SIMULATION: Projectile Motion",

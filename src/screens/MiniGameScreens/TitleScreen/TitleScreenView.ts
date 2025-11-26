@@ -4,6 +4,9 @@ import type { View, NavButton } from "../../../types";
 import { createKonvaButton } from "../../../utils/ui/NavigationButton";
 import { BackgroundHelper } from "../../../utils/ui/BackgroundHelper";
 
+/**
+ * View for the minigame title screen
+ */
 export class TitleScreenView implements View {
   private group: Konva.Group;
 

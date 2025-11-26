@@ -4,6 +4,11 @@ import type { SimulationScreenConfig } from "./types";
 import { SimulationContentView } from "./SimulationContentView";
 import { createKonvaButton } from "../../utils/ui/NavigationButton";
 
+/**
+ * View for simulation screens
+ * Composes the core simulation content with BACK/NEXT navigation buttons 
+ * manages the enabled/disabled state of the NEXT button
+ */
 export class SimulationScreenView implements View {
   private group: Konva.Group;
   private content: SimulationContentView;
@@ -17,7 +22,7 @@ export class SimulationScreenView implements View {
     this.group = new Konva.Group();
 
     this.content = new SimulationContentView(config, () =>
-      // unlock NEXT
+      // unlock NEXT when answer is correct
       this.setNextEnabled(true),
     );
     this.group.add(this.content.getGroup());
@@ -42,7 +47,7 @@ export class SimulationScreenView implements View {
     this.setNextEnabled(false);
   }
 
-  // Called when the correct answer is selected.
+  // Called when the correct answer is selected
   public setNextEnabled(enabled: boolean): void {
     this.nextBtn.setAttr("disabled", !enabled);
     this.nextBtn.opacity(enabled ? 1 : 0.5);

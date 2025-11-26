@@ -1,5 +1,8 @@
 import type { NavButton } from "../../types";
 
+/** 
+ * Navigation buttons for the Friction topic screen (back to map 1, go to simulation)
+ */
 export const FrictionTopicNavigationButtons: NavButton[] = [
   {
     id: "back",
@@ -23,6 +26,9 @@ export const FrictionTopicNavigationButtons: NavButton[] = [
   },
 ];
 
+/** 
+ * Navigation buttons for the Projectile Motion topic screen (back to map 2, go to simulation)
+ */
 export const ProjMotionTopicNavigationButtons: NavButton[] = [
   {
     id: "back",
@@ -44,6 +50,9 @@ export const ProjMotionTopicNavigationButtons: NavButton[] = [
   },
 ];
 
+/** 
+ * Navigation buttons for the Force topic screen (back to map 1, go to simulation) 
+ */
 export const ForceTopicNavigationButtons: NavButton[] = [
   {
     id: "back",
@@ -65,6 +74,9 @@ export const ForceTopicNavigationButtons: NavButton[] = [
   },
 ];
 
+/** 
+ * Navigation buttons for the Distance topic screen (back to map 1, go to simulation)
+ */
 export const DistanceTopicNavigationButtons: NavButton[] = [
   {
     id: "back",
@@ -86,6 +98,9 @@ export const DistanceTopicNavigationButtons: NavButton[] = [
   },
 ];
 
+/** 
+ * Navigation buttons for the Gravity topic screen (back to map 2, go to simulation)
+ */
 export const GravityTopicNavigationButtons: NavButton[] = [
   {
     id: "back",
@@ -107,6 +122,9 @@ export const GravityTopicNavigationButtons: NavButton[] = [
   },
 ];
 
+/** 
+ * Navigation buttons for the Trajectory topic screen (back to map 2, go to simulation)
+ */
 export const TrajectoryTopicNavigationButtons: NavButton[] = [
   {
     id: "back",

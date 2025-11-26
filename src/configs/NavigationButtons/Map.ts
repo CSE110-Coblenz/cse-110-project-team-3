@@ -1,5 +1,8 @@
 import type { NavButton } from "../../types";
 
+/** 
+ * Navigation buttons for Map 1 screen (reference, rules, next map, exit)
+ */
 export const Map1ScreenNavigationButtons: NavButton[] = [
   {
     id: "reference",
@@ -55,6 +58,9 @@ export const Map1ScreenNavigationButtons: NavButton[] = [
   },
 ];
 
+/** 
+ * Navigation buttons for Map 2 screen (reference, rules, previous map, exit)
+ */
 export const Map2ScreenNavigationButtons: NavButton[] = [
   {
     id: "reference",

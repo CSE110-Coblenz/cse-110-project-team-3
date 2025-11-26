@@ -6,6 +6,11 @@ import { MinigameSimulModel } from "./MinigameSimulModel";
 import { MinigameSimulView } from "./MinigameSimulView";
 import { getMinigameSimulScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
+/**
+ * Controller for the projectile minigame simulation
+ * Coordinates model, view, randomized targets, and navigation,
+ * handling play/reset flow and hit detection.
+ */
 export class MinigameSimulController extends MinigameController {
   private view: MinigameSimulView;
   private model: MinigameSimulModel;

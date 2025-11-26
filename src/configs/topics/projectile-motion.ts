@@ -2,6 +2,9 @@ import type { TopicScreenConfig } from "../../types";
 import { ProjMotionTopicNavigationButtons } from "../../configs/NavigationButtons/Topic";
 import { COLORS } from "../../constants";
 
+/**
+ * Configuration for the projectile motion topic screen. Find implementation details in "../../screens/TopicScreen/types"
+ */
 export const projectileMotionConfig: TopicScreenConfig = {
   title: "Projectile Motion",
   // Use descriptionSegments to bold specific phrases. Each segment may include '\n' to force new lines.

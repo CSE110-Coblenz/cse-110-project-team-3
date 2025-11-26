@@ -4,6 +4,11 @@ import { STAGE_WIDTH, STAGE_HEIGHT, FONTS, COLORS } from "../../constants";
 import type { SimulationScreenConfig, SimulationOptionConfig } from "./types";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper";
 
+/**
+ * Content view for a simulation screen
+ * Renders background, title, problem text, visual media (video or image),
+ * multiple-choice options, and reports when the user answers correctly
+ */
 export class SimulationContentView implements View {
   private group = new Konva.Group();
   private videoEl?: HTMLVideoElement;
@@ -72,10 +77,8 @@ export class SimulationContentView implements View {
     const visualWidth = rightPanelX - layout.left - 18; // leave space for right options panel
     const visualHeight = STAGE_HEIGHT - layout.top - layout.bottom;
 
-    // --- VISUAL CONTENT SELECTION (video OR picture) ---
-
     if (config.video) {
-      // If a video config is present, render the video in loop as before.
+      // If a video config is present, render the video in loop 
       const src = new URL(config.video.src, import.meta.url).toString();
 
       this.videoEl = document.createElement("video");
@@ -135,10 +138,9 @@ export class SimulationContentView implements View {
         this.imageNode?.getLayer()?.batchDraw();
       };
     }
-    // If neither video nor picture is provided, the visual area is simply empty.
+    // If neither video nor picture is provided, the visual area is simply empty
 
-    // --- RIGHT SIDE OPTIONS PANEL ---
-
+    // Right side options panel:
     const RIGHT_PANEL_PAD = 16;
     const OPT_W = layout.rightPanelWidth - 2 * RIGHT_PANEL_PAD;
     const OPT_H = 50;
@@ -204,7 +206,7 @@ export class SimulationContentView implements View {
     g.on("mouseenter", () => {
       if (g.getAttr("disabled") || g.getAttr("locked")) return;
       document.body.style.cursor = "pointer";
-      rect.fill("white");
+      rect.fill(COLORS.buttonHover);
       g.getLayer()?.batchDraw();
     });
 
@@ -235,7 +237,7 @@ export class SimulationContentView implements View {
       rect.fill("#22c55e");
       this.lockAll();
       this.answeredCorrectly = true;
-      this.onCorrectAnswer();
+      this.onCorrectAnswer(); // unlock NEXT
     } else {
       // Wrong answer: fill red for a moment then revert to base color
       rect.fill("#ef4444");
