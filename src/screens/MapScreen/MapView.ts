@@ -237,7 +237,7 @@ export class MapScreenView implements View {
 
     group.on("mouseleave", () => {
       if (group.getAttr("disabled")) return; // ignore hover if node is disabled
-      
+
       outer.stroke(COLORS.nodeActive); // Return to normal
       outer.shadowBlur(20);
       if (group.getStage()) {

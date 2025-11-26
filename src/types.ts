@@ -309,7 +309,7 @@ export abstract class BaseMinigameSimulView implements View {
 
     g.on("mouseleave", () => {
       if (g.getAttr("disabled") || g.getAttr("locked")) return;
-      
+
       document.body.style.cursor = "default";
       rect.fill(COLORS.buttonFill); // Return to stone tablet
       rect.shadowBlur(8); // Normal shadow

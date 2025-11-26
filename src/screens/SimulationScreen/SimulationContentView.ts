@@ -78,7 +78,7 @@ export class SimulationContentView implements View {
     const visualHeight = STAGE_HEIGHT - layout.top - layout.bottom;
 
     if (config.video) {
-      // If a video config is present, render the video in loop 
+      // If a video config is present, render the video in loop
       const src = new URL(config.video.src, import.meta.url).toString();
 
       this.videoEl = document.createElement("video");

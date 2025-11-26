@@ -6,7 +6,7 @@ import { createKonvaButton } from "../../utils/ui/NavigationButton";
 
 /**
  * View for simulation screens
- * Composes the core simulation content with BACK/NEXT navigation buttons 
+ * Composes the core simulation content with BACK/NEXT navigation buttons
  * manages the enabled/disabled state of the NEXT button
  */
 export class SimulationScreenView implements View {

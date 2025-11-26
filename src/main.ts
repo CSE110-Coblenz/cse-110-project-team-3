@@ -90,19 +90,52 @@ class App implements ScreenSwitcher {
 
     // Initialize topic screens with different configurations
     this.forceTopicController = new TopicScreenController(this, forceConfig);
-    this.frictionTopicController = new TopicScreenController(this, frictionConfig);
-    this.distanceTopicController = new TopicScreenController(this, distanceConfig);
-    this.gravityTopicController = new TopicScreenController(this, gravityConfig);
-    this.projectileMotionTopicController = new TopicScreenController(this, projectileMotionConfig);
-    this.trajectoryTopicController = new TopicScreenController(this, trajectoryConfig);
+    this.frictionTopicController = new TopicScreenController(
+      this,
+      frictionConfig,
+    );
+    this.distanceTopicController = new TopicScreenController(
+      this,
+      distanceConfig,
+    );
+    this.gravityTopicController = new TopicScreenController(
+      this,
+      gravityConfig,
+    );
+    this.projectileMotionTopicController = new TopicScreenController(
+      this,
+      projectileMotionConfig,
+    );
+    this.trajectoryTopicController = new TopicScreenController(
+      this,
+      trajectoryConfig,
+    );
 
     // Initialize Simulation screens with different configurations
-    this.lev1SimulationController = new SimulationScreenController(this, Lev1SimulationConfig);
-    this.lev2SimulationController = new SimulationScreenController(this, Lev2SimulationConfig);
-    this.lev3SimulationController = new SimulationScreenController(this, Lev3SimulationConfig);
-    this.lev4SimulationController = new SimulationScreenController(this, Lev4SimulationConfig);
-    this.lev5SimulationController = new SimulationScreenController(this, Lev5SimulationConfig);
-    this.lev6SimulationController = new SimulationScreenController(this, Lev6SimulationConfig);
+    this.lev1SimulationController = new SimulationScreenController(
+      this,
+      Lev1SimulationConfig,
+    );
+    this.lev2SimulationController = new SimulationScreenController(
+      this,
+      Lev2SimulationConfig,
+    );
+    this.lev3SimulationController = new SimulationScreenController(
+      this,
+      Lev3SimulationConfig,
+    );
+    this.lev4SimulationController = new SimulationScreenController(
+      this,
+      Lev4SimulationConfig,
+    );
+    this.lev5SimulationController = new SimulationScreenController(
+      this,
+      Lev5SimulationConfig,
+    );
+    this.lev6SimulationController = new SimulationScreenController(
+      this,
+      Lev6SimulationConfig,
+    );
 
     // add all screen views to the layer
     this.layer.add(this.menuScreenController.getView().getGroup());
@@ -166,7 +199,7 @@ class App implements ScreenSwitcher {
       case "menu":
         this.menuScreenController.getView().show();
         break;
-      
+
       case "map":
         // Show the appropriate map based on mapId (default to map 1)
         if (screen.mapId === 2) {
@@ -175,19 +208,23 @@ class App implements ScreenSwitcher {
           this.map1ScreenController.getView().show();
         }
         break;
-      
+
       case "rules":
-        this.rulesScreenController.setReturnTo(screen.returnTo || { type: "map" });
+        this.rulesScreenController.setReturnTo(
+          screen.returnTo || { type: "map" },
+        );
         this.rulesScreenController.getView().show();
         break;
-      
+
       case "reference":
         // Always set returnTo, defaulting to map if not specified
         // This ensures the controller's state is reset properly
-        this.referenceScreenController.setReturnTo(screen.returnTo || { type: "map" });
+        this.referenceScreenController.setReturnTo(
+          screen.returnTo || { type: "map" },
+        );
         this.referenceScreenController.getView().show();
         break;
-      
+
       case "topic":
         if (screen.level === "force") {
           this.forceTopicController.getView().show();
@@ -203,7 +240,7 @@ class App implements ScreenSwitcher {
           this.trajectoryTopicController.getView().show();
         }
         break;
-      
+
       case "simulation":
         if (screen.topic === "force") {
           this.lev1SimulationController.getView().show();
@@ -223,36 +260,62 @@ class App implements ScreenSwitcher {
       case "minigame":
         switch (screen.screen) {
           case "title":
-            this.titleScreenController = new TitleScreenController(this, screen.level);
+            this.titleScreenController = new TitleScreenController(
+              this,
+              screen.level,
+            );
             this.layer.add(this.titleScreenController.getView().getGroup());
             this.titleScreenController.getView().show();
             break;
           case "rules":
-            this.miniGameRuleScreenController = new MiniGameRuleScreenController( this,  miniGameRuleConfig, screen.level);
-            this.layer.add(this.miniGameRuleScreenController.getView().getGroup(),);
+            this.miniGameRuleScreenController =
+              new MiniGameRuleScreenController(
+                this,
+                miniGameRuleConfig,
+                screen.level,
+              );
+            this.layer.add(
+              this.miniGameRuleScreenController.getView().getGroup(),
+            );
             this.miniGameRuleScreenController.getView().show();
             break;
           case "simulation":
             switch (screen.level) {
               case 1:
-                this.minigame1SimulController = new Minigame1SimulController(this, screen.level);
-                this.layer.add(this.minigame1SimulController.getView().getGroup());
+                this.minigame1SimulController = new Minigame1SimulController(
+                  this,
+                  screen.level,
+                );
+                this.layer.add(
+                  this.minigame1SimulController.getView().getGroup(),
+                );
                 this.minigame1SimulController.getView().show();
                 break;
               case 2:
-                this.minigameSimulController = new MinigameSimulController(this, screen.level);
-                this.layer.add(this.minigameSimulController.getView().getGroup());
+                this.minigameSimulController = new MinigameSimulController(
+                  this,
+                  screen.level,
+                );
+                this.layer.add(
+                  this.minigameSimulController.getView().getGroup(),
+                );
                 this.minigameSimulController.getView().show();
                 break;
             }
             break;
           case "completed":
-            this.completedScreenController = new CompletedScreenController(this, screen.level);
+            this.completedScreenController = new CompletedScreenController(
+              this,
+              screen.level,
+            );
             this.layer.add(this.completedScreenController.getView().getGroup());
             this.completedScreenController.getView().show();
             break;
           case "gameover":
-            this.gameOverScreenController = new GameOverScreenController(this, screen.level);
+            this.gameOverScreenController = new GameOverScreenController(
+              this,
+              screen.level,
+            );
             this.layer.add(this.gameOverScreenController.getView().getGroup());
             this.gameOverScreenController.getView().show();
             break;

@@ -1,6 +1,6 @@
 import type { NavButton } from "../../types";
 
-/** 
+/**
  * Navigation buttons for the reference screen (exit back to caller)
  */
 export const ReferenceScreenNavigationButtons: NavButton[] = [

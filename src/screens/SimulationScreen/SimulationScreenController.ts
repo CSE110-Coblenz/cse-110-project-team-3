@@ -7,7 +7,7 @@ import { SIM_UNLOCK_INDEX } from "../../configs/maps/MapScreenConfig";
 
 /**
  * Controller for simulation-based quiz screens
- * Wires navigation buttons, unlocks map progress on success 
+ * Wires navigation buttons, unlocks map progress on success
  * routes between screens based on the simulation configuration
  */
 export class SimulationScreenController extends ScreenController {
@@ -34,7 +34,7 @@ export class SimulationScreenController extends ScreenController {
         if (buttonId === "next") {
           const idx = SIM_UNLOCK_INDEX[config.id];
           if (idx !== undefined) {
-            setCurrentLevelIndex(idx);  // unlock idx node on the map
+            setCurrentLevelIndex(idx); // unlock idx node on the map
           }
         }
         this.screenSwitcher.switchToScreen(button.target);

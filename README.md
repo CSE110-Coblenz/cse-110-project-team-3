@@ -34,9 +34,7 @@ There are two physics-based mini-games, both accessible from the dungeon map onc
 - [`public/`](public/): Images, GIFs, videos such as background textures and simulation media.
 
 - [`src/`](src/):
-
   - [`src/configs/`](src/configs/): Data-only configuration used to build screens.
-
     - [`src/configs/maps/`](src/configs/maps/): Map layouts, nodes, arrows, and unlock indices for each dungeon map.
 
     - [`src/configs/NavigationButtons/`](src/configs/NavigationButtons/): Configuration for navigation buttons.
@@ -48,7 +46,6 @@ There are two physics-based mini-games, both accessible from the dungeon map onc
     - [`src/configs/topics/`](src/configs/topics/): Topic screen configs for each physics concept.
 
   - [`src/screens/`](src/screens/):
-
     - [`src/screens/StartScreen/`](src/screens/StartScreen/): Main menu with start, resume, rules, and quit.
 
     - [`src/screens/MapScreen/`](src/screens/MapScreen/): Dungeon map with levels, arrows, map navigation buttons, and level unlock logic.
@@ -63,8 +60,8 @@ There are two physics-based mini-games, both accessible from the dungeon map onc
 
     - [`src/screens/MiniGameScreens/`](src/screens/MiniGameScreens/): Title, minigame-specific rules, friction minigame, projectile minigame, completed, and game-over screens.
 
-  - [`src/utils/ui/`](src/utils/ui/): 
-    Shared UI helpers for  dungeon backgrounds, torch lights, and the reusable Konva navigation buttons.
+  - [`src/utils/ui/`](src/utils/ui/):
+    Shared UI helpers for dungeon backgrounds, torch lights, and the reusable Konva navigation buttons.
 
   - [`src/constants.ts`](src/constants.ts): Global numeric and style constants (stage size, colors, fonts, simulation parameters).
 

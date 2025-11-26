@@ -3,8 +3,8 @@ import { TitleScreenView } from "./TitleScreenView";
 import { ScreenController } from "../../../types";
 import { getTitleScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
-/** 
- * Controller for the minigame title screen 
+/**
+ * Controller for the minigame title screen
  */
 export class TitleScreenController extends ScreenController {
   private view: TitleScreenView;
