@@ -142,26 +142,31 @@ export class UserDataset {
    * Add a user to the dataset
    */
   static async addUser(username: string): Promise<void> {
-    const database = await this.ensureDb();
-    const now = new Date().toISOString();
+    try {
+      const database = await this.ensureDb();
+      const now = new Date().toISOString();
 
-    // Check if user already exists
-    const existingUser = await this.getUser(username);
-    if (existingUser) {
-      // Update last login time
-      database.run(
-        `UPDATE users SET lastLoginAt = ? WHERE username = ?`,
-        [now, username]
-      );
-    } else {
-      // Add new user
-      database.run(
-        `INSERT INTO users (username, createdAt, lastLoginAt) VALUES (?, ?, ?)`,
-        [username, now, now]
-      );
+      // Check if user already exists
+      const existingUser = await this.getUser(username);
+      if (existingUser) {
+        // Update last login time
+        database.run(
+          `UPDATE users SET lastLoginAt = ? WHERE username = ?`,
+          [now, username]
+        );
+      } else {
+        // Add new user
+        database.run(
+          `INSERT INTO users (username, createdAt, lastLoginAt) VALUES (?, ?, ?)`,
+          [username, now, now]
+        );
+      }
+
+      saveDatabase();
+    } catch (error) {
+      console.warn("Failed to add user to database, using localStorage only:", error);
+      // Continue without database - localStorage is already updated in setCurrentUsername
     }
-
-    saveDatabase();
   }
 
   /**

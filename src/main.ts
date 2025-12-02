@@ -212,7 +212,7 @@ class App implements ScreenSwitcher {
         this.loginScreenController.show();
         break;
       case "menu":
-        this.menuScreenController.getView().show();
+        this.menuScreenController.show();
         break;
       case "map":
         // Show the appropriate map based on mapId (default to map 1)
@@ -339,14 +339,11 @@ class App implements ScreenSwitcher {
   }
 }
 
-// Initialize database and start app
-(async () => {
-  try {
-    await UserDataset.initialize();
-    new App();
-  } catch (error) {
-    console.error("Failed to initialize database:", error);
-    // Still start the app even if database initialization fails
-    new App();
-  }
-})();
+// Start app immediately, initialize database in background
+new App();
+
+// Initialize database asynchronously (non-blocking)
+UserDataset.initialize().catch((error) => {
+  console.warn("Database initialization failed, continuing without SQLite:", error);
+  // App will continue to work with localStorage fallback
+});

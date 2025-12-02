@@ -27,7 +27,10 @@ export class MenuScreenController extends ScreenController {
   /** Called when this screen becomes active (App already calls this) */
   show(): void {
     this.model.load();
-    this.view.setResumeEnabled(this.model.getHasResume());
+    const hasResume = this.model.getHasResume();
+    const lastScreen = this.model.getLastScreen();
+    console.log("MenuScreen show() - hasResume:", hasResume, "lastScreen:", lastScreen);
+    this.view.setResumeEnabled(hasResume);
     super.show(); // calls this.getView().show()
   }
 
@@ -41,19 +44,20 @@ export class MenuScreenController extends ScreenController {
   }
 
   private handleResumeClick(): void {
-    // Resume from where the user left off
+    console.log("Resume button clicked");
+    // Resume from where the user left off - go directly to the last screen
     const lastScreen = this.model.getLastScreen();
+    console.log("Last screen from model:", lastScreen);
+    
     if (!lastScreen) {
+      console.warn("No last screen found, resume button should be disabled");
       // Should not happen if button is enabled, but handle gracefully
       return;
     }
 
-    // Navigate to login screen with the last screen as the destination
-    // This allows the user to log in and then continue from where they left off
-    this.screenSwitcher.switchToScreen({
-      type: "login",
-      nextScreen: lastScreen,
-    });
+    // Navigate directly to the last screen (skip login)
+    console.log("Navigating directly to:", lastScreen);
+    this.screenSwitcher.switchToScreen(lastScreen);
   }
 
   private handleRulesClick(): void {

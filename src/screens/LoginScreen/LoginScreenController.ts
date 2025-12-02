@@ -31,10 +31,22 @@ export class LoginScreenController extends ScreenController {
 
   /** Called when this screen becomes active */
   show(): void {
-    // Check if there's an existing user
-    const existingUsername = this.model.getExistingUsername();
-    if (existingUsername) {
-      this.view.setUsername(existingUsername);
+    // Only pre-fill username if coming from START (new game)
+    // For RESUME, always require username entry
+    // Check if nextScreen is map (START) vs other screens (RESUME)
+    const isNewGame = this.nextScreen.type === "map";
+    
+    if (isNewGame) {
+      // For new game, pre-fill if user exists
+      const existingUsername = this.model.getExistingUsername();
+      if (existingUsername) {
+        this.view.setUsername(existingUsername);
+      } else {
+        this.view.setUsername(""); // Clear for new users
+      }
+    } else {
+      // For resume, always clear to require fresh login
+      this.view.setUsername("");
     }
 
     this.view.show();
@@ -45,6 +57,7 @@ export class LoginScreenController extends ScreenController {
   }
 
   private async handleLogin(username: string): Promise<void> {
+    console.log("handleLogin called with username:", username);
     this.view.clearError();
 
     // Update model with username
@@ -56,15 +69,22 @@ export class LoginScreenController extends ScreenController {
       return;
     }
 
-    // Save to dataset
-    const success = await this.model.login();
-    if (!success) {
-      this.view.setError("Failed to save username. Please try again.");
-      return;
-    }
+    try {
+      // Save to dataset (SQLite database) - don't wait, do it in background
+      this.model.login().catch((err) => {
+        console.warn("Database save failed, but continuing:", err);
+      });
 
-    // Navigate to queued destination (map by default)
-    this.screenSwitcher.switchToScreen(this.nextScreen);
+      // Navigate to the destination screen (map for START, saved screen for RESUME)
+      const destination = this.nextScreen || { type: "map" };
+      console.log("Login successful, navigating to:", destination);
+      this.screenSwitcher.switchToScreen(destination);
+    } catch (error) {
+      console.error("Login error:", error);
+      // Even if there's an error, still navigate to the destination
+      const destination = this.nextScreen || { type: "map" };
+      this.screenSwitcher.switchToScreen(destination);
+    }
   }
 
   getView(): LoginScreenView {

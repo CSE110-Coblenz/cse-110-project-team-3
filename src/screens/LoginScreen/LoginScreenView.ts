@@ -84,7 +84,10 @@ export class LoginScreenView implements View {
       buttonY,
       buttonWidth,
       buttonHeight,
-      () => handlers.onSubmit(this.usernameInput.value),
+      () => {
+        console.log("Login button clicked, username:", this.usernameInput.value);
+        handlers.onSubmit(this.usernameInput.value);
+      },
     );
     this.group.add(this.submitBtn);
 
@@ -113,7 +116,7 @@ export class LoginScreenView implements View {
     height: number,
     onClick?: () => void,
   ): Konva.Group {
-    const g = new Konva.Group({ x, y });
+    const g = new Konva.Group({ x, y, listening: true });
 
     const r = Math.min(height / 2 + 6, 24);
     const rect = new Konva.Rect({
@@ -126,6 +129,7 @@ export class LoginScreenView implements View {
       shadowColor: "#000",
       shadowOpacity: 0.15,
       shadowBlur: 8,
+      listening: true, // Enable click detection
     });
 
     const text = new Konva.Text({
@@ -141,6 +145,7 @@ export class LoginScreenView implements View {
       verticalAlign: "middle",
       horizontalAlign: "center",
       fontFamily: FONTS.topic,
+      listening: true, // Enable click detection
     });
 
     // hover + click interactions
@@ -151,6 +156,8 @@ export class LoginScreenView implements View {
         if ((g as any)._disabled) return;
         onClick();
       });
+      // Also enable pointer events on the group
+      g.listening(true);
     }
 
     g.add(rect, text);
@@ -198,6 +205,10 @@ export class LoginScreenView implements View {
   show(): void {
     this.group.visible(true);
     this.group.getLayer()?.draw();
+    // Ensure button is listening
+    if (this.submitBtn) {
+      this.submitBtn.listening(true);
+    }
     // Update position and show the input
     this.updateInputPosition();
     this.usernameInput.style.display = "block";
