@@ -17,7 +17,6 @@ type NodeDescription = {
 
 export class MapScreenView implements View {
   private group: Konva.Group;
-  private config: MapScreenConfig;
   private nodes: NodeDescription[] = [];
 
   /**
@@ -40,7 +39,6 @@ export class MapScreenView implements View {
     handleButtonClick?: (buttonId: string) => void,
     handleNodeClick?: (nodeId: string) => void,
   ) {
-    this.config = config;
     this.group = new Konva.Group({ visible: false });
 
     // Add dungeon background

@@ -4,7 +4,7 @@ import {
   COLORS,
   STAGE_WIDTH,
   STAGE_HEIGHT,
-  FONT_FAMILY,
+  FONTS,
 } from "../../constants";
 
 /**
@@ -40,7 +40,7 @@ export class LoginScreenView implements View {
       text: "ENTER YOUR USERNAME",
       fontSize: 36,
       fontStyle: "bold",
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.topic,
       fill: COLORS.text,
       listening: false,
     });
@@ -55,7 +55,7 @@ export class LoginScreenView implements View {
     this.usernameInput.style.height = "50px";
     this.usernameInput.style.padding = "0 20px";
     this.usernameInput.style.fontSize = "24px";
-    this.usernameInput.style.fontFamily = FONT_FAMILY;
+    this.usernameInput.style.fontFamily = FONTS.topic;
     this.usernameInput.style.border = "4px solid " + COLORS.buttonStroke;
     this.usernameInput.style.borderRadius = "12px";
     this.usernameInput.style.backgroundColor = COLORS.buttonFill;
@@ -96,7 +96,7 @@ export class LoginScreenView implements View {
       align: "center",
       text: "",
       fontSize: 18,
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.topic,
       fill: "#ff4d4f",
       listening: false,
       visible: false,
@@ -140,7 +140,7 @@ export class LoginScreenView implements View {
       align: "center",
       verticalAlign: "middle",
       horizontalAlign: "center",
-      fontFamily: FONT_FAMILY,
+      fontFamily: FONTS.topic,
     });
 
     // hover + click interactions

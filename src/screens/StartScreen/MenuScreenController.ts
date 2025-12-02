@@ -1,5 +1,5 @@
 import { ScreenController } from "../../types";
-import type { ScreenSwitcher, Screen } from "../../types";
+import type { ScreenSwitcher } from "../../types";
 import { MenuScreenModel } from "./MenuScreenModel";
 import { MenuScreenView } from "./MenuScreenView";
 
@@ -40,24 +40,24 @@ export class MenuScreenController extends ScreenController {
     });
   }
 
-  private handleResumeClick(): void {}
-  private startGame() {
-    MenuScreenModel.setLastScreen("menu");
-    this.screenSwitcher.switchToScreen({ type: "map" });
-  }
-
-  private resume() {
-    const last = this.model.getLastScreen();
-    if (!last) {
+  private handleResumeClick(): void {
+    // Resume from where the user left off
+    const lastScreen = this.model.getLastScreen();
+    if (!lastScreen) {
+      // Should not happen if button is enabled, but handle gracefully
       return;
     }
 
-    const nextScreen: Screen = last;
-    this.screenSwitcher.switchToScreen({ type: "login", nextScreen });
+    // Navigate to login screen with the last screen as the destination
+    // This allows the user to log in and then continue from where they left off
+    this.screenSwitcher.switchToScreen({
+      type: "login",
+      nextScreen: lastScreen,
+    });
   }
 
   private handleRulesClick(): void {
-    MenuScreenModel.setLastScreen("rules");
+    MenuScreenModel.setLastScreen({ type: "rules", returnTo: { type: "menu" } });
     this.screenSwitcher.switchToScreen({
       type: "rules",
       returnTo: { type: "menu" },

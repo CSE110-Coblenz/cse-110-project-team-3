@@ -44,7 +44,7 @@ export class LoginScreenController extends ScreenController {
     this.view.hide();
   }
 
-  private handleLogin(username: string): void {
+  private async handleLogin(username: string): Promise<void> {
     this.view.clearError();
 
     // Update model with username
@@ -57,7 +57,7 @@ export class LoginScreenController extends ScreenController {
     }
 
     // Save to dataset
-    const success = this.model.login();
+    const success = await this.model.login();
     if (!success) {
       this.view.setError("Failed to save username. Please try again.");
       return;

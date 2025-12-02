@@ -11,10 +11,10 @@ import { TitleScreenController } from "./screens/MiniGameScreens/TitleScreen/Tit
 import { MiniGameRuleScreenController } from "./screens/MiniGameScreens/MiniGameRuleScreen/MiniGameRuleScreenController.ts";
 import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedScreen/CompletedScreenController.ts";
 import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
-import { MenuScreenController } from "./screens/StartScreen/MenuScreenController.ts";
 import { MenuScreenModel } from "./screens/StartScreen/MenuScreenModel";
 import { LoginScreenController } from "./screens/LoginScreen/LoginScreenController.ts";
 import { Minigame1SimulController } from "./screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController.ts";
+import { UserDataset } from "./dataset/UserDataset";
 
 // Import configurations for minigames
 import { MinigameSimulController } from "./screens/MiniGameScreens/MinigameSimulScreen/MinigameSimulController";
@@ -339,4 +339,14 @@ class App implements ScreenSwitcher {
   }
 }
 
-new App();
+// Initialize database and start app
+(async () => {
+  try {
+    await UserDataset.initialize();
+    new App();
+  } catch (error) {
+    console.error("Failed to initialize database:", error);
+    // Still start the app even if database initialization fails
+    new App();
+  }
+})();

@@ -9,7 +9,6 @@ export class MenuScreenView implements View {
   private group: Konva.Group;
 
   private resumeBtn?: Konva.Group;
-  private resumeEnabled = false;
 
   constructor(handlers: {
     onStart: () => void;
@@ -264,7 +263,6 @@ export class MenuScreenView implements View {
 
   /** Enable/disable visual state for Resume */
   setResumeEnabled(enabled: boolean) {
-    this.resumeEnabled = enabled;
     if (!this.resumeBtn) return;
 
     (this.resumeBtn as any)._disabled = !enabled;
