@@ -26,13 +26,13 @@ export class LoginScreenModel {
   /**
    * Save username to dataset and return success status
    */
-  login(): boolean {
+  async login(): Promise<boolean> {
     if (!this.isValid()) {
       return false;
     }
 
     const trimmedUsername = this.username.trim();
-    UserDataset.setCurrentUsername(trimmedUsername);
+    await UserDataset.setCurrentUsername(trimmedUsername);
     return true;
   }
 

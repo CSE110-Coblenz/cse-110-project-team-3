@@ -344,4 +344,14 @@ class App implements ScreenSwitcher {
   }
 }
 
-new App();
+// Initialize database and start app
+(async () => {
+  try {
+    await UserDataset.initialize();
+    new App();
+  } catch (error) {
+    console.error("Failed to initialize database:", error);
+    // Still start the app even if database initialization fails
+    new App();
+  }
+})();

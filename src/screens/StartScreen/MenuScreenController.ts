@@ -41,6 +41,7 @@ export class MenuScreenController extends ScreenController {
   }
 
   private handleResumeClick(): void {
+<<<<<<< HEAD
     console.log("Resume button clicked");
     const lastScreen = this.model.getLastScreen();
     console.log("Last screen from model:", lastScreen);
