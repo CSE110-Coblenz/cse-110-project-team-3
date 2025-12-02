@@ -9,7 +9,6 @@ export class MenuScreenView implements View {
   private group: Konva.Group;
 
   private resumeBtn?: Konva.Group;
-  private resumeEnabled = false;
 
   constructor(handlers: {
     onStart: () => void;
@@ -144,7 +143,10 @@ export class MenuScreenView implements View {
       startY,
       buttonWidth,
       buttonHeight,
-      handlers.onResume,
+      () => {
+        console.log("Resume button clicked in view");
+        handlers.onResume();
+      },
     );
     this.group.add(this.resumeBtn);
     startY += 80;
@@ -180,7 +182,7 @@ export class MenuScreenView implements View {
     height: number,
     onClick?: () => void,
   ): Konva.Group {
-    const g = new Konva.Group({ x, y });
+    const g = new Konva.Group({ x, y, listening: true });
 
     const r = Math.min(height / 2 + 6, 24);
 
@@ -254,6 +256,16 @@ export class MenuScreenView implements View {
     // Click handler
     if (onClick) {
       g.on("click", () => {
+        console.log("Button clicked, disabled:", (g as any)._disabled);
+        if ((g as any)._disabled) {
+          console.log("Button is disabled, ignoring click");
+          return;
+        }
+        console.log("Calling onClick handler");
+        onClick();
+      });
+      // Also try tap event for mobile
+      g.on("tap", () => {
         if ((g as any)._disabled) return;
         onClick();
       });
@@ -264,10 +276,14 @@ export class MenuScreenView implements View {
 
   /** Enable/disable visual state for Resume */
   setResumeEnabled(enabled: boolean) {
-    this.resumeEnabled = enabled;
-    if (!this.resumeBtn) return;
+    console.log("setResumeEnabled called with:", enabled);
+    if (!this.resumeBtn) {
+      console.warn("Resume button not found");
+      return;
+    }
 
     (this.resumeBtn as any)._disabled = !enabled;
+    console.log("Resume button disabled state:", !enabled);
 
     // Tint when disabled
     const rect = this.resumeBtn.findOne<Konva.Rect>("Rect");
@@ -275,6 +291,10 @@ export class MenuScreenView implements View {
     if (rect && text) {
       rect.fill(enabled ? COLORS.buttonFill : "#bdbdbd");
       text.fill(enabled ? COLORS.buttonText : "#555");
+    }
+    // Ensure button is listening when enabled
+    if (enabled) {
+      this.resumeBtn.listening(true);
     }
     this.group.getLayer()?.draw();
   }
