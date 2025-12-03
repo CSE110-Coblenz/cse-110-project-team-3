@@ -11,17 +11,19 @@ export interface View {
 /**
  * Screen types for navigation
  *
- * - "menu": MenuScreen
- * - "rules": Rulesscreen
- * - "level": Levelscreen
- * - "map": Mapscreen
- * - "reference": ReferenceScreen
- * - "minigame": Minigame screen title/rules/completed/gameover/simulation
- * - "topic": Topic screen for specified level
- * - "simulation": Simulation screen for specified topic
+ * - "login": Login screen for username entry
+ * - "menu": Menu/Start screen
+ * - "rules": Rules screen
+ * - "level": Level screen
+ * - "map": Map screen
+ * - "reference": Reference screen with optional return navigation
+ * - "topic": Topic screen with specified level
+ * - "simulation": Simulation screen for specified level
+ * - "minigame": Minigame screen with sub-screen and level
  */
 
 export type Screen =
+  | { type: "login"; nextScreen?: Screen }
   | { type: "menu" }
   | { type: "rules"; returnTo?: Screen }
   | { type: "level" }
