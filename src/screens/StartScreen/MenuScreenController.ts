@@ -29,7 +29,12 @@ export class MenuScreenController extends ScreenController {
     this.model.load();
     const hasResume = this.model.getHasResume();
     const lastScreen = this.model.getLastScreen();
-    console.log("MenuScreen show() - hasResume:", hasResume, "lastScreen:", lastScreen);
+    console.log(
+      "MenuScreen show() - hasResume:",
+      hasResume,
+      "lastScreen:",
+      lastScreen,
+    );
     this.view.setResumeEnabled(hasResume);
     super.show(); // calls this.getView().show()
   }
