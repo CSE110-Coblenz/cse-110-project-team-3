@@ -15,7 +15,6 @@ import { CompletedScreenController } from "./screens/MiniGameScreens/CompletedSc
 import { GameOverScreenController } from "./screens/MiniGameScreens/GameOverScreen/GameOverScreenController.ts";
 import { MenuScreenModel } from "./screens/StartScreen/MenuScreenModel";
 import { LoginScreenController } from "./screens/LoginScreen/LoginScreenController.ts";
-import { Minigame1SimulController } from "./screens/MiniGameScreens/Minigame1SimulScreen/Minigame1SimulController.ts";
 import { UserDataset } from "./dataset/UserDataset";
 
 // Import configurations for minigames
