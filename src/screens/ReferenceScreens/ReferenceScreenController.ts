@@ -3,10 +3,9 @@ import type { ScreenSwitcher, Screen } from "../../types.ts";
 import { ReferenceScreenView } from "./ReferenceScreenView.ts";
 import { ReferenceScreenNavigationButtons } from "../../configs/NavigationButtons/Reference.ts";
 
-/*
-ReferenceController handles the reference screen interactions
-*/
-
+/**
+ * ReferenceController handles the reference screen interactions
+ */
 export class ReferenceScreenController extends ScreenController {
   private view: ReferenceScreenView;
   private screenSwitcher: ScreenSwitcher;

@@ -1,5 +1,10 @@
 import { BaseMinigameSimulModel } from "../../../types";
 
+/**
+ * Model for the projectile minigame simulation
+ * Extends the base minigame model with angle and initial height
+ * and clamps angle changes to valid gameplay ranges.
+ */
 export class MinigameSimulModel extends BaseMinigameSimulModel {
   private angle: number;
   private initial_height: number;

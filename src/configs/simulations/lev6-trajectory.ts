@@ -1,5 +1,9 @@
 import type { SimulationScreenConfig } from "../../screens/SimulationScreen/types";
 
+/**
+ * Configuration for the trajectory simulation screen
+ * Find implementation details in "../../screens/SimulationScreen/types"
+ */
 export const Lev6SimulationConfig: SimulationScreenConfig = {
   id: "lev6-trajectory",
   title: "SIMULATION: Projectile Trajectory",

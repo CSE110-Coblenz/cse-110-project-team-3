@@ -3,6 +3,9 @@ import { MinigameCompletedScreenView } from "./CompletedScreenView";
 import { ScreenController } from "../../../types";
 import { getCompletedScreenNavigationButtons } from "../../../configs/NavigationButtons/MiniGame";
 
+/**
+ * Controller for the minigame completed screen
+ */
 export class CompletedScreenController extends ScreenController {
   private view: MinigameCompletedScreenView;
   private screenSwitcher: ScreenSwitcher;

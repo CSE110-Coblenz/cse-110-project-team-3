@@ -5,6 +5,9 @@ import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { RulesScreenNavigationButtons } from "../../configs/NavigationButtons/Rules.ts";
 
+/**
+ * View for the rules screen
+ */
 export class RulesScreenView implements View {
   private group: Konva.Group;
 

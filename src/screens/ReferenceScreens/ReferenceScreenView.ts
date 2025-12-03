@@ -5,9 +5,9 @@ import { createKonvaButton } from "../../utils/ui/NavigationButton.ts";
 import { BackgroundHelper } from "../../utils/ui/BackgroundHelper.ts";
 import { ReferenceScreenNavigationButtons } from "../../configs/NavigationButtons/Reference.ts";
 
-/*
-ReferenceScreenView makes the reference screen view
-*/
+/**
+ * ReferenceScreenView makes the reference screen view
+ */
 export class ReferenceScreenView implements View {
   private group: Konva.Group;
 

@@ -94,7 +94,7 @@ export abstract class MinigameController extends ScreenController {
   protected handleHit(hit: boolean): void {
     if (hit) {
       if (this.level === 1) {
-        // game1 completed -> unlock lev-4
+        // game1 completed: unlock lev-4
         setCurrentLevelIndex(4);
       } else if (this.level === 2) {
         //  game2 completed
@@ -301,6 +301,7 @@ export abstract class BaseMinigameSimulView implements View {
     // Add hover effects - stone tablet glows like torchlight
     g.on("mouseenter", () => {
       if (g.getAttr("disabled") || g.getAttr("locked")) return;
+
       document.body.style.cursor = "pointer";
       rect.fill(COLORS.buttonHover); // Lit stone
       rect.shadowBlur(16); // Stronger glow
@@ -310,6 +311,7 @@ export abstract class BaseMinigameSimulView implements View {
 
     g.on("mouseleave", () => {
       if (g.getAttr("disabled") || g.getAttr("locked")) return;
+
       document.body.style.cursor = "default";
       rect.fill(COLORS.buttonFill); // Return to stone tablet
       rect.shadowBlur(8); // Normal shadow

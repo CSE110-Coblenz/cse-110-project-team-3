@@ -145,6 +145,12 @@ export class BackgroundHelper {
     });
     group.add(vignette);
 
+    //add looping background music
+    const bgMusic = new Audio("/bg_audio.mp3");
+    bgMusic.loop = true;
+    bgMusic.volume = 1.0;
+    bgMusic.play();
+
     return group;
   }
 }
