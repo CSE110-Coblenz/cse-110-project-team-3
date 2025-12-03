@@ -56,11 +56,11 @@ export class MenuScreenController extends ScreenController {
 
     if (!lastScreen) {
       console.warn("No last screen found, resume button should be disabled");
+      // Should not happen if button is enabled, but handle gracefully
       return;
     }
 
     // Navigate directly to the last screen (skip login)
-    // MenuScreenModel already validates and stores all screen types correctly
     console.log("Navigating directly to:", lastScreen);
     this.screenSwitcher.switchToScreen(lastScreen);
   }
