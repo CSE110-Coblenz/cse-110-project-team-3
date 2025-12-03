@@ -29,7 +29,12 @@ export class MenuScreenController extends ScreenController {
     this.model.load();
     const hasResume = this.model.getHasResume();
     const lastScreen = this.model.getLastScreen();
-    console.log("MenuScreen show() - hasResume:", hasResume, "lastScreen:", lastScreen);
+    console.log(
+      "MenuScreen show() - hasResume:",
+      hasResume,
+      "lastScreen:",
+      lastScreen,
+    );
     this.view.setResumeEnabled(hasResume);
     super.show(); // calls this.getView().show()
   }
@@ -48,7 +53,7 @@ export class MenuScreenController extends ScreenController {
     // Resume from where the user left off - go directly to the last screen
     const lastScreen = this.model.getLastScreen();
     console.log("Last screen from model:", lastScreen);
-    
+
     if (!lastScreen) {
       console.warn("No last screen found, resume button should be disabled");
       // Should not happen if button is enabled, but handle gracefully
@@ -61,7 +66,10 @@ export class MenuScreenController extends ScreenController {
   }
 
   private handleRulesClick(): void {
-    MenuScreenModel.setLastScreen({ type: "rules", returnTo: { type: "menu" } });
+    MenuScreenModel.setLastScreen({
+      type: "rules",
+      returnTo: { type: "menu" },
+    });
     this.screenSwitcher.switchToScreen({
       type: "rules",
       returnTo: { type: "menu" },

@@ -35,7 +35,7 @@ export class LoginScreenController extends ScreenController {
     // For RESUME, always require username entry
     // Check if nextScreen is map (START) vs other screens (RESUME)
     const isNewGame = this.nextScreen.type === "map";
-    
+
     if (isNewGame) {
       // For new game, pre-fill if user exists
       const existingUsername = this.model.getExistingUsername();

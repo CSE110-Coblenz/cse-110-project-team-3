@@ -1,11 +1,6 @@
 import Konva from "konva";
 import type { View } from "../../types";
-import {
-  COLORS,
-  STAGE_WIDTH,
-  STAGE_HEIGHT,
-  FONTS,
-} from "../../constants";
+import { COLORS, STAGE_WIDTH, STAGE_HEIGHT, FONTS } from "../../constants";
 
 /**
  * LoginScreenView - Konva rendering for the login screen
@@ -85,7 +80,10 @@ export class LoginScreenView implements View {
       buttonWidth,
       buttonHeight,
       () => {
-        console.log("Login button clicked, username:", this.usernameInput.value);
+        console.log(
+          "Login button clicked, username:",
+          this.usernameInput.value,
+        );
         handlers.onSubmit(this.usernameInput.value);
       },
     );

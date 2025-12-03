@@ -123,7 +123,7 @@ export class UserDataset {
       return;
     }
     const trimmedUsername = username.trim();
-    
+
     // Store in localStorage for quick access
     localStorage.setItem(USERNAME_KEY, trimmedUsername);
 
@@ -150,21 +150,24 @@ export class UserDataset {
       const existingUser = await this.getUser(username);
       if (existingUser) {
         // Update last login time
-        database.run(
-          `UPDATE users SET lastLoginAt = ? WHERE username = ?`,
-          [now, username]
-        );
+        database.run(`UPDATE users SET lastLoginAt = ? WHERE username = ?`, [
+          now,
+          username,
+        ]);
       } else {
         // Add new user
         database.run(
           `INSERT INTO users (username, createdAt, lastLoginAt) VALUES (?, ?, ?)`,
-          [username, now, now]
+          [username, now, now],
         );
       }
 
       saveDatabase();
     } catch (error) {
-      console.warn("Failed to add user to database, using localStorage only:", error);
+      console.warn(
+        "Failed to add user to database, using localStorage only:",
+        error,
+      );
       // Continue without database - localStorage is already updated in setCurrentUsername
     }
   }
@@ -195,15 +198,19 @@ export class UserDataset {
     const database = await this.ensureDb();
     const stmt = database.prepare("SELECT * FROM users WHERE username = ?");
     stmt.bind([username]);
-    
+
     if (!stmt.step()) {
       stmt.free();
       return null;
     }
 
-    const row = stmt.getAsObject() as { username: string; createdAt: string; lastLoginAt: string };
+    const row = stmt.getAsObject() as {
+      username: string;
+      createdAt: string;
+      lastLoginAt: string;
+    };
     stmt.free();
-    
+
     return {
       username: row.username,
       createdAt: row.createdAt,

@@ -350,6 +350,9 @@ new App();
 
 // Initialize database asynchronously (non-blocking)
 UserDataset.initialize().catch((error) => {
-  console.warn("Database initialization failed, continuing without SQLite:", error);
+  console.warn(
+    "Database initialization failed, continuing without SQLite:",
+    error,
+  );
   // App will continue to work with localStorage fallback
 });
